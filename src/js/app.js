@@ -1,105 +1,96 @@
-App = {
-  web3Provider: null,
-  contracts: {},
+function app() {
+    if (typeof web3 == 'undefined') throw 'No web3 detected. Is Metamask/Mist being used?';
+    web3 = new Web3(web3.currentProvider); // MetaMask injected Ethereum provider
+    console.log("Using web3 version: " + Web3.version);
+  
+    var contract;
+    var userAccount;
+  
+    var contractDataPromise = $.getJSON('ChanCore.json');
+    var networkIdPromise = web3.eth.net.getId(); // resolves on the current network id
+    var accountsPromise = web3.eth.getAccounts(); // resolves on an array of accounts
+  
+    Promise.all([contractDataPromise, networkIdPromise, accountsPromise])
+      .then(function initApp(results) {
+        var contractData = results[0];
+        var networkId = results[1];
+        var accounts = results[2];
+        userAccount = accounts[0];
+  
+        // (todo) Make sure the contract is deployed on the network to which our provider is connected
+  
+        var contractAddress = contractData.networks[networkId].address;
+        contract = new web3.eth.Contract(contractData.abi, contractAddress);
+        
+ function transfer(to, amount) {
+    console.log(to, amount)
+    if (!to || !amount) return console.log("Fill in both fields");
 
-  init: function() {
-    return App.initWeb3();
-  },
+    $("#loader").show();
 
-  initWeb3: function() {
-    // Initialize web3 and set the provider to the testRPC.
-    if (typeof web3 !== 'undefined') {
-      App.web3Provider = web3.currentProvider;
-      web3 = new Web3(web3.currentProvider);
-    } else {
-      // set the provider you want from Web3.providers
-      App.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:9545');
-      web3 = new Web3(App.web3Provider);
-    }
-
-    return App.initContract();
-  },
-
-  initContract: function() {
-    $.getJSON('TutorialToken.json', function(data) {
-      // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      var TutorialTokenArtifact = data;
-      App.contracts.TutorialToken = TruffleContract(TutorialTokenArtifact);
-
-      // Set the provider for our contract.
-      App.contracts.TutorialToken.setProvider(App.web3Provider);
-
-      // Use our contract to retieve and mark the adopted pets.
-      return App.getBalances();
-    });
-
-    return App.bindEvents();
-  },
-
-  bindEvents: function() {
-    $(document).on('click', '#transferButton', App.handleTransfer);
-  },
-
-  handleTransfer: function(event) {
-    event.preventDefault();
-
-    var amount = parseInt($('#TTTransferAmount').val());
-    var toAddress = $('#TTTransferAddress').val();
-
-    console.log('Transfer ' + amount + ' TT to ' + toAddress);
-
-    var tutorialTokenInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-
-      var account = accounts[0];
-
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
-
-        return tutorialTokenInstance.transfer(toAddress, amount, {from: account});
-      }).then(function(result) {
-        alert('Transfer Successful!');
-        return App.getBalances();
-      }).catch(function(err) {
-        console.log(err.message);
+    contract.methods.transfer(to, amount).send({from: userAccount})
+      .then(refreshBalance)
+      .catch(function (e) {
+        $("#loader").hide();
       });
-    });
-  },
-
-  getBalances: function() {
-    console.log('Getting balances...');
-
-    var tutorialTokenInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-
-      var account = accounts[0];
-
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
-
-        return tutorialTokenInstance.balanceOf(account);
-      }).then(function(result) {
-        balance = result.c[0];
-
-        $('#TTBalance').text(balance);
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    });
   }
 
-};
 
-$(function() {
-  $(window).load(function() {
-    App.init();
+
+  function mint(amount) {
+    console.log("mint");
+    if (!amount) return console.log("Fill in amount field");
+
+    $("#loader").show();
+    console.log(contract.methods);
+
+    contract.methods.mint(amount).send({from: userAccount})
+      .then(refreshBalance)
+      .catch(function (e) {
+        $("#loader").hide();
+      });
+  }
+
+
+
+  $("#mint").click(function() {
+    console.log("hello mint");
+    var amount = $("#amount").val();
+    mint(amount);
   });
-});
+
+  $("#button").click(function() {
+  	console.log("hello");
+  	 var toAddress = $("#address").val();
+    var amount = $("#amount").val();
+    transfer(toAddress, amount);
+   
+  });
+
+if (!(networkId in contractData.networks)) {
+   throw new Error("Contract not found in selected Ethereum network on MetaMask.");
+}
+
+      })
+
+
+
+      .then(refreshBalance)
+     .catch(console.error);
+    function refreshBalance() { // Returns web3's PromiEvent
+     // Calling the contract (try with/without declaring view)
+     contract.methods.balanceOf(userAccount).call().then(function (balance) {
+     	console.log(balance);
+     	console.log(userAccount);
+       $('#display').text(balance + " CDT");
+       $("#loader").hide();
+     });}
+
+
+}
+
+
+$(document).ready(app);
+
+
+
