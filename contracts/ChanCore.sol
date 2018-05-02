@@ -14,7 +14,7 @@ contract ChanCore is ChanAuction {
         paused = true;
 
         // start with the mythical chan 0 - so we don't have generation-0 parent issues
-        _createChan("AnimeGod", address(0), true);
+        _createChan("AnimeGod", this, true);
     }
 
     // Used to mark the smart contract as upgraded, in case there is a serious
