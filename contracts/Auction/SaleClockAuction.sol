@@ -32,14 +32,11 @@ contract SaleClockAuction is ClockAuction {
         address _seller
     )
         public
+        canBeStoredWith128Bits(_startingPrice)
+        canBeStoredWith128Bits(_endingPrice)
+        canBeStoredWith64Bits(_duration)
     {
-        // Sanity check that no inputs overflow how many bits we've allocated
-        // to store them in the auction struct.
-        require(_startingPrice == uint256(uint128(_startingPrice)));
-        require(_endingPrice == uint256(uint128(_endingPrice)));
-        require(_duration == uint256(uint64(_duration)));
-
-        require(msg.sender == address(nonFungibleContract));
+        //require(msg.sender == address(nonFungibleContract));
         _escrow(_seller, _tokenId);
         Auction memory auction = Auction(
             _seller,
