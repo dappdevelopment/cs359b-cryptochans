@@ -1,6 +1,6 @@
 var SaleClockAuction = artifacts.require("SaleClockAuction");
 var ChanCore = artifacts.require("ChanCore");
-var ownerCut = 8000 //80% of auction revenue
+var ownerCut = 2000 //20% of auction revenue goes to contract owner
 
 module.exports = function(deployer) {
 
