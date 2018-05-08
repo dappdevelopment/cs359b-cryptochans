@@ -1,44 +1,48 @@
-import React, { Component,  PropTypes} from 'react'
+import React, { Component} from 'react'
 import Chanchancore_contract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuction from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './getweb3'
 import logo from './logo.svg';
 import './App.css';
-
+import PropTypes from 'prop-types';
 
 class App extends Component {
-  state = {
-    address: null,
-    contract: null,
-    loading: false,
-  }
 
 
-  render() {
-    const contract = require('truffle-contract');
-    const chancore_contract = contract(Chanchancore_contract);
-    const saleClockAuction_contract = contract(SaleClockAuction);
-    getWeb3
-    .then(results => {
-      chancore_contract.setProvider(results.web3.currentProvider);
-      console.log(results.web3.currentProvider);
-      saleClockAuction_contract.setProvider(results.web3.currentProvider);
+  instantiateContract(){
 
-      results.web3.eth.getAccounts((error, accounts) => {
+      const contract = require('truffle-contract');
+      const chancore_contract = contract(Chanchancore_contract);
+      const saleClockAuction_contract = contract(SaleClockAuction);
+
+      chancore_contract.setProvider(this.state.web3.currentProvider);
+      console.log(this.state.web3.currentProvider);
+      saleClockAuction_contract.setProvider(this.state.web3.currentProvider);
+
+      this.state.web3.eth.getAccounts((error, accounts) => {
       console.log(accounts);
       console.log({userAccount: accounts[0]});
+      this.setState({account:accounts[0]});
+      //this.cur_account = accounts[0];
       });
 
       chancore_contract.deployed().then((instance) => {
       console.log("success");
       console.log(instance);
 
-      var chanid = document.getElementById('chanid');
+      // var chanid = document.getElementById('chanid');
 
-      console.log(chanid);
+      // console.log(chanid);
 
       console.log(instance.getChan(0).then(result=> {console.log(result); }));
       console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
+
+      console.log(instance.owner().then(result=> {
+        console.log(result);
+        console.log(this.state.account);
+        console.log(result==this.state.account);
+       }));
+
 
     });
 
@@ -52,13 +56,28 @@ class App extends Component {
 
     });
 
-
-        
-      });
+  }
 
 
 
 
+
+  componentWillMount() {
+    getWeb3
+    .then(results => {
+      this.setState({
+        web3: results.web3
+      })
+      // Instantiate contract once web3 provided.
+      this.instantiateContract();
+    })
+    .catch(() => {
+      console.log('Error finding web3.')
+    })
+  }
+
+
+  render() {
 
     return (
 
@@ -70,10 +89,10 @@ class App extends Component {
         <p className="App-intro">
           Test
         </p>
-        <span>Chan id: </span>
-        <input id="chanid" type="int"></input>
+        <span>set the SaleClockAuction's address </span>
+        <input id="chanid" type="text"></input>
         <button id="button">
-        Find
+        Set
         </button>
         <p id="detail">
         </p>
