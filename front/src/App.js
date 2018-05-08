@@ -8,9 +8,7 @@ import PropTypes from 'prop-types';
 
 class App extends Component {
 
-
   instantiateContract(){
-
       const contract = require('truffle-contract');
       const chancore_contract = contract(Chanchancore_contract);
       const saleClockAuction_contract = contract(SaleClockAuction);
@@ -29,6 +27,7 @@ class App extends Component {
       chancore_contract.deployed().then((instance) => {
       console.log("success");
       console.log(instance);
+      this.setState({contract_1:instance});
 
       // var chanid = document.getElementById('chanid');
 
@@ -48,6 +47,8 @@ class App extends Component {
 
 
       saleClockAuction_contract.deployed().then((instance) => {
+      this.setState({contract_2:instance});
+
       console.log("success");
       console.log(instance);
 
@@ -57,10 +58,6 @@ class App extends Component {
     });
 
   }
-
-
-
-
 
   componentWillMount() {
     getWeb3
@@ -76,9 +73,24 @@ class App extends Component {
     })
   }
 
+  setAddr(){
+    console.log(this.state.setaddr);
+    console.log(this.state.contract_2);
+    // this.state.contract_2.setSaleAuctionAddress(this.state.setaddr).then(result=> {console.log(result);});
+  }
+
+  handleChange(event){
+    console.log(event.target.value);
+    this.setState({setaddr: event.target.value});
+  }
+  
+  withdraw(){
+      console.log(this.state.contract_2);
+      console.log(this.state.contract_2.withdrawBalance().then(result=> {console.log(result); }));
+  }
+
 
   render() {
-
     return (
 
       <div className="App">
@@ -90,12 +102,15 @@ class App extends Component {
           Test
         </p>
         <span>set the SaleClockAuction's address </span>
-        <input id="chanid" type="text"></input>
-        <button id="button">
+        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
+        <button id="button" onClick={this.setAddr.bind(this)}>
         Set
         </button>
         <p id="detail">
         </p>
+        <button id="withdraw" onClick={this.withdraw.bind(this)}>
+        Withdraw
+        </button>
       </div>
     );
   }
