@@ -1,5 +1,5 @@
 import React, { Component,  PropTypes} from 'react'
-import ChanOwnership from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
+import ChanOwnership from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import getWeb3 from './getweb3'
 import logo from './logo.svg';
 import './App.css';
@@ -35,11 +35,15 @@ class App extends Component {
       // console.log(instance.Transfer(1,1,1));
       // console.log(instance.getChan(1).call({from:"0x993406b67fd87715893a47aefb4944b5a5f9c535"}));
       console.log("success");
-      console.log(instance.Pause());
+      console.log(instance);
 
-      // console.log(instance.balanceOf("0x993406b67fd87715893a47aefb4944b5a5f9c535"));
-      // console.log(instance.balanceOf.call({from: "0x993406b67fd87715893a47aefb4944b5a5f9c535"}, 1));
+      var chanid = document.getElementById('chanid');
+
+      console.log(chanid);
+
+      console.log(instance.getChan(0).then(result=> {console.log(result); }));
       console.log("?");
+
     });
 
 
@@ -58,13 +62,15 @@ class App extends Component {
           <h1 className="App-title">Test</h1>
         </header>
         <p className="App-intro">
-          Test
+          Get Chan Level
         </p>
         <span>Chan id: </span>
-        <input id="chanid" type="text"></input>
+        <input id="chanid" type="int"></input>
         <button id="button">
-        Buy!
+        Find
         </button>
+        <p id="detail">
+        </p>
       </div>
     );
   }
