@@ -1,5 +1,6 @@
 import React, { Component,  PropTypes} from 'react'
-import ChanOwnership from '../node_modules/cryptochans/build/contracts/ChanCore.json'
+import Chanchancore_contract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
+import SaleClockAuction from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './getweb3'
 import logo from './logo.svg';
 import './App.css';
@@ -15,25 +16,20 @@ class App extends Component {
 
   render() {
     const contract = require('truffle-contract');
-    const ownership = contract(ChanOwnership);
+    const chancore_contract = contract(Chanchancore_contract);
+    const saleClockAuction_contract = contract(SaleClockAuction);
     getWeb3
     .then(results => {
-      ownership.setProvider(results.web3.currentProvider);
+      chancore_contract.setProvider(results.web3.currentProvider);
       console.log(results.web3.currentProvider);
-
-      // const net_id = results.web3.eth.getId();
-      // const address = ownership.networks[net_id].address;
-      // const contract1 = new results.web3.eth.Contract(ownership.abi, address);
-
+      saleClockAuction_contract.setProvider(results.web3.currentProvider);
 
       results.web3.eth.getAccounts((error, accounts) => {
       console.log(accounts);
       console.log({userAccount: accounts[0]});
       });
 
-      ownership.deployed().then((instance) => {
-      // console.log(instance.Transfer(1,1,1));
-      // console.log(instance.getChan(1).call({from:"0x993406b67fd87715893a47aefb4944b5a5f9c535"}));
+      chancore_contract.deployed().then((instance) => {
       console.log("success");
       console.log(instance);
 
@@ -42,7 +38,17 @@ class App extends Component {
       console.log(chanid);
 
       console.log(instance.getChan(0).then(result=> {console.log(result); }));
-      console.log("?");
+      console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
+
+    });
+
+
+      saleClockAuction_contract.deployed().then((instance) => {
+      console.log("success");
+      console.log(instance);
+
+      console.log(instance.isSaleClockAuction().then(result=> {console.log(result); }));
+      console.log(instance.ownerCut().then(result=> {console.log(result); }));
 
     });
 
@@ -62,7 +68,7 @@ class App extends Component {
           <h1 className="App-title">Test</h1>
         </header>
         <p className="App-intro">
-          Get Chan Level
+          Test
         </p>
         <span>Chan id: </span>
         <input id="chanid" type="int"></input>
