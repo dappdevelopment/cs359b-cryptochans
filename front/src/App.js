@@ -113,7 +113,7 @@ class App extends Component {
 
   render() {
     let AdminDisplay = this.state.admin?        
-         <div>
+         <div style={{width:'300px'}}>
             <Panel>
               <Panel.Heading>Admin Content</Panel.Heading>
               <Panel.Body></Panel.Body>
