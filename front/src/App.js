@@ -6,6 +6,14 @@ import logo from './logo.svg';
 import './App.css';
 import PropTypes from 'prop-types';
 
+import AppBar from 'material-ui/AppBar';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import Toolbar from 'material-ui/Toolbar';
+
+
+import { Navbar, Jumbotron, Button, Panel } from 'react-bootstrap';
+
+
 class App extends Component {
 
   instantiateContract(){
@@ -21,17 +29,12 @@ class App extends Component {
       console.log(accounts);
       console.log({userAccount: accounts[0]});
       this.setState({account:accounts[0]});
-      //this.cur_account = accounts[0];
       });
 
       chancore_contract.deployed().then((instance) => {
       console.log("success");
       console.log(instance);
       this.setState({contract_1:instance});
-
-      // var chanid = document.getElementById('chanid');
-
-      // console.log(chanid);
 
       console.log(instance.getChan(0).then(result=> {console.log(result); }));
       console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
@@ -40,6 +43,7 @@ class App extends Component {
         console.log(result);
         console.log(this.state.account);
         console.log(result==this.state.account);
+        this.setState({admin:true});
        }));
 
 
@@ -83,14 +87,39 @@ class App extends Component {
     console.log(event.target.value);
     this.setState({setaddr: event.target.value});
   }
-  
+
   withdraw(){
       console.log(this.state.contract_2);
       console.log(this.state.contract_2.withdrawBalance().then(result=> {console.log(result); }));
   }
 
+  change(){
+
+
+
+
+  }
+
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      admin: false
+    }
+
+  }
+
 
   render() {
+    let AdminDisplay = this.state.admin?        
+         <div>
+            <Panel>
+              <Panel.Heading>Admin Content</Panel.Heading>
+              <Panel.Body></Panel.Body>
+            </Panel>
+        </div> : null;
+
     return (
 
       <div className="App">
@@ -111,7 +140,10 @@ class App extends Component {
         <button id="withdraw" onClick={this.withdraw.bind(this)}>
         Withdraw
         </button>
+        {AdminDisplay}
       </div>
+
+
     );
   }
 }
