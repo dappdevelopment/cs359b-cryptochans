@@ -83,7 +83,16 @@ truffle(development)> myC.then(function(instance){return instance.getChan(0)})
 truffle(development)> .exit
 ```
 
-TODO:
-1. On the front end UI, check if the current metamask address is the owner using the contract's owner() function. If so, display an additional "Admin Panel" that has the following:
-  - A text field and button to set the SaleClockAuction's address in ChanCore's contract, by calling setSaleAuctionAddress()
-  - A button to withdraw funds by calling withdrawAuctionBalance()
+7. Create symlink from node_module to root
+Due to React.js' limitations, contracts outside of src directory must be symbolically linked from within node_module
+```
+cd build/contracts
+npm link
+cd ../..
+npm link cryptochans
+```
+
+8. Run
+```
+npm run start
+```
