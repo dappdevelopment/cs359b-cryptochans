@@ -42,3 +42,12 @@ truffle(development)> myC.then(function(instance){return instance.getChan(0)})
 truffle(development)> .exit
 ```
 If you get output similar to above, then the ChanCore contract deployed successfully and the first CryptoChan called AnimeGod has been created. Note that the owner of AnimeGod is the ChanCore contract itself, which address should match the address printed in step 2 after running `truffle migrate --reset`.
+
+
+5.when you are inside project dir, run following commands
+npm link
+cd front/
+npm link cryptochans
+
+6.How to start:
+inside /front, run npm start

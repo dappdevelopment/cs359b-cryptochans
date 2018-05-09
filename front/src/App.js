@@ -12,6 +12,10 @@ import Toolbar from 'material-ui/Toolbar';
 
 
 import { Navbar, Jumbotron, Button, Panel } from 'react-bootstrap';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+
+
+import ChanDetails from './pages/ChanDetails';
 
 
 class App extends Component {
@@ -141,6 +145,15 @@ class App extends Component {
         Withdraw
         </button>
         {AdminDisplay}
+
+        <Router>
+        <div>
+        <Link to="/test">My trees</Link>
+        <Switch>
+              <Route path="/test" render={(props) => <ChanDetails {...props} contract={this.contract_1} />} />
+        </Switch>
+        </div>
+        </Router>
       </div>
 
 
