@@ -11,12 +11,12 @@ contract ChanAuction is ChanOwnership {
 
     // Sets the reference to the sale auction.
     // @param _address - Address of sale contract.
-    //function setSaleAuctionAddress(address _address) external onlyOwner {
-    function setSaleAuctionAddress(address _address) public {
+    function setSaleAuctionAddress(address _address) external onlyOwner {
+    //function setSaleAuctionAddress(address _address) public {
         SaleClockAuction candidateContract = SaleClockAuction(_address);
 
         // Verify that a contract is what we expect
-        //require(candidateContract.isSaleClockAuction());
+        require(candidateContract.isSaleClockAuction());
 
         // Set the new contract address
         saleAuction = candidateContract;
