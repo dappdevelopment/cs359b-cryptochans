@@ -56,6 +56,12 @@ contract ChanCore is ChanAuction {
         gender = chan.gender;
     }
 
+    function ChanLevelup(uint256 _id) public returns (uint256 newlevel) {
+        Chan storage chan = chans[_id];
+        chan.level += 1; //todo: get random number
+        newlevel = chan.level;
+    }
+
     // @override
     function unpause() public onlyOwner whenPaused {
         require(saleAuction != address(0));
