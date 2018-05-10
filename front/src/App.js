@@ -16,7 +16,7 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
 import ChanDetails from './pages/ChanDetails';
-
+import BuyNewChan from './pages/MarketPlace'
 
 class App extends Component {
 
@@ -40,15 +40,15 @@ class App extends Component {
       console.log(instance);
       this.setState({contract_1:instance});
 
-      console.log(instance.getChan(0).then(result=> {console.log(result); }));
-      console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
+      instance.getChan(0).then(result=> {console.log(result); });
+      instance.ownerOf(0).then(result=> {console.log(result); });
 
-      console.log(instance.owner().then(result=> {
+      instance.owner().then(result=> {
         console.log(result);
         console.log(this.state.account);
         console.log(result==this.state.account);
         this.setState({admin:true});
-       }));
+       });
 
 
     });
@@ -60,8 +60,8 @@ class App extends Component {
       console.log("success");
       console.log(instance);
 
-      console.log(instance.isSaleClockAuction().then(result=> {console.log(result); }));
-      console.log(instance.ownerCut().then(result=> {console.log(result); }));
+      instance.isSaleClockAuction().then(result=> {console.log(result); });
+      instance.ownerCut().then(result=> {console.log(result); });
 
     });
 
@@ -94,7 +94,9 @@ class App extends Component {
 
   withdraw(){
       console.log(this.state.contract_2);
-      console.log(this.state.contract_2.withdrawBalance().then(result=> {console.log(result); }));
+      console.log(this.state.contract_2);
+      console.log(this.state.contract_2.withdrawBalance);
+      console.log(this.state.contract_2.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
   }
 
   change(){
@@ -125,7 +127,7 @@ class App extends Component {
         </div> : null;
 
     return (
-
+        <Router>
       <div className="App">
         <header className="App-header">
           // <img src={logo} className="App-logo" alt="logo" />
@@ -146,15 +148,19 @@ class App extends Component {
         </button>
         {AdminDisplay}
 
-        <Router>
+
         <div>
-        <Link to="/test">My trees</Link>
+        <Link to="/0">My Chans</Link>
+        <Link to="/MarketPlace">MarketPlace</Link>
+        
         <Switch>
-              <Route path="/test" render={(props) => <ChanDetails {...props} contract={this.contract_1} />} />
+              <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.contract_1} />} />
+              <Route path="/marketplace" render={(props) => <BuyNewChan {...props} contract={this.contract_1} />} />
+
         </Switch>
         </div>
-        </Router>
       </div>
+              </Router>
 
 
     );
