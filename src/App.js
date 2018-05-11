@@ -164,11 +164,10 @@ class App extends Component {
 
         <div>
         <Link to="/0">My Chans</Link>
-        <Link to="/MarketPlace">MarketPlace</Link>
+        <Link to="/Marketplace">MarketPlace</Link>
         
         <Switch>
-              <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} />} />
-              <Route path="/marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} />} />
+              <Route path="/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
 
         </Switch>
         </div>

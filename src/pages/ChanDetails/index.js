@@ -17,6 +17,10 @@ export default class ChanDetails extends React.Component {
 
 
 
+  
+
+
+
 
   render() {
         let startDate = new Date();
