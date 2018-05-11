@@ -37,7 +37,6 @@ export default class BuyNewChan extends React.Component {
         const i2="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down"
         const fake_data =[{"url":i1},{"url":i2}];
         const buy_func = this.buy.bind(this);
-        const getChanDetail = this.ChanCoreContract.getChan;
 
 
     return (
@@ -47,9 +46,6 @@ export default class BuyNewChan extends React.Component {
       {fake_data.map(function(d, idx){
         console.log(buy_func);
          return (<li><img height="200" width="200" src={d.url} key={idx}/>
-         <p>
-         {getChanDetail.bind(null,idx).then(result=> {console.log(result,typeof(result)); return result;})}
-         </p>
           <button id="withdraw" onClick={buy_func.bind(null,idx)}>
         Buy!
         </button>
