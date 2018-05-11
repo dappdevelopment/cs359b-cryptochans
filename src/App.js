@@ -13,6 +13,11 @@ import {Navbar, Jumbotron, Button, Panel} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
+
+import ChanDetails from './pages/ChanDetails';
+import BuyNewChan from './pages/MarketPlace'
+
+
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
@@ -105,7 +110,7 @@ class App extends Component {
   setAddr(){
     console.log(this.state.setaddr);
     console.log(this.state.chanCoreInstance);
-    this.state.chanCoreInstance.setSaleAuctionAddress(this.state.setaddr).then(result=> {console.log(result);});
+    this.state.chanCoreInstance.setSaleAuctionAddress.sendTransaction(this.state.setaddr,{from:this.state.account}).then(result=> {console.log(result);});
   }
 
   handleChange(event){
@@ -114,8 +119,7 @@ class App extends Component {
   }
 
   withdraw(){
-      console.log(this.state.chanCoreInstance);
-      console.log(this.state.chanCoreInstance.withdrawBalance().then(result=> {console.log(result); }));
+      console.log(this.state.saleClockAuctionInstance.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
   }
 
   change(){
@@ -136,6 +140,7 @@ class App extends Component {
 
     return (
 
+     <Router>
       <div className="App">
         <header className="App-header">
           // <img src={logo} className="App-logo" alt="logo" />
@@ -155,11 +160,21 @@ class App extends Component {
         Withdraw
         </button>
         {AdminDisplay}
+
+
+        <div>
+        <Link to="/0">My Chans</Link>
+        <Link to="/MarketPlace">MarketPlace</Link>
+        
+        <Switch>
+              <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} />} />
+              <Route path="/marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} />} />
+
+        </Switch>
+        </div>
       </div>
-
-
+              </Router>
     );
   }
 }
-
 export default App

@@ -1,10 +1,23 @@
 import React from 'react';
 
-import Grid from 'material-ui/Grid';
+// import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
 
 export default class ChanDetails extends React.Component {
+
+  // constructor(props) {
+  //   super(props)
+
+  //   this.state = {
+  //     admin: false
+  //   }
+
+  // }
+
+
+
+
   render() {
         let startDate = new Date();
         let elapsedTime = 0;
@@ -37,23 +50,15 @@ export default class ChanDetails extends React.Component {
 
         const { match, contract } = this.props;
         const selectedId = match.params.id;
+        console.log(selectedId,'id?');
+        console.log(contract,'contract?');
+        contract.getChan(selectedId).then(result=> {console.log(result);});
+        // console.log(this.state.value);
 
     return (
       <div>
-        <h1>My Chan Detail</h1>
-        <Grid container spacing={24}>
-          <Grid item xs={12} md={6} lg={4}>
-            <AsyncCryptoChan contract={contract} id={selectedId} />
-          </Grid>
-          <Grid item xs={12} md={6} lg={8}>
-            <div style={{float: 'right'}}>
-              <button>Level up!</button>
-            </div>
-            <ul>
-              <li><strong>Level:</strong> 666</li>
-            </ul>
-          </Grid>
-        </Grid>
+        <h1>id={selectedId}</h1>
+
       </div>
     )
   }
