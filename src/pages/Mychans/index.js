@@ -7,7 +7,7 @@ import React from 'react';
 
 import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
-export default class BuyNewChan extends React.Component {
+export default class Mychans extends React.Component {
   //   constructor(props) {
   //   super(props)
 
@@ -49,7 +49,7 @@ export default class BuyNewChan extends React.Component {
         console.log(buy_func);
          return (<Col xs={6} md={4}>
       <Thumbnail src={d.url} alt="242x200">
-        <h3>Chan:{idx}</h3>
+        <h3>Chan</h3>
         <p>Chan Details//Todo</p>
         <p>
            <Button id="withdraw" onClick={buy_func.bind(null,idx)}>
