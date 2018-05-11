@@ -9,7 +9,7 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel,Carousel} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
@@ -139,27 +139,10 @@ class App extends Component {
         </div> : null;
 
     return (
-
-     <Router>
+      <div>
+           <Router>
       <div className="App">
-        <header className="App-header">
-          // <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Test</h1>
-        </header>
-        <p className="App-intro">
-          Test
-        </p>
-        <span>set the SaleClockAuction's address </span>
-        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
-        <button id="button" onClick={this.setAddr.bind(this)}>
-        Set
-        </button>
-        <p id="detail">
-        </p>
-        <button id="withdraw" onClick={this.withdraw.bind(this)}>
-        Withdraw
-        </button>
-        {AdminDisplay}
+
 
 
         <div>
@@ -174,7 +157,50 @@ class App extends Component {
         </Switch>
         </div>
       </div>
+      
               </Router>
+      <header className="App-header">
+          // <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Test</h1>
+        </header>
+        <p className="App-intro">
+          Test
+        </p>
+        <span>set the SaleClockAuction's address </span>
+        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
+        <Button bsStyle="primary" id="Button" onClick={this.setAddr.bind(this)}>
+        Set
+        </Button>
+        <p id="detail">
+        </p>
+        <Button bsStyle="primary" id="withdraw" onClick={this.withdraw.bind(this)}>
+        Withdraw
+        </Button>
+                     <Carousel>
+  <Carousel.Item>
+    <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
+    <Carousel.Caption>
+      <h3>First slide label</h3>
+      <p>Cryptochans</p>
+    </Carousel.Caption>
+  </Carousel.Item>
+  <Carousel.Item>
+    <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
+    <Carousel.Caption>
+      <h3>Second slide label</h3>
+      <p>Cryptochans</p>
+    </Carousel.Caption>
+  </Carousel.Item>
+</Carousel>
+
+
+
+        {AdminDisplay}
+
+</div>
+
+
+
     );
   }
 }
