@@ -9,7 +9,7 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel,Carousel} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel,Carousel, Grid} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
