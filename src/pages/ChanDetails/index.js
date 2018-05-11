@@ -3,6 +3,7 @@ import React from 'react';
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
+import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
 
@@ -16,7 +17,11 @@ export default class ChanDetails extends React.Component {
   // }
 
 
-
+    sell(chan_id){
+        console.log("bought");
+        console.log(chan_id);
+        //this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
+    }
   
 
 
@@ -57,11 +62,41 @@ export default class ChanDetails extends React.Component {
         console.log(selectedId,'id?');
         console.log(contract,'contract?');
         contract.getChan(selectedId).then(result=> {console.log(result);});
-        // console.log(this.state.value);
 
+        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
+        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+        const fake_data =[{"url":i1},{"url":i2}];
+        const sell_func = this.sell.bind(this);
+        // console.log(this.state.value);
     return (
       <div>
-        <h1>id={selectedId}</h1>
+
+         <h1>id={selectedId}</h1>
+        <div>
+        <Grid>
+  <Row>
+      {fake_data.map(function(d, idx){
+        console.log(sell_func);
+         return (<Col xs={6} md={4}>
+      <Thumbnail src={d.url} alt="242x200">
+        <h3>Chan:{idx}</h3>
+        <p>Chan Details//Todo</p>
+        <p>
+           <Button id="withdraw" onClick={sell_func.bind(null,idx)}>
+        Buy!
+        </Button>
+          <Button bsStyle="default">Button</Button>
+        </p>
+      </Thumbnail>
+    </Col>)
+       })}
+         </Row>
+</Grid>
+      </div>
+
+
+
+
 
       </div>
     )

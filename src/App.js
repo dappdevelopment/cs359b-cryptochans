@@ -147,7 +147,7 @@ class App extends Component {
 
         <div>
 
-        <Link to="/0">Chan Detail page</Link>
+        <Link to="/ChanDetails">Chan Detail page</Link>
 
 
 
