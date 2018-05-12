@@ -140,7 +140,7 @@ class App extends Component {
 
     return (
       <div>
-           <Router>
+           <Router basename={'/cryptochans/'}>
       <div className="App">
             <header className="App-header">
           <img src={logo} className="App-logo" alt="logo.jpg" />
