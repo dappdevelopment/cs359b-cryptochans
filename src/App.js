@@ -160,7 +160,7 @@ class App extends Component {
 &emsp;
        <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
 &emsp;
-      <Link to="/cryptochans/Admin"><Button hide={this.state.admin} bsStyle="info">Admin</Button></Link>
+      <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
 &emsp;
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 
@@ -178,8 +178,8 @@ class App extends Component {
   <Carousel.Item>
     <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
     <Carousel.Caption>
-      <h3>First slide label</h3>
-      <p>Cryptochans</p>
+
+      <h3>Cryptochans</h3>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item>
