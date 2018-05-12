@@ -59,7 +59,7 @@ export default class Chat extends React.Component {
   sendMessage() {
     var message = this.state.meg
     if (message === '') {
-      alert('不能发送空白消息哦')
+      alert('Cannot be empty')
     } else {
       this.setState({
         megArray: [...this.state.megArray, message]
@@ -103,7 +103,7 @@ export default class Chat extends React.Component {
         </div>
          <div className="fixedBottom">
            <input className="input" value={meg} onChange={this.handleData.bind(this)} />
-           <button className="button" onClick={this.sendMessage.bind(this)}>发送</button>
+           <button className="button" onClick={this.sendMessage.bind(this)}>Send</button>
          </div>
       </div>
     )
