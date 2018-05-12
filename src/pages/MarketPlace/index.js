@@ -40,7 +40,7 @@ export default class BuyNewChan extends React.Component {
 
 
     return (
-      <div>
+<div>
         <h1>{this.contract2}</h1>
         <div>
         <Grid>
