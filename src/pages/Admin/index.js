@@ -53,6 +53,8 @@ export default class Admin extends React.Component {
 
   createGen0Auction(){
     console.log(this.state.account);
+    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
+    this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
     this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
   }
 
