@@ -154,17 +154,17 @@ class App extends Component {
       <Link to="/0"><Button  bsStyle="info">Chan Detail page</Button></Link> 
       &emsp;
 
-        <Link to="/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
+        <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
 &emsp;
-       <Link to="/MyChans"><Button  bsStyle="info">See My Chans</Button></Link>
+       <Link to="/cryptochans/MyChans"><Button  bsStyle="info">See My Chans</Button></Link>
 &emsp;
         <Link to="/"><Button  bsStyle="info">Go Back</Button></Link>
 
         <Switch>
 
-              <Route path="/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
-              <Route path="/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
                             <Route path="/" render={(props)=><Carousel>
   <Carousel.Item>
     <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
