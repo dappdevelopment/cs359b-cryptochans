@@ -11,7 +11,8 @@ contract ChanMinting is ChanAuction {
     uint256 public gen0CreationLimit = 50000;
 
     // Constants for gen0 auctions.
-    uint256 public gen0StartingPrice = 10 finney;
+    //uint256 public gen0StartingPrice = 10 finney; //milliETH
+    uint256 public gen0StartingPrice = 10 szabo;    //microETH
     uint256 public gen0AuctionDuration = 1 days;
 
     // Counts the number of cats the contract owner has created.

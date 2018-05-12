@@ -108,6 +108,13 @@ contract ClockAuction is Pausable, ClockAuctionBase {
         _cancelAuction(_tokenId, auction.seller);
     }
 
+    /// @dev Returns whether NFT is on Auction.
+    /// @param _tokenId - ID of NFT on auction.
+    function isOnAuction(uint256 _tokenId) public view returns (bool) {
+        Auction storage auction = tokenIdToAuction[_tokenId];
+        return _isOnAuction(auction);
+    }
+
     /// @dev Returns auction info for an NFT on auction.
     /// @param _tokenId - ID of NFT on auction.
     function getAuction(uint256 _tokenId)
