@@ -5,7 +5,7 @@ import Chat from './Chat.js';
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
 
@@ -66,8 +66,23 @@ export default class ChanDetails extends React.Component {
   }
 
 
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
+
+
 
   render() {
+        const popover = (
+      <Popover id="modal-popover" title="popover">
+        very popover. such engagement
+      </Popover>
+    );
+
         // let startDate = new Date();
         // let elapsedTime = 0;
 
@@ -118,14 +133,37 @@ export default class ChanDetails extends React.Component {
 
 
 
-        <Button bsStype="danger" id="withdraw" onClick={this.sell.bind(this)}>
+        <Button bsStype="primary" onClick={this.sell.bind(this)}>
         Sell
         </Button>
         <br/>
-        <Button bsStype="danger" id="withdraw" onClick={this.sell.bind(this)}>
-        Talk to me
+
+
+
+        <Button bsStyle="primary" onClick={this.handleShow.bind(this)}>
+          Chat with me
         </Button>
-        <Chat/>
+
+        <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Chat</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <Chat/>
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleClose.bind(this)}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+
+
+
+
+
+
+
     </Col>
     </Row>
     </Grid>

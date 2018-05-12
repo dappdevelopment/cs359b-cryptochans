@@ -138,7 +138,7 @@ class App extends Component {
               <Panel.Heading>Admin Content</Panel.Heading>
               <Panel.Body></Panel.Body>
             </Panel>
-        </div> : null;
+        </div> : null; 
 
     return (
       <div>
@@ -158,9 +158,9 @@ class App extends Component {
 
         <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
 &emsp;
-       <Link to="/cryptochans/MyChans"><Button  bsStyle="info">My Chans</Button></Link>
+       <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
 &emsp;
-      <Link to="/cryptochans/Admin"><Button  bsStyle="info">Admin</Button></Link>
+      <Link to="/cryptochans/Admin"><Button hide={this.state.admin} bsStyle="info">Admin</Button></Link>
 &emsp;
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 

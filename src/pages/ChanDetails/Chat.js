@@ -1,9 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
+import './chat.css';
 
-import '../../css/chat.css';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+
+// const Message = styled.div`
+//   background-color: #77f442;
+//   padding: 15px;
+//   border-radius: 3px;
+//   align-self: flex-end;
+//   max-width: 80%;
+//   `;
+
+// const Response =styled.div`
+//   background-color: #f2f2f2;
+//   padding: 15px;
+//   border-radius: 3px;
+//   align-self: flex-start;
+//   margin: 2px;
+//   max-width: 80%;
+// `
 
 export default class Chat extends React.Component {
+
+
+
+
+
+
+
 
 
 
@@ -58,10 +91,14 @@ export default class Chat extends React.Component {
        
         <div className="msg-list" ref="msgList">
           {megArray.map((elem,index) => (
+
             <div className="container" key={index}>
               <div className="message">{elem}</div>
               <div className="response">{respon[index]}</div>
-            </div>)
+            </div>
+
+
+            )
            )}
         </div>
          <div className="fixedBottom">
