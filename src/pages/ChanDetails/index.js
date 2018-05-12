@@ -19,50 +19,7 @@ export default class ChanDetails extends React.Component {
     };
 
 
-     let startDate = new Date();
-        let elapsedTime = 0;
-        var valid=false;
-
-        const focus = function() {
-            startDate = new Date();
-            valid = true;
-        };
-
-        var difficult_level = 2000;
-        const self=this;
-        const blur = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log('now:',elapsedTime);
-            self.setState({intimacy:(elapsedTime/difficult_level)});
-            valid=false;
-        };
-
-        const beforeunload = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log('tttttime',elapsedTime);
-            self.setState({intimacy:(elapsedTime/difficult_level)});
-            valid=false;
-
-            // elapsedTime contains the time spent on page in milliseconds
-        };
-
-        const refreshIntimacy = function(){
-          if (valid) {
-          const endDate = new Date();
-          const spentTime = endDate.getTime() - startDate.getTime();
-          elapsedTime += spentTime;
-          self.setState({intimacy:(elapsedTime/difficult_level)});
-          startDate = new Date();}
-        };
-
-        window.addEventListener('focus', focus);
-        window.addEventListener('blur', blur);
-        window.addEventListener('beforeunload', beforeunload);
-        setInterval(refreshIntimacy,3000);
+     
 
 
 
@@ -115,7 +72,13 @@ export default class ChanDetails extends React.Component {
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
-      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
+      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
+        console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); 
+        this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
+        this.setState({gender:result[3]?"female":"male"});
+        console.log("yyyyyyy",this.state);
+        this.setState({difficult_level:2000*(result[2].c[0]+1)});
+      });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
       const i1="https://s3.amazonaws.com/cryptochans/0"+(parseInt(selectedId)+1).toString()+".jpg";
@@ -141,6 +104,53 @@ export default class ChanDetails extends React.Component {
       }).catch(() => {
         console.log('Error finding web3.')
       })
+
+
+
+      let startDate = new Date();
+        let elapsedTime = 0;
+        var valid=true;
+
+        const focus = function() {
+            startDate = new Date();
+            valid = true;
+        };
+
+        console.log('state?????',this.state, this.state.level);
+        const self=this;
+        const blur = function() {
+            const endDate = new Date();
+            const spentTime = endDate.getTime() - startDate.getTime();
+            elapsedTime += spentTime;
+            console.log('now:',elapsedTime);
+            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            valid=false;
+        };
+
+        const beforeunload = function() {
+            const endDate = new Date();
+            const spentTime = endDate.getTime() - startDate.getTime();
+            elapsedTime += spentTime;
+            console.log('tttttime',elapsedTime);
+            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            valid=false;
+
+            // elapsedTime contains the time spent on page in milliseconds
+        };
+
+        const refreshIntimacy = function(){
+          if (valid) {
+          const endDate = new Date();
+          const spentTime = endDate.getTime() - startDate.getTime();
+          elapsedTime += spentTime;
+          self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+          startDate = new Date();}
+        };
+
+        window.addEventListener('focus', focus);
+        window.addEventListener('blur', blur);
+        window.addEventListener('beforeunload', beforeunload);
+        setInterval(refreshIntimacy,3000);
 
   }
 
