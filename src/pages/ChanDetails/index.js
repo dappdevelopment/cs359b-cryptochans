@@ -73,32 +73,23 @@ export default class ChanDetails extends React.Component {
 
          <h1>id={selectedId}</h1>
         <div>
-        <Grid>
-  <Row>
-      {fake_data.map(function(d, idx){
-        console.log(sell_func);
-         return (<Col xs={6} md={4}>
-      <Thumbnail src={d.url} alt="242x200">
-        <h3>Chan:{idx}</h3>
-        <p>Chan Details//Todo</p>
-        <p>
-           <Button id="withdraw" onClick={sell_func.bind(null,idx)}>
+
+
+
+
+      <Col xs={10} md={20}>
+
+    <Image src={i1} atl="800x800">
+
+    </Image>
+        <Button id="withdraw" onClick={sell_func}>
         Buy!
         </Button>
-          <Button bsStyle="default">Button</Button>
-        </p>
-      </Thumbnail>
-    </Col>)
-       })}
-         </Row>
-</Grid>
-      </div>
 
+    </Col>
+    </div>
+    </div>
 
-
-
-
-      </div>
     )
   }
 }

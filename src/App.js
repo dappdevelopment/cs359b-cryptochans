@@ -142,6 +142,10 @@ class App extends Component {
       <div>
            <Router>
       <div className="App">
+            <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo.jpg" />
+          <h1 className="App-title">Cryptochans</h1>
+        </header>
 
 
 
@@ -149,43 +153,16 @@ class App extends Component {
 
         <Link to="/ChanDetails">Chan Detail page</Link>
 
-
-
-
         <Link to="/Marketplace">MarketPlace</Link>
 
-        <Link to="/Marketplace">See My Chans</Link>
+        <Link to="/MyChans">See My Chans</Link>
 
         <Switch>
+
+              <Route path="/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
               <Route path="/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
               <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
-              <Route path="/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
-
-
-
-        </Switch>
-        </div>
-      </div>
-      
-              </Router>
-      <header className="App-header">
-          // <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Test</h1>
-        </header>
-        <p className="App-intro">
-          Test
-        </p>
-        <span>set the SaleClockAuction's address </span>
-        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
-        <Button bsStyle="primary" id="Button" onClick={this.setAddr.bind(this)}>
-        Set
-        </Button>
-        <p id="detail">
-        </p>
-        <Button bsStyle="primary" id="withdraw" onClick={this.withdraw.bind(this)}>
-        Withdraw
-        </Button>
-                     <Carousel>
+                            <Route path="/" render={(props)=><Carousel>
   <Carousel.Item>
     <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
     <Carousel.Caption>
@@ -200,7 +177,19 @@ class App extends Component {
       <p>Cryptochans</p>
     </Carousel.Caption>
   </Carousel.Item>
-</Carousel>
+</Carousel>}           />
+
+
+
+        </Switch>
+        </div>
+      </div>
+      
+              </Router>
+
+
+        
+                     
 
 
 
