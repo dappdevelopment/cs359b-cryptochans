@@ -20,16 +20,16 @@ export default class BuyNewChan extends React.Component {
     }
 
     buy(chan_id){
-        console.log("bought");
         console.log(chan_id);
+
         //auction.seller,
         //    auction.startingPrice,
         //    auction.endingPrice,
         //    auction.duration,
         //    auction.startedAt
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
-        this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
-          if(isOnAuction){
+        // this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
+        //   if(isOnAuction){
             this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
               console.log("Seller: "+result[0]);
               console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
@@ -37,11 +37,11 @@ export default class BuyNewChan extends React.Component {
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });
-          } else {
-            console.log("Not on Auction");
-          }
-        });  
-        this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result);});
+          // } else {
+          //   console.log("Not on Auction");
+          // }
+        // });  
+        this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result/1000000000000000+" finney (milliETH)");});
         this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
     }
 
@@ -111,13 +111,13 @@ export default class BuyNewChan extends React.Component {
   <Row>
       {this.state.fake_data.map(function(d, idx){
          return (<Col xs={6} md={4}>
-      <Thumbnail src={d.url} alt="242x200">
+      <Thumbnail src={d.url} alt="Image not available">
         <h3>Chan:{d.id}</h3>
         <p>Name:{d.name}</p>
         <p>Gender:{d.gender}</p>
         <p>Level:{d.level}</p>
         <p>
-           <Button bsStyle="primary" onClick={buy_func.bind(null,idx)}>
+           <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
         Buy!
         </Button>
         </p>

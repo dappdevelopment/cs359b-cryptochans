@@ -227,10 +227,11 @@ export default class ChanDetails extends React.Component {
         </Button>
         <br/>
         Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy}%`} />
+        <Label bsStyle="info">Unlock More features!</Label>
+
         <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
           Level me up
         </Button>
-
 
 
         </ButtonGroup>
