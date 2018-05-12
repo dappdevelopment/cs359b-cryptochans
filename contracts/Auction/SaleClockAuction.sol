@@ -57,7 +57,8 @@ contract SaleClockAuction is ClockAuction {
         // _bid verifies token ID size
         address seller = tokenIdToAuction[_tokenId].seller;
         uint256 price = _bid(_tokenId, msg.value);
-        _transfer(msg.sender, _tokenId);
+        //uint256 price = 0;
+        //_transfer(msg.sender, _tokenId);
 
         // If not a gen0 auction, exit
         if (seller == address(nonFungibleContract)) {

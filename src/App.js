@@ -160,15 +160,15 @@ class App extends Component {
 &emsp;
        <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
 &emsp;
-      <Link to="/cryptochans/Admin"><Button hide={this.state.admin} bsStyle="info">Admin</Button></Link>
+      <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
 &emsp;
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 
         <Switch>
-              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract1={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract1={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
-              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract1={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract1={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
+              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
                             <Route path="/" render={(props)=>
 
   <Grid>
@@ -178,8 +178,8 @@ class App extends Component {
   <Carousel.Item>
     <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
     <Carousel.Caption>
-      <h3>First slide label</h3>
-      <p>Cryptochans</p>
+
+      <h3>Cryptochans</h3>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item>

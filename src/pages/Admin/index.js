@@ -38,11 +38,11 @@ export default class Admin extends React.Component {
         console.log('Error finding web3.')
       })
 
-      const { match, contract1, contract2} = this.props;
+      const { match, contract, contract2} = this.props;
       // const selectedId = match.params.id;
       console.log(contract2);
       this.ChanCoreContract = contract2;
-      this.SaleAuctionCoreContract = contract1;
+      this.SaleAuctionCoreContract = contract;
 
   }
 

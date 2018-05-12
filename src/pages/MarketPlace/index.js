@@ -28,13 +28,19 @@ export default class BuyNewChan extends React.Component {
         //    auction.duration,
         //    auction.startedAt
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
-        this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
-          console.log("Seller: "+result[0]);
-          console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
-          console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
-          console.log("Duration: "+result[3]/3600 + " hours");
-          console.log("Started At: "+result[4]);
-        });
+        this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
+          if(isOnAuction){
+            this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
+              console.log("Seller: "+result[0]);
+              console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
+              console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+              console.log("Duration: "+result[3]/3600 + " hours");
+              console.log("Started At: "+result[4]);
+            });
+          } else {
+            console.log("Not on Auction");
+          }
+        });  
         this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result);});
         this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
     }
@@ -56,11 +62,11 @@ export default class BuyNewChan extends React.Component {
           console.log('Error finding web3.')
         })
 
-        const { match, contract1, contract2} = this.props;
+        const { match, contract, contract2} = this.props;
         // const selectedId = match.params.id;
         console.log(contract2);
         this.ChanCoreContract = contract2;
-        this.SaleAuctionCoreContract = contract1;
+        this.SaleAuctionCoreContract = contract;
 
         // const myChans = this.cryptotreesContract.getMyChans();
         const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
