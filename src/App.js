@@ -140,27 +140,35 @@ class App extends Component {
 
     return (
       <div>
-           <Router>
+           <Router basename={'/cryptochans/'}>
+
+
+
+
+
+
+
+
       <div className="App">
 
 
 
         <div>
 
-        <Link to="/ChanDetails">Chan Detail page</Link>
+        <Link to="/cryptochans/ChanDetails">Chan Detail page</Link>
 
 
 
 
-        <Link to="/Marketplace">MarketPlace</Link>
+        <Link to="/cryptochans/Marketplace">MarketPlace</Link>
 
-        <Link to="/Marketplace">See My Chans</Link>
+        <Link to="/cryptochans/Marketplace">See My Chans</Link>
 
         <Switch>
-              <Route path="/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
-              <Route path="/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
-
+              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/ChanDetails" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
 
 
         </Switch>

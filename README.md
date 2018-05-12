@@ -96,3 +96,48 @@ npm link cryptochans
 ```
 npm run start
 ```
+
+
+Contract info on Rinkeby Test Network
+
+Migrations
+```
+https://rinkeby.etherscan.io/tx/0x16f542a05425e0e29f4a6ed6cd27f1d22a04120a25d595652cb8a9e852ac2e8d
+
+"networks": {
+    "4": {
+		"events": {},
+		"links": {},
+		"address": "0x0c082ceb22d1b3aa426f567e3d9e07f2baf26207",
+		"transactionHash": "0x16f542a05425e0e29f4a6ed6cd27f1d22a04120a25d595652cb8a9e852ac2e8d0x16f54"
+    }
+},
+```
+
+ChanCore
+```
+https://rinkeby.etherscan.io/tx/0xf5b475ba434e951ec85c7ffc9607f730d55101f5b8f83d594faf3dbcb7d49934
+
+"networks": {
+	"4": {
+		"events": {},
+		"links": {},
+		"address": "0xc7e511f61e9d46c326c60877baa00fd00a26f876",
+		"transactionHash": "0xf5b475ba434e951ec85c7ffc9607f730d55101f5b8f83d594faf3dbcb7d499340xf5b47"
+	}
+},
+```
+
+SaleClockAuction
+```
+https://rinkeby.etherscan.io/tx/0xb0b2508e2452ea0d8d0984fd9c9d9e9898a3684a3b3f1ea0966d0b6d4cd05ab8
+
+"networks": {
+	"4": {
+		"events": {},
+		"links": {},
+		"address": "0xa2f325e88bcbbfda2de5f003b7db210a17483c38",
+		"transactionHash": "0xb0b2508e2452ea0d8d0984fd9c9d9e9898a3684a3b3f1ea0966d0b6d4cd05ab80xb0b25"
+	}
+},
+```

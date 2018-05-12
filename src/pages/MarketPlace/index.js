@@ -33,8 +33,8 @@ export default class BuyNewChan extends React.Component {
         this.SaleAuctionCoreContract = contract1;
 
         // const myChans = this.cryptotreesContract.getMyChans();
-        const i1 ="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg"
-        const i2="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down"
+        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
+        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
         const fake_data =[{"url":i1},{"url":i2}];
         const buy_func = this.buy.bind(this);
 

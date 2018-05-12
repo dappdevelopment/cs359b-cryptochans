@@ -63,8 +63,9 @@ export default class ChanDetails extends React.Component {
         console.log(contract,'contract?');
         contract.getChan(selectedId).then(result=> {console.log(result);});
 
-        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
-        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+        const i1 ="https://s3.amazonaws.com/cryptochans/0"+selectedId+"1.jpg"
+        
+        const i2="https://s3.amazonaws.com/cryptochans/01.jpg"
         const fake_data =[{"url":i1},{"url":i2}];
         const sell_func = this.sell.bind(this);
         // console.log(this.state.value);
@@ -82,8 +83,8 @@ export default class ChanDetails extends React.Component {
         <h3>Chan:{idx}</h3>
         <p>Chan Details//Todo</p>
         <p>
-           <Button id="withdraw" onClick={sell_func.bind(null,idx)}>
-        Buy!
+           <Button id="sell" onClick={sell_func.bind(null,idx)}>
+        Sell!
         </Button>
           <Button bsStyle="default">Button</Button>
         </p>
