@@ -1,9 +1,9 @@
 pragma solidity ^0.4.21;
 
-import "./ChanAuction.sol";
+import "./ChanMinting.sol";
 //import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract ChanCore is ChanAuction {
+contract ChanCore is ChanMinting {
 
     // Set in case the core contract is broken and an upgrade is required
     address public newContractAddress;
@@ -17,6 +17,8 @@ contract ChanCore is ChanAuction {
         _createChan("AnimeGod", this, true);
 
         _createChan("MiaoChan", msg.sender, true);
+
+
     }
 
     // Used to mark the smart contract as upgraded, in case there is a serious
