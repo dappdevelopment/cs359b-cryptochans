@@ -3,7 +3,7 @@ import React from 'react';
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
 
@@ -13,6 +13,7 @@ export default class ChanDetails extends React.Component {
   //   this.state = {
   //     admin: false
   //   }
+  //   this.result =null;
 
   // }
 
@@ -23,7 +24,33 @@ export default class ChanDetails extends React.Component {
         //this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
     }
   
+  componentWillMount() {
+    // Get network provider and web3 instance.
+    // See utils/getWeb3 for more info.
 
+
+      const { match, contract } = this.props;
+      const selectedId = match.params.id;
+      console.log(selectedId,'id?');
+      console.log(contract,'contract?');
+      contract.getChan(selectedId).then(result=> {console.log(result); this.setState({name:result[0]}); this.setState({create_time:result[1]});
+this.setState({level:result[2]});
+this.setState({gender:result?"female":"male"});
+    });
+      // const name = this.result[0];
+      // const create_time = this.result[1];
+      // const level = this.result[2];
+      // const gender =this.result[3]?"female":"male";
+
+     const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
+      // const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+      const sell_func = this.sell.bind(this);
+      // console.log(this.state.value);
+
+      this.setState({selectedId:selectedId});
+      this.setState({fake_img:i1});
+
+  }
 
 
 
@@ -55,23 +82,12 @@ export default class ChanDetails extends React.Component {
         window.addEventListener('blur', blur);
         window.addEventListener('beforeunload', beforeunload);
 
-
-
-        const { match, contract } = this.props;
-        const selectedId = match.params.id;
-        console.log(selectedId,'id?');
-        console.log(contract,'contract?');
-        contract.getChan(selectedId).then(result=> {console.log(result);});
-
-        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
-        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
-        const fake_data =[{"url":i1},{"url":i2}];
-        const sell_func = this.sell.bind(this);
-        // console.log(this.state.value);
     return (
+
       <div>
 
-         <h1>id={selectedId}</h1>
+         <h1>Cryptochan<Badge>{this.state.selectedId}</Badge> Name:{this.state.name}</h1>
+
         <div>
 
 
@@ -79,10 +95,14 @@ export default class ChanDetails extends React.Component {
 
       <Col xs={10} md={20}>
 
-    <Image src={i1} atl="800x800">
+    <Image style={{width: 800, height: 400}} src={this.state.fake_img} atl="800x800">
 
     </Image>
-        <Button id="withdraw" onClick={sell_func}>
+        <p>gender:{this.state.gender}</p>
+
+
+
+        <Button id="withdraw" onClick={this.sell}>
         Buy!
         </Button>
 

@@ -10,7 +10,7 @@ import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
 import {Navbar, Jumbotron, Button, Panel,Carousel, Grid} from 'react-bootstrap';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
 
 
 
@@ -151,11 +151,14 @@ class App extends Component {
 
         <div>
 
-        <Link to="/ChanDetails">Chan Detail page</Link>
+      <Link to="/0"><Button  bsStyle="info">Chan Detail page</Button></Link> 
+      &emsp;
 
-        <Link to="/Marketplace">MarketPlace</Link>
-
-        <Link to="/MyChans">See My Chans</Link>
+        <Link to="/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
+&emsp;
+       <Link to="/MyChans"><Button  bsStyle="info">See My Chans</Button></Link>
+&emsp;
+        <Link to="/"><Button  bsStyle="info">Go Back</Button></Link>
 
         <Switch>
 
@@ -193,7 +196,7 @@ class App extends Component {
 
 
 
-        {AdminDisplay}
+
 
 </div>
 
