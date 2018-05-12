@@ -17,6 +17,7 @@ import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-route
 import ChanDetails from './pages/ChanDetails';
 import BuyNewChan from './pages/MarketPlace'
 import Mychans from './pages/Mychans'
+import Admin from './pages/Admin'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -158,10 +159,12 @@ class App extends Component {
 &emsp;
        <Link to="/cryptochans/MyChans"><Button  bsStyle="info">My Chans</Button></Link>
 &emsp;
+      <Link to="/cryptochans/Admin"><Button  bsStyle="info">Admin</Button></Link>
+&emsp;
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 
         <Switch>
-
+              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
               <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
               <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
               <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
