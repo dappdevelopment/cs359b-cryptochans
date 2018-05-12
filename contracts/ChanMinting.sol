@@ -37,17 +37,17 @@ contract ChanMinting is ChanAuction {
     function createGen0Auction(string _name, bool _gender) public onlyOwner {
         require(gen0CreatedCount < gen0CreationLimit);
 
-        uint256 chanId = _createChan(_name, this, _gender);
+        uint256 chanId = _createChan(_name, msg.sender, _gender);
         approve(saleAuction, chanId);
-
+        
         saleAuction.createAuction(
             chanId,
             _computeNextGen0Price(),
             0,
             gen0AuctionDuration,
-            address(this)
+            msg.sender
         );
-
+        
         gen0CreatedCount++;
     }
 
