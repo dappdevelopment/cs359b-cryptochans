@@ -7,20 +7,34 @@ import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge
 
 export default class ChanDetails extends React.Component {
 
-  // constructor(props) {
-  //   super(props)
+  constructor(props) {
+    super(props);
+    this.state = {
 
-  //   this.state = {
-  //     admin: false
-  //   }
-  //   this.result =null;
+    };
 
-  // }
+  }
 
 
-    sell(chan_id){
+    sell(){
         console.log("bought");
-        console.log(chan_id);
+        // console.log(this.state.selectedId);
+        // console.log(this.SaleAuctionContract);
+        // console.log(this.ChanCoreContract);
+        console.log(this.ChanCoreContract.ownerOf(0).then(result=> {console.log(result); }));
+        
+        console.log(this.state.owner);
+        // this.SaleAuctionContract.createAuction().then(result=>{console.log(result);});
+
+
+
+
+    //      function createSaleAuction(
+    //     uint256 _chanId,
+    //     uint256 _startingPrice,
+    //     uint256 _endingPrice,
+    //     uint256 _duration
+    // )
         //this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
     }
   
@@ -29,18 +43,20 @@ export default class ChanDetails extends React.Component {
     // See utils/getWeb3 for more info.
 
 
-      const { match, contract } = this.props;
+      const { match, contract,contract2} = this.props;
       const selectedId = match.params.id;
       console.log(selectedId,'id?');
       console.log(contract,'contract?');
-      contract.getChan(selectedId).then(result=> {console.log(result); this.setState({name:result[0]}); this.setState({create_time:result[1]});
-this.setState({level:result[2]});
-this.setState({gender:result?"female":"male"});
-    });
+      
+
+      this.ChanCoreContract = contract;
+      this.SaleAuctionContract = contract2;
+      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1]});this.setState({level:result[2]});this.setState({gender:result?"female":"male"});});
       // const name = this.result[0];
       // const create_time = this.result[1];
       // const level = this.result[2];
       // const gender =this.result[3]?"female":"male";
+
 
      const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
       // const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
@@ -55,32 +71,32 @@ this.setState({gender:result?"female":"male"});
 
 
   render() {
-        let startDate = new Date();
-        let elapsedTime = 0;
+        // let startDate = new Date();
+        // let elapsedTime = 0;
 
-        const focus = function() {
-            startDate = new Date();
-        };
+        // const focus = function() {
+        //     startDate = new Date();
+        // };
 
-        const blur = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log(elapsedTime);
-        };
+        // const blur = function() {
+        //     const endDate = new Date();
+        //     const spentTime = endDate.getTime() - startDate.getTime();
+        //     elapsedTime += spentTime;
+        //     console.log(elapsedTime);
+        // };
 
-        const beforeunload = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log(elapsedTime);
+        // const beforeunload = function() {
+        //     const endDate = new Date();
+        //     const spentTime = endDate.getTime() - startDate.getTime();
+        //     elapsedTime += spentTime;
+        //     console.log(elapsedTime);
 
-            // elapsedTime contains the time spent on page in milliseconds
-        };
+        //     // elapsedTime contains the time spent on page in milliseconds
+        // };
 
-        window.addEventListener('focus', focus);
-        window.addEventListener('blur', blur);
-        window.addEventListener('beforeunload', beforeunload);
+        // window.addEventListener('focus', focus);
+        // window.addEventListener('blur', blur);
+        // window.addEventListener('beforeunload', beforeunload);
 
     return (
 
@@ -92,21 +108,29 @@ this.setState({gender:result?"female":"male"});
 
 
 
-
-      <Col xs={10} md={20}>
+      <Grid>
+      <Row>
+      <Col xs={9} md={16}>
 
     <Image style={{width: 800, height: 400}} src={this.state.fake_img} atl="800x800">
 
     </Image>
+    </Col>
+    <Col>
         <p>gender:{this.state.gender}</p>
 
 
 
-        <Button id="withdraw" onClick={this.sell}>
-        Buy!
+        <Button bsStype="danger" id="withdraw" onClick={this.sell.bind(this)}>
+        Sell
         </Button>
-
+        <br/>
+        <Button bsStype="danger" id="withdraw" onClick={this.sell.bind(this)}>
+        Talk to me
+        </Button>
     </Col>
+    </Row>
+    </Grid>
     </div>
     </div>
 
