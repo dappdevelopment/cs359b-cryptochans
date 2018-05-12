@@ -52,7 +52,8 @@ export default class Admin extends React.Component {
   }
 
   createGen0Auction(){
-    this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name, true, {from:this.state.account});
+    console.log(this.state.account);
+    this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
   }
 
 

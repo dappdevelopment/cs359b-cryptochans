@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Chat from './Chat.js';
+
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
@@ -24,7 +26,7 @@ export default class ChanDetails extends React.Component {
         console.log(this.ChanCoreContract.ownerOf(0).then(result=> {console.log(result); }));
         
         console.log(this.state.owner);
-        // this.SaleAuctionContract.createAuction().then(result=>{console.log(result);});
+        this.SaleAuctionContract.createAuction.sendTransaction(10,1,10,this.state.owner,{from:this.state.account});
 
 
 
@@ -52,11 +54,6 @@ export default class ChanDetails extends React.Component {
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
       this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1]});this.setState({level:result[2]});this.setState({gender:result?"female":"male"});});
-      // const name = this.result[0];
-      // const create_time = this.result[1];
-      // const level = this.result[2];
-      // const gender =this.result[3]?"female":"male";
-
 
      const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
       // const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
@@ -128,6 +125,7 @@ export default class ChanDetails extends React.Component {
         <Button bsStype="danger" id="withdraw" onClick={this.sell.bind(this)}>
         Talk to me
         </Button>
+        <Chat/>
     </Col>
     </Row>
     </Grid>

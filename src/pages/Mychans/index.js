@@ -18,13 +18,6 @@ export default class Mychans extends React.Component {
 
   // }
 
-    buy(chan_id){
-        console.log("bought");
-        console.log(chan_id);
-        this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
-    }
-
-
     componentWillMount() {
         const { match, contract1, contract2} = this.props;
         // const selectedId = match.params.id;
@@ -33,17 +26,18 @@ export default class Mychans extends React.Component {
         this.SaleAuctionCoreContract = contract1;
 
         // const myChans = this.cryptotreesContract.getMyChans();
-        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
-        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg";
+        const i2="https://s3.amazonaws.com/cryptochans/02.jpg";
+        const i3="https://s3.amazonaws.com/cryptochans/01.jpg";
         // this.ChanCoreContract.().then(result=>{
         //     this.setState({chanlist:result});
         // });
-        this.setState({fake_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"}]});
+        this.setState({fake_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
     }
 
 
   render() {
-    const buy_func = this.buy.bind(this);
+
 
 
     return (
@@ -60,7 +54,7 @@ export default class Mychans extends React.Component {
         <p>Name:{d.name}</p>
 
         <p>
-        Gender
+        Gender:female
 
         </p>
       </Thumbnail>

@@ -38,6 +38,9 @@ export default class BuyNewChan extends React.Component {
         // this.ChanCoreContract.().then(result=>{
         //     this.setState({chanlist:result});
         // });
+
+
+
         this.setState({fake_data:[{"url":i1, "name":"Alice"},{"url":i2,"name":"Holly"}]});
     }
 

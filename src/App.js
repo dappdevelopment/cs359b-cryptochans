@@ -120,6 +120,7 @@ class App extends Component {
   }
 
   withdraw(){
+    console.log(this.state.account);
       console.log(this.state.saleClockAuctionInstance.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
   }
 
@@ -169,6 +170,7 @@ class App extends Component {
               <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
               <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
                             <Route path="/" render={(props)=>
+
   <Grid>
   <Col xs={14} md={20}>
   <Row xs={10} md={10}>
@@ -188,7 +190,15 @@ class App extends Component {
     </Carousel.Caption>
   </Carousel.Item>
 </Carousel>
-</Row></Col></Grid>
+</Row></Col>
+<span>set the SaleClockAuction's address </span>
+        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
+        <Button bsStyle="primary" id="Button" onClick={this.setAddr.bind(this)}>
+        Set
+        </Button>
+        <Button bsStyle="primary" id="withdraw" onClick={this.withdraw.bind(this)}>
+        Withdraw
+        </Button></Grid>
 }           />
 
 
