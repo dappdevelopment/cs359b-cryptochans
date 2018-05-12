@@ -26,9 +26,9 @@ export default class Mychans extends React.Component {
         this.SaleAuctionCoreContract = contract1;
 
         // const myChans = this.cryptotreesContract.getMyChans();
-        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg";
-        const i2="https://s3.amazonaws.com/cryptochans/02.jpg";
-        const i3="https://s3.amazonaws.com/cryptochans/01.jpg";
+        const i1 ="https://s3.amazonaws.com/cryptochans/1.jpg";
+        const i2="https://s3.amazonaws.com/cryptochans/2.jpg";
+        const i3="https://s3.amazonaws.com/cryptochans/3.jpg";
         // this.ChanCoreContract.().then(result=>{
         //     this.setState({chanlist:result});
         // });

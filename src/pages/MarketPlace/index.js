@@ -63,22 +63,39 @@ export default class BuyNewChan extends React.Component {
         })
 
         const { match, contract, contract2} = this.props;
-        // const selectedId = match.params.id;
         console.log(contract2);
         this.ChanCoreContract = contract2;
         this.SaleAuctionCoreContract = contract;
 
-        // const myChans = this.cryptotreesContract.getMyChans();
-        const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
-        const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
-        const i3="https://s3.amazonaws.com/cryptochans/01.jpg";
+        const i1 ="https://s3.amazonaws.com/cryptochans/1.jpg"
+        const i2="https://s3.amazonaws.com/cryptochans/2.jpg"
+        const i3="https://s3.amazonaws.com/cryptochans/3.jpg";
         // this.ChanCoreContract.().then(result=>{
         //     this.setState({chanlist:result});
         // });
 
+        const chanIdList=[0,1,2,3,4,5,6];
+        const self = this;
+        console.log('sfdsfdfsdfsdfdddd',self);
 
 
-        this.setState({fake_data:[{"url":i1, "name":"Alice"},{"url":i2,"name":"Holly"},{"url":i3, "name":"Bella"}]});
+        self.setState({fake_data:[]});
+
+        for (var i = chanIdList.length - 1; i >= 0; i--) {
+            const id = chanIdList[i];
+            self.ChanCoreContract.getChan(id).then(result=> {
+            console.log(result); 
+            var cur_chan={"id":id};
+            cur_chan.create_time = result[1].c[0];
+            cur_chan.name = result[0];
+            cur_chan.level = result[2].c[0];
+            cur_chan.gender = result[3]?"female":"male";
+            console.log(id,typeof(id));
+            cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(parseInt(id)+1)+".jpg";
+            console.log(cur_chan.url);
+            self.setState({fake_data:self.state.fake_data.concat([cur_chan])});
+          });
+        }
     }
 
 
@@ -95,10 +112,12 @@ export default class BuyNewChan extends React.Component {
       {this.state.fake_data.map(function(d, idx){
          return (<Col xs={6} md={4}>
       <Thumbnail src={d.url} alt="242x200">
-        <h3>Chan:{idx}</h3>
+        <h3>Chan:{d.id}</h3>
         <p>Name:{d.name}</p>
+        <p>Gender:{d.gender}</p>
+        <p>Level:{d.level}</p>
         <p>
-           <Button bsStyle="primary" id="withdraw" onClick={buy_func.bind(null,idx)}>
+           <Button bsStyle="primary" onClick={buy_func.bind(null,idx)}>
         Buy!
         </Button>
         </p>

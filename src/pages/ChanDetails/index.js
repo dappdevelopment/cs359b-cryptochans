@@ -14,7 +14,8 @@ export default class ChanDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      intimacy:0
+      intimacy:0,
+      fake_data:[]
 
     };
 
@@ -81,7 +82,7 @@ export default class ChanDetails extends React.Component {
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
-      const i1="https://s3.amazonaws.com/cryptochans/0"+(parseInt(selectedId)+1).toString()+".jpg";
+      const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)+1).toString()+".jpg";
       console.log('iiiiiii',i1);
       const sell_func = this.sell.bind(this);
       // console.log(this.state.value);
@@ -201,17 +202,17 @@ export default class ChanDetails extends React.Component {
 
       <Grid>
       <Row>
-      <Col xs={9} md={16}>
+      <Col xs={4} md={8}>
 
-    <Image style={{width: 500, height: 400}} src={this.state.fake_img} atl="800x800">
+    <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
 
     </Image>
     </Col>
-    <Col>
+    <Col >
         <p>Gender:{this.state.gender}</p>
         <p>Level:{this.state.level}</p>
         
-        <p>Create Time:{formatTime}</p>     
+        <p>Birth Date:{formatTime}</p>     
 
         <ButtonGroup vertical>
         <Button onClick={this.sell.bind(this)}>
@@ -225,7 +226,7 @@ export default class ChanDetails extends React.Component {
           Chat with me
         </Button>
         <br/>
-        Intimacy:<ProgressBar now={this.state.intimacy} label={`${this.state.intimacy}%`} />
+        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy}%`} />
         <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
           Level me up
         </Button>
