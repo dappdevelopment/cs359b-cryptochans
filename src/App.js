@@ -165,10 +165,10 @@ class App extends Component {
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 
         <Switch>
-              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
-              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
+              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract1={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract1={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract1={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract1={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
                             <Route path="/" render={(props)=>
 
   <Grid>

@@ -1,4 +1,5 @@
 import React from 'react';
+import getWeb3 from '../../utils/getWeb3'
 
 // import Card from 'material-ui/Card';
 
@@ -8,24 +9,53 @@ import React from 'react';
 import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class BuyNewChan extends React.Component {
-  //   constructor(props) {
-  //   super(props)
+    constructor(props) {
+       super(props)
 
-  //   this.state = {
-  //     admin: false,
-  //     web3: null
-  //   }
+       this.state = {
+         admin: false,
+         web3: null
+       }
 
-  // }
+    }
 
     buy(chan_id){
         console.log("bought");
         console.log(chan_id);
-        this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
+        //auction.seller,
+        //    auction.startingPrice,
+        //    auction.endingPrice,
+        //    auction.duration,
+        //    auction.startedAt
+        this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
+        this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
+          console.log("Seller: "+result[0]);
+          console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
+          console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+          console.log("Duration: "+result[3]/3600 + " hours");
+          console.log("Started At: "+result[4]);
+        });
+        this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result);});
+        this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
     }
 
 
     componentWillMount() {
+
+        getWeb3
+        .then(results => {
+          this.setState({
+            web3: results.web3
+          })
+
+          // Get accounts.
+          results.web3.eth.getAccounts((error, accounts) => {
+            this.setState({account:accounts[0]});
+          })
+        }).catch(() => {
+          console.log('Error finding web3.')
+        })
+
         const { match, contract1, contract2} = this.props;
         // const selectedId = match.params.id;
         console.log(contract2);
@@ -35,13 +65,14 @@ export default class BuyNewChan extends React.Component {
         // const myChans = this.cryptotreesContract.getMyChans();
         const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
         const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+        const i3="https://s3.amazonaws.com/cryptochans/01.jpg";
         // this.ChanCoreContract.().then(result=>{
         //     this.setState({chanlist:result});
         // });
 
 
 
-        this.setState({fake_data:[{"url":i1, "name":"Alice"},{"url":i2,"name":"Holly"}]});
+        this.setState({fake_data:[{"url":i1, "name":"Alice"},{"url":i2,"name":"Holly"},{"url":i3, "name":"Bella"}]});
     }
 
 
