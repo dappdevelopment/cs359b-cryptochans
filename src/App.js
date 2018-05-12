@@ -9,7 +9,7 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel,Carousel, Grid} from 'react-bootstrap';
+import {Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
 
 
@@ -142,7 +142,7 @@ class App extends Component {
       <div>
            <Router>
       <div className="App">
-            <header className="App-header">
+            <header>
           <img src={logo} className="App-logo" alt="logo.jpg" />
           <h1 className="App-title">Cryptochans</h1>
         </header>
@@ -151,21 +151,25 @@ class App extends Component {
 
         <div>
 
-      <Link to="/0"><Button  bsStyle="info">Chan Detail page</Button></Link> 
+      <Link to="/cryptochans/0"><Button  bsStyle="info">Chan Detail</Button></Link> 
       &emsp;
 
         <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
 &emsp;
-       <Link to="/cryptochans/MyChans"><Button  bsStyle="info">See My Chans</Button></Link>
+       <Link to="/cryptochans/MyChans"><Button  bsStyle="info">My Chans</Button></Link>
 &emsp;
-        <Link to="/"><Button  bsStyle="info">Go Back</Button></Link>
+        <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
 
         <Switch>
 
-              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
               <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
               <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance}/>} />
-                            <Route path="/" render={(props)=><Carousel>
+                            <Route path="/" render={(props)=>
+  <Grid>
+  <Col xs={14} md={20}>
+  <Row xs={10} md={10}>
+  <Carousel>
   <Carousel.Item>
     <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
     <Carousel.Caption>
@@ -180,7 +184,9 @@ class App extends Component {
       <p>Cryptochans</p>
     </Carousel.Caption>
   </Carousel.Item>
-</Carousel>}           />
+</Carousel>
+</Row></Col></Grid>
+}           />
 
 
 

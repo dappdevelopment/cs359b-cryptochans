@@ -25,7 +25,7 @@ export default class BuyNewChan extends React.Component {
     }
 
 
-  render() {
+    componentWillMount() {
         const { match, contract1, contract2} = this.props;
         // const selectedId = match.params.id;
         console.log(contract2);
@@ -35,8 +35,15 @@ export default class BuyNewChan extends React.Component {
         // const myChans = this.cryptotreesContract.getMyChans();
         const i1 ="https://s3.amazonaws.com/cryptochans/01.jpg"
         const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
-        const fake_data =[{"url":i1},{"url":i2}];
-        const buy_func = this.buy.bind(this);
+        // this.ChanCoreContract.().then(result=>{
+        //     this.setState({chanlist:result});
+        // });
+        this.setState({fake_data:[{"url":i1, "name":"Alice"},{"url":i2,"name":"Holly"}]});
+    }
+
+
+  render() {
+    const buy_func = this.buy.bind(this);
 
 
     return (
@@ -45,17 +52,15 @@ export default class BuyNewChan extends React.Component {
         <div>
         <Grid>
   <Row>
-      {fake_data.map(function(d, idx){
-        console.log(buy_func);
+      {this.state.fake_data.map(function(d, idx){
          return (<Col xs={6} md={4}>
       <Thumbnail src={d.url} alt="242x200">
         <h3>Chan:{idx}</h3>
-        <p>Chan Details//Todo</p>
+        <p>Name:{d.name}</p>
         <p>
-           <Button id="withdraw" onClick={buy_func.bind(null,idx)}>
+           <Button bsStyle="primary" id="withdraw" onClick={buy_func.bind(null,idx)}>
         Buy!
         </Button>
-          <Button bsStyle="default">Button</Button>
         </p>
       </Thumbnail>
     </Col>)
