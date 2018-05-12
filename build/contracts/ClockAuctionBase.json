@@ -129,7 +129,7 @@
         "id": 279,
         "nodeType": "ImportDirective",
         "scope": 665,
-        "sourceUnit": 1586,
+        "sourceUnit": 1738,
         "src": "26:65:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -298,7 +298,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_ERC721_$1585",
+              "typeIdentifier": "t_contract$_ERC721_$1737",
               "typeString": "contract ERC721"
             },
             "typeName": {
@@ -306,10 +306,10 @@
               "id": 291,
               "name": "ERC721",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1585,
+              "referencedDeclaration": 1737,
               "src": "740:6:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721_$1585",
+                "typeIdentifier": "t_contract$_ERC721_$1737",
                 "typeString": "contract ERC721"
               }
             },
@@ -756,10 +756,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "1551:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -903,10 +903,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "1672:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1032,7 +1032,7 @@
                               "referencedDeclaration": 292,
                               "src": "2037:19:1",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_ERC721_$1585",
+                                "typeIdentifier": "t_contract$_ERC721_$1737",
                                 "typeString": "contract ERC721"
                               }
                             },
@@ -1043,7 +1043,7 @@
                             "lValueRequested": false,
                             "memberName": "ownerOf",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1625,
+                            "referencedDeclaration": 1777,
                             "src": "2037:27:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_address_$",
@@ -1242,7 +1242,7 @@
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2328,
+                        "referencedDeclaration": 2480,
                         "src": "2489:4:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ClockAuctionBase_$664",
@@ -1287,7 +1287,7 @@
                         "referencedDeclaration": 292,
                         "src": "2448:19:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ERC721_$1585",
+                          "typeIdentifier": "t_contract$_ERC721_$1737",
                           "typeString": "contract ERC721"
                         }
                       },
@@ -1298,7 +1298,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1671,
+                      "referencedDeclaration": 1823,
                       "src": "2448:32:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -1421,7 +1421,7 @@
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2328,
+                        "referencedDeclaration": 2480,
                         "src": "2894:4:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ClockAuctionBase_$664",
@@ -1479,7 +1479,7 @@
                         "referencedDeclaration": 292,
                         "src": "2861:19:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ERC721_$1585",
+                          "typeIdentifier": "t_contract$_ERC721_$1737",
                           "typeString": "contract ERC721"
                         }
                       },
@@ -1490,7 +1490,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1671,
+                      "referencedDeclaration": 1823,
                       "src": "2861:32:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -1685,10 +1685,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "3345:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2591,10 +2591,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "4480:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2765,10 +2765,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "4652:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -3249,7 +3249,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2307,
+                          "referencedDeclaration": 2459,
                           "src": "6050:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -3824,7 +3824,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2309,
+                      "referencedDeclaration": 2461,
                       "src": "7192:3:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3917,7 +3917,7 @@
                               "name": "now",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2309,
+                              "referencedDeclaration": 2461,
                               "src": "7248:3:1",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -5196,7 +5196,7 @@
         "id": 279,
         "nodeType": "ImportDirective",
         "scope": 665,
-        "sourceUnit": 1586,
+        "sourceUnit": 1738,
         "src": "26:65:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5365,7 +5365,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_ERC721_$1585",
+              "typeIdentifier": "t_contract$_ERC721_$1737",
               "typeString": "contract ERC721"
             },
             "typeName": {
@@ -5373,10 +5373,10 @@
               "id": 291,
               "name": "ERC721",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1585,
+              "referencedDeclaration": 1737,
               "src": "740:6:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC721_$1585",
+                "typeIdentifier": "t_contract$_ERC721_$1737",
                 "typeString": "contract ERC721"
               }
             },
@@ -5823,10 +5823,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "1551:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -5970,10 +5970,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "1672:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -6099,7 +6099,7 @@
                               "referencedDeclaration": 292,
                               "src": "2037:19:1",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_ERC721_$1585",
+                                "typeIdentifier": "t_contract$_ERC721_$1737",
                                 "typeString": "contract ERC721"
                               }
                             },
@@ -6110,7 +6110,7 @@
                             "lValueRequested": false,
                             "memberName": "ownerOf",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 1625,
+                            "referencedDeclaration": 1777,
                             "src": "2037:27:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_address_$",
@@ -6309,7 +6309,7 @@
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2328,
+                        "referencedDeclaration": 2480,
                         "src": "2489:4:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ClockAuctionBase_$664",
@@ -6354,7 +6354,7 @@
                         "referencedDeclaration": 292,
                         "src": "2448:19:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ERC721_$1585",
+                          "typeIdentifier": "t_contract$_ERC721_$1737",
                           "typeString": "contract ERC721"
                         }
                       },
@@ -6365,7 +6365,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1671,
+                      "referencedDeclaration": 1823,
                       "src": "2448:32:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -6488,7 +6488,7 @@
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2328,
+                        "referencedDeclaration": 2480,
                         "src": "2894:4:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_ClockAuctionBase_$664",
@@ -6546,7 +6546,7 @@
                         "referencedDeclaration": 292,
                         "src": "2861:19:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ERC721_$1585",
+                          "typeIdentifier": "t_contract$_ERC721_$1737",
                           "typeString": "contract ERC721"
                         }
                       },
@@ -6557,7 +6557,7 @@
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1671,
+                      "referencedDeclaration": 1823,
                       "src": "2861:32:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -6752,10 +6752,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "3345:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -7658,10 +7658,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "4480:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -7832,10 +7832,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2310,
-                        2311
+                        2462,
+                        2463
                       ],
-                      "referencedDeclaration": 2310,
+                      "referencedDeclaration": 2462,
                       "src": "4652:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -8316,7 +8316,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2307,
+                          "referencedDeclaration": 2459,
                           "src": "6050:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -8891,7 +8891,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2309,
+                      "referencedDeclaration": 2461,
                       "src": "7192:3:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -8984,7 +8984,7 @@
                               "name": "now",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2309,
+                              "referencedDeclaration": 2461,
                               "src": "7248:3:1",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -10242,5 +10242,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-12T00:33:26.419Z"
+  "updatedAt": "2018-05-12T06:18:52.995Z"
 }
