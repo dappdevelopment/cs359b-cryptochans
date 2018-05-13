@@ -7,15 +7,22 @@ import getWeb3 from '../../utils/getWeb3'
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
-import {ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
+import {ProgressBar, ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      intimacy:0,
+      fake_data:[]
 
     };
+
+
+     
+
+
 
   }
 
@@ -38,7 +45,8 @@ export default class ChanDetails extends React.Component {
         // console.log(this.SaleAuctionContract);
         // console.log(this.ChanCoreContract);
         console.log('ddddd',this.state.account);
-        this.SaleAuctionContract.createAuction.sendTransaction(10,1,10,this.state.account,{from:this.state.account});
+        console.log(this.state.selectedId);
+        this.SaleAuctionContract.createAuction.sendTransaction(this.state.selectedId,10,1,10,this.state.account,{from:this.state.account});
 
 
 
@@ -65,10 +73,17 @@ export default class ChanDetails extends React.Component {
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
-      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
+      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
+        console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); 
+        this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
+        this.setState({gender:result[3]?"female":"male"});
+        console.log("yyyyyyy",this.state);
+        this.setState({difficult_level:2000*(result[2].c[0]+1)});
+      });
 
-     const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
-      // const i2="https://s3.amazonaws.com/cryptochans/02.jpg"
+     //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
+      const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)+1).toString()+".jpg";
+      console.log('iiiiiii',i1);
       const sell_func = this.sell.bind(this);
       // console.log(this.state.value);
 
@@ -90,6 +105,53 @@ export default class ChanDetails extends React.Component {
       }).catch(() => {
         console.log('Error finding web3.')
       })
+
+
+
+      let startDate = new Date();
+        let elapsedTime = 0;
+        var valid=true;
+
+        const focus = function() {
+            startDate = new Date();
+            valid = true;
+        };
+
+        console.log('state?????',this.state, this.state.level);
+        const self=this;
+        const blur = function() {
+            const endDate = new Date();
+            const spentTime = endDate.getTime() - startDate.getTime();
+            elapsedTime += spentTime;
+            console.log('now:',elapsedTime);
+            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            valid=false;
+        };
+
+        const beforeunload = function() {
+            const endDate = new Date();
+            const spentTime = endDate.getTime() - startDate.getTime();
+            elapsedTime += spentTime;
+            console.log('tttttime',elapsedTime);
+            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            valid=false;
+
+            // elapsedTime contains the time spent on page in milliseconds
+        };
+
+        const refreshIntimacy = function(){
+          if (valid) {
+          const endDate = new Date();
+          const spentTime = endDate.getTime() - startDate.getTime();
+          elapsedTime += spentTime;
+          self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+          startDate = new Date();}
+        };
+
+        window.addEventListener('focus', focus);
+        window.addEventListener('blur', blur);
+        window.addEventListener('beforeunload', beforeunload);
+        setInterval(refreshIntimacy,3000);
 
   }
 
@@ -125,35 +187,7 @@ export default class ChanDetails extends React.Component {
       </Popover>
     );
 
-        // let startDate = new Date();
-        // let elapsedTime = 0;
-
-        // const focus = function() {
-        //     startDate = new Date();
-        // };
-
-        // const blur = function() {
-        //     const endDate = new Date();
-        //     const spentTime = endDate.getTime() - startDate.getTime();
-        //     elapsedTime += spentTime;
-        //     console.log(elapsedTime);
-        // };
-
-        // const beforeunload = function() {
-        //     const endDate = new Date();
-        //     const spentTime = endDate.getTime() - startDate.getTime();
-        //     elapsedTime += spentTime;
-        //     console.log(elapsedTime);
-
-        //     // elapsedTime contains the time spent on page in milliseconds
-        // };
-
-        // window.addEventListener('focus', focus);
-        // window.addEventListener('blur', blur);
-        // window.addEventListener('beforeunload', beforeunload);
-        console.log(this.state);
-
-
+       
         var formatTime = this.timeConverter(this.state.create_time);
 
     return (
@@ -168,16 +202,17 @@ export default class ChanDetails extends React.Component {
 
       <Grid>
       <Row>
-      <Col xs={9} md={16}>
+      <Col xs={4} md={8}>
 
-    <Image style={{width: 500, height: 400}} src={this.state.fake_img} atl="800x800">
+    <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
 
     </Image>
     </Col>
-    <Col>
+    <Col >
         <p>Gender:{this.state.gender}</p>
         <p>Level:{this.state.level}</p>
-        <p>Create Time:{formatTime}</p>     
+        
+        <p>Birth Date:{formatTime}</p>     
 
         <ButtonGroup vertical>
         <Button onClick={this.sell.bind(this)}>
@@ -191,7 +226,10 @@ export default class ChanDetails extends React.Component {
           Chat with me
         </Button>
         <br/>
-        <Button  onClick={this.levelup.bind(this)}>
+        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy}%`} />
+        <Label bsStyle="info">Unlock More features!</Label>
+
+        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
           Level me up
         </Button>
 

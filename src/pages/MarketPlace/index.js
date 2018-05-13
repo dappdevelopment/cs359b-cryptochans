@@ -20,7 +20,6 @@ export default class BuyNewChan extends React.Component {
     }
 
     buy(chan_id){
-        console.log("bought");
         console.log(chan_id);
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
         this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
@@ -34,12 +33,10 @@ export default class BuyNewChan extends React.Component {
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });
-            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result);});
+            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result/1000000000000000+" finney (milliETH)");});
             this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
-          } else {
-            console.log("Not on Auction");
           }
-        });    
+        });
     }
 
 
@@ -134,7 +131,6 @@ export default class BuyNewChan extends React.Component {
 
   render() {
     const buy_func = this.buy.bind(this);
-    console.log(this.state.fake_data);
 
 
     return (
@@ -145,13 +141,13 @@ export default class BuyNewChan extends React.Component {
   <Row>
       {this.state.fake_data.map(function(d, idx){
          return (<Col xs={6} md={4}>
-      <Thumbnail src={d.url} alt="242x200">
+      <Thumbnail src={d.url} alt="Image not available">
         <h3>Chan:{d.id}</h3>
         <p>Name:{d.name}</p>
         <p>Gender:{d.gender}</p>
         <p>Level:{d.level}</p>
         <p>
-           <Button bsStyle="primary" onClick={buy_func.bind(null,idx)}>
+           <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
         Buy!
         </Button>
         </p>
