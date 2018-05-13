@@ -8,9 +8,11 @@ import getWeb3 from '../../utils/getWeb3'
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
-import {InputGroup,Input,ProgressBar, ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
+import {Glyphicon,InputGroup,Input,ProgressBar, ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
+
+
 
   constructor(props) {
     super(props);
@@ -220,13 +222,43 @@ export default class ChanDetails extends React.Component {
 
       <Grid>
       <Row>
-      <Col xs={6} md={6}>
+      <Col xs={5} md={5}>
 
     <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
 
     </Image>
     </Col>
-    <Col xs={6} md={6}>
+    <Col xs={2} md={2}>
+    Unlocked achievements:
+    <ButtonGroup vertical>
+      <Button bsStyle='warning'>
+        <Glyphicon glyph="heart" />
+        blink
+      </Button>
+      <br/>
+      <Button bsStyle='warning'>
+        <Glyphicon glyph="heart" />
+        sweet word
+      </Button>
+      <br/>
+      <Button bsStyle='warning'>
+        <Glyphicon glyph="heart" />
+        hug
+      </Button>
+      <br/>
+      <Button bsStyle='warning'>
+        <Glyphicon glyph="heart" />
+        kiss
+      </Button>
+      <br/>
+      <Button bsStyle='warning' disabled>
+        <Glyphicon glyph="heart" />
+        dance
+      </Button>
+    </ButtonGroup>
+
+    </Col>
+    <Col xs={5} md={5}>
     <Panel>
         <p>Gender:{this.state.gender}</p>
         <p>Level:{this.state.level}</p>
