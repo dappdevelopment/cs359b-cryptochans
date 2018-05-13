@@ -115,11 +115,12 @@ export default class BuyNewChan extends React.Component {
 
 
          this.ChanCoreContract.totalSupply().then(totalChans => {
-            console.log('tTTTT',totalChans);
           for(var i = 0; i < totalChans; i++){
-                const id=i;
+            const id=i;
+            this.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
+              if(isOnAuction){
                 const chan = {};
-                self.ChanCoreContract.getChan(i).then( chanData => {
+                self.ChanCoreContract.getChan(id).then( chanData => {
                   chan.id = id;
                   chan.name = chanData[0];
                   chan.create_time = chanData[1].c[0];
@@ -137,13 +138,13 @@ export default class BuyNewChan extends React.Component {
                   });
                 }).then( () => {
                   this.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-                    chan.current_price = price.c[1]/1000000000000000+" finney (milliETH)";
+                    chan.current_price = price/1000000000000000+" finney (milliETH)";
                     console.log(chan);
-                  console.log(chan.current_price);
                   self.setState({fake_data:self.state.fake_data.concat([chan])});
                   });
                 });
-
+              }
+            });
           }
         });
 
