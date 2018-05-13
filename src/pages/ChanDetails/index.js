@@ -35,22 +35,13 @@ export default class ChanDetails extends React.Component {
 
     sell(){
         console.log("sell");
-        // console.log(this.state.selectedId);
-        // console.log(this.SaleAuctionContract);
-        // console.log(this.ChanCoreContract);
-        console.log(this.state);
-        this.SaleAuctionContract.createAuction.sendTransaction(this.state.selectedId,this.state.high,this.state.low,this.state.dur,this.state.account,{from:this.state.account});
-
-
-
-
-    //      function createSaleAuction(
-    //     uint256 _chanId,
-    //     uint256 _startingPrice,
-    //     uint256 _endingPrice,
-    //     uint256 _duration
-    // )
-        //this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log(result,typeof(result)); const owner = result });
+        this.ChanCoreContract.createSaleAuction.sendTransaction(
+          this.state.selectedId,
+          this.state.high,
+          this.state.low,
+          this.state.dur,
+          {from:this.state.account}
+        );
     }
   
   componentWillMount() {

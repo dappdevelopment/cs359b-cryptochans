@@ -58,6 +58,21 @@ export default class Admin extends React.Component {
     this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
   }
 
+  togglePause(){
+    console.log(this.state.account);
+    this.ChanCoreContract.paused().then( isPaused => {
+      console.log(isPaused);
+      if(isPaused){
+        this.ChanCoreContract.unpause.sendTransaction({from:this.state.account});
+      } else {
+        this.ChanCoreContract.pause.sendTransaction({from:this.state.account});
+      }
+    });
+    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
+    this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
+    this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
+  }
+
 
   render() {
 
@@ -70,6 +85,11 @@ export default class Admin extends React.Component {
           <input id="chanName" type="text" onChange={this.handleNameChange.bind(this)}></input>
           <button id="button" onClick={this.createGen0Auction.bind(this)}>
             Create
+          </button>
+        </div>
+        <div>
+          <button id="button" onClick={this.togglePause.bind(this)}>
+            Pause/Unpause
           </button>
         </div>
       </div>
