@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ChanCoreContract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './utils/getWeb3'
-import logo from './logo.svg'
+import logo from './logo.jpg'
 import PropTypes from 'prop-types'
 
 import AppBar from 'material-ui/AppBar'

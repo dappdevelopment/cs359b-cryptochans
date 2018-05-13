@@ -51,6 +51,10 @@ contract ChanAuction is ChanOwnership {
         );
     }
 
+    function checkAuctionBalances() external view onlyOwner returns (uint256) {
+        return address(saleAuction).balance;
+    }
+
     // Transfers the balance of the sale auction contract
     // to the ChanCore contract. We use two-step withdrawal to
     // prevent two transfer calls in the auction bid function.

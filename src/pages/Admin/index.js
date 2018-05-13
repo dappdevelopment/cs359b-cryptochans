@@ -73,6 +73,16 @@ export default class Admin extends React.Component {
     this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
   }
 
+  checkBalance(){
+    this.ChanCoreContract.checkAuctionBalances().then( balance => {
+      console.log("Contract Balance: " + balance.toNumber()/1000000000000000000 + "ETH");
+    });
+  }
+
+  withdrawBalance(){
+    this.ChanCoreContract.withdrawAuctionBalances.sendTransaction({from:this.state.account});
+  }
+
 
   render() {
 
@@ -90,6 +100,14 @@ export default class Admin extends React.Component {
         <div>
           <button id="button" onClick={this.togglePause.bind(this)}>
             Pause/Unpause
+          </button>
+        </div>
+        <div>
+          <button id="button" onClick={this.checkBalance.bind(this)}>
+            Check Balance
+          </button>
+          <button id="button" onClick={this.withdrawBalance.bind(this)}>
+            Withdraw Balance
           </button>
         </div>
       </div>

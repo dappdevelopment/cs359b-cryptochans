@@ -114,8 +114,9 @@ export default class BuyNewChan extends React.Component {
               console.log("Price:"+priceInWei/1000000000000000+" finney (milliETH)");
               this.SaleAuctionCoreContract.bid.sendTransaction(chan_id, {
                 from:this.state.account,
+                to:this.SaleAuctionCoreContract.address,
                 value:priceInWei,
-                gas:100000
+                gas:1000000
               });
             });
           }
