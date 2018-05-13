@@ -30,6 +30,10 @@ export default class ChanDetails extends React.Component {
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
     this.refreshState();
+    this.state.intimacy = 0;
+    this.elapsedTime = 0;
+    this.setState({level:this.state.level+1});
+    this.setState({difficult_level:this.state.level*2000});
    }
 
 
@@ -64,6 +68,7 @@ export default class ChanDetails extends React.Component {
         this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
         this.setState({gender:result[3]?"female":"male"});
         console.log("yyyyyyy",this.state);
+        this.setState({level:result[2].c[0]+1});
         this.setState({difficult_level:2000*(result[2].c[0]+1)});
       });
 
@@ -95,7 +100,7 @@ export default class ChanDetails extends React.Component {
 
 
       let startDate = new Date();
-        let elapsedTime = 0;
+        this.elapsedTime = 0;
         var valid=true;
 
         const focus = function() {
@@ -108,18 +113,18 @@ export default class ChanDetails extends React.Component {
         const blur = function() {
             const endDate = new Date();
             const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log('now:',elapsedTime);
-            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            self.elapsedTime += spentTime;
+            console.log('now:',self.elapsedTime);
+            self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
             valid=false;
         };
 
         const beforeunload = function() {
             const endDate = new Date();
             const spentTime = endDate.getTime() - startDate.getTime();
-            elapsedTime += spentTime;
-            console.log('tttttime',elapsedTime);
-            self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+            self.elapsedTime += spentTime;
+            console.log('tttttime',self.elapsedTime);
+            self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
             valid=false;
 
             // elapsedTime contains the time spent on page in milliseconds
@@ -129,8 +134,8 @@ export default class ChanDetails extends React.Component {
           if (valid) {
           const endDate = new Date();
           const spentTime = endDate.getTime() - startDate.getTime();
-          elapsedTime += spentTime;
-          self.setState({intimacy:(elapsedTime/self.state.difficult_level)});
+          self.elapsedTime += spentTime;
+          self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
           startDate = new Date();}
         };
 
@@ -240,7 +245,7 @@ export default class ChanDetails extends React.Component {
           Chat with me
         </Button>
         <br/>
-        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy}%`} />
+        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
         <Label bsStyle="info">Unlock More features!</Label>
 
         <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
