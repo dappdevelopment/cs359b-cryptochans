@@ -33,6 +33,10 @@ contract ChanMinting is ChanAuction {
         _createChan(_name, _owner, _gender);
     }
 
+    function _approvedByContract(uint256 _chanId) internal {
+        approve(saleAuction, _chanId);
+    }
+
     /// @dev Creates a new gen0 Chan with the given name and gender
     ///  creates an auction for it.
     function createGen0Auction(string _name, bool _gender) public onlyOwner {
@@ -40,6 +44,7 @@ contract ChanMinting is ChanAuction {
 
         uint256 chanId = _createChan(_name, msg.sender, _gender);
         approve(saleAuction, chanId);
+        //_approvedByContract(chanId);
         
         saleAuction.createAuction(
             chanId,

@@ -21,15 +21,11 @@ export default class BuyNewChan extends React.Component {
 
     buy(chan_id){
         console.log(chan_id);
-
-        //auction.seller,
-        //    auction.startingPrice,
-        //    auction.endingPrice,
-        //    auction.duration,
-        //    auction.startedAt
+        this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
+        this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
-        // this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
-        //   if(isOnAuction){
+        this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
+          if(isOnAuction){
             this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
               console.log("Seller: "+result[0]);
               console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
@@ -37,12 +33,10 @@ export default class BuyNewChan extends React.Component {
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });
-          // } else {
-          //   console.log("Not on Auction");
-          // }
-        // });  
-        this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result/1000000000000000+" finney (milliETH)");});
-        this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
+            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result/1000000000000000+" finney (milliETH)");});
+            this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
+          }
+        });
     }
 
 
@@ -81,7 +75,43 @@ export default class BuyNewChan extends React.Component {
 
         self.setState({fake_data:[]});
 
-        for (var i = chanIdList.length - 1; i >= 0; i--) {
+        this.ChanCoreContract.totalSupply().then(totalChans => {
+          for(var i = 0; i < totalChans; i++){
+            this.SaleAuctionCoreContract.isOnAuction(i).then( isOnAuction => {
+              if(isOnAuction){
+                var chan = {};
+                self.ChanCoreContract.getChan(i).then( chanData => {
+                  chan.id = i;
+                  chan.name = chanData[0];
+                  chan.create_time = chanData[1].c[0];
+                  chan.level = chanData[2].c[0];
+                  chan.gender = chanData[3] ? "female" : "male";
+                  chan.url = "https://s3.amazonaws.com/cryptochans/" + i + ".jpg";
+                }).then( () => {
+                  console.log(chan);
+                  this.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+                    chan.seller           = auctionData[0];
+                    chan.starting_price   = auctionData[1];
+                    chan.ending_price     = auctionData[2];
+                    chan.auction_duration = auctionData[3];
+                    chan.started_at       = auctionData[4];
+                  });
+                }).then( () => {
+                  this.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+                    chan.current_price = price;
+                  });
+                }).then( () => {
+                  console.log(chan);
+                  this.state.fake_data.push(chan);  
+                }).then( () => {
+                  //console.log(this.state.fake_data);
+                })
+              }
+            });
+          }
+        });
+
+        /*for (var i = chanIdList.length - 1; i >= 0; i--) {
             const id = chanIdList[i];
             self.ChanCoreContract.getChan(id).then(result=> {
             console.log(result); 
@@ -95,7 +125,7 @@ export default class BuyNewChan extends React.Component {
             console.log(cur_chan.url);
             self.setState({fake_data:self.state.fake_data.concat([cur_chan])});
           });
-        }
+        }*/
     }
 
 
