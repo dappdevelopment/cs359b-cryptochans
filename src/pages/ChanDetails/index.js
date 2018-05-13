@@ -7,7 +7,7 @@ import getWeb3 from '../../utils/getWeb3'
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
-import {ProgressBar, ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
+import {InputGroup,Input,ProgressBar, ButtonGroup,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail,Badge, Label, Well, Modal,Popover} from 'react-bootstrap';
 
 export default class ChanDetails extends React.Component {
 
@@ -40,13 +40,12 @@ export default class ChanDetails extends React.Component {
 
 
     sell(){
-        console.log("bought");
+        console.log("sell");
         // console.log(this.state.selectedId);
         // console.log(this.SaleAuctionContract);
         // console.log(this.ChanCoreContract);
-        console.log('ddddd',this.state.account);
-        console.log(this.state.selectedId);
-        this.SaleAuctionContract.createAuction.sendTransaction(this.state.selectedId,10,1,10,this.state.account,{from:this.state.account});
+        console.log(this.state);
+        this.SaleAuctionContract.createAuction.sendTransaction(this.state.selectedId,this.state.high,this.state.low,this.state.dur,this.state.account,{from:this.state.account});
 
 
 
@@ -165,6 +164,33 @@ export default class ChanDetails extends React.Component {
   }
 
 
+  handleSellClose() {
+    this.setState({ sellshow: false });
+  }
+
+  handleSellShow() {
+    this.setState({ sellshow: true });
+  }
+
+
+  handleLowPriceChange(event){
+    console.log(event.target.value);
+    this.setState({low: event.target.value});
+  }
+
+  handleHighPriceChange(event){
+    console.log(event.target.value);
+    this.setState({high: event.target.value});
+  }
+
+
+  handleDurChange(event){
+    console.log(event.target.value);
+    this.setState({dur: event.target.value});
+  }
+
+
+
   timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -215,7 +241,7 @@ export default class ChanDetails extends React.Component {
         <p>Birth Date:{formatTime}</p>     
 
         <ButtonGroup vertical>
-        <Button onClick={this.sell.bind(this)}>
+        <Button onClick={this.handleSellShow.bind(this)}>
         Sell
         </Button>
         <br/>
@@ -246,6 +272,29 @@ export default class ChanDetails extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleClose.bind(this)}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+
+
+          <Modal show={this.state.sellshow} onHide={this.handleSellClose.bind(this)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sell</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+           Start Price:<input id="low" type="text" onChange={this.handleHighPriceChange.bind(this)}></input>
+           <br/>
+          End Price:<input id="high" type="text" onChange={this.handleLowPriceChange.bind(this)}></input>
+          <br/>
+           Duration:<input id="duration" type="text" onChange={this.handleDurChange.bind(this)}></input>
+           <br/>
+
+           <Button onClick={this.sell.bind(this)}>Sell now</Button>
+
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleSellClose.bind(this)}>Close</Button>
           </Modal.Footer>
         </Modal>
 
