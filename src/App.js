@@ -9,9 +9,15 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel} from 'react-bootstrap';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
+import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
 
+
+
+import ChanDetails from './pages/ChanDetails';
+import BuyNewChan from './pages/MarketPlace'
+import Mychans from './pages/Mychans'
+import Admin from './pages/Admin'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -105,7 +111,7 @@ class App extends Component {
   setAddr(){
     console.log(this.state.setaddr);
     console.log(this.state.chanCoreInstance);
-    this.state.chanCoreInstance.setSaleAuctionAddress(this.state.setaddr).then(result=> {console.log(result);});
+    this.state.chanCoreInstance.setSaleAuctionAddress.sendTransaction(this.state.setaddr,{from:this.state.account}).then(result=> {console.log(result);});
   }
 
   handleChange(event){
@@ -114,8 +120,8 @@ class App extends Component {
   }
 
   withdraw(){
-      console.log(this.state.chanCoreInstance);
-      console.log(this.state.chanCoreInstance.withdrawBalance().then(result=> {console.log(result); }));
+    console.log(this.state.account);
+      console.log(this.state.saleClockAuctionInstance.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
   }
 
   change(){
@@ -132,34 +138,83 @@ class App extends Component {
               <Panel.Heading>Admin Content</Panel.Heading>
               <Panel.Body></Panel.Body>
             </Panel>
-        </div> : null;
+        </div> : null; 
 
     return (
-
+      <div>
+           <Router basename={'/cryptochans/'}>
       <div className="App">
-        <header className="App-header">
-          // <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Test</h1>
+            <header>
+          <img src={logo} className="App-logo" alt="logo.jpg" />
+          <h1 className="App-title">Cryptochans</h1>
         </header>
-        <p className="App-intro">
-          Test
-        </p>
-        <span>set the SaleClockAuction's address </span>
+
+
+
+        <div>
+
+        <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
+         &emsp;
+      <Link to="/cryptochans/0"><Button  bsStyle="info">Chan Detail</Button></Link> 
+      &emsp;
+
+        <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
+&emsp;
+       <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
+&emsp;
+      <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
+&emsp;
+        
+
+        <Switch>
+              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
+              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} />} />
+              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
+                            <Route path="/" render={(props)=>
+
+  <Grid>
+  <Col xs={14} md={20}>
+  <Row xs={10} md={10}>
+  <Carousel>
+  <Carousel.Item>
+    <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
+    <Carousel.Caption>
+
+      <h3>Cryptochans</h3>
+    </Carousel.Caption>
+  </Carousel.Item>
+  <Carousel.Item>
+    <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
+    <Carousel.Caption>
+      <h3>Second slide label</h3>
+      <p>Cryptochans</p>
+    </Carousel.Caption>
+  </Carousel.Item>
+</Carousel>
+</Row></Col>
+<span>set the SaleClockAuction's address </span>
         <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
-        <button id="button" onClick={this.setAddr.bind(this)}>
+        <Button bsStyle="primary" id="Button" onClick={this.setAddr.bind(this)}>
         Set
-        </button>
-        <p id="detail">
-        </p>
-        <button id="withdraw" onClick={this.withdraw.bind(this)}>
+        </Button>
+        <Button bsStyle="primary" id="withdraw" onClick={this.withdraw.bind(this)}>
         Withdraw
-        </button>
-        {AdminDisplay}
+        </Button></Grid>
+}           />
+
+
+
+        </Switch>
+        </div>
       </div>
+      
+              </Router>
+</div>
+
 
 
     );
   }
 }
-
 export default App

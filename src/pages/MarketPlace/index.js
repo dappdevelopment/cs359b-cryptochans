@@ -1,120 +1,192 @@
 import React from 'react';
-
-import { Link } from 'react-router-dom';
-import Card from 'material-ui/Card';
-import Grid from 'material-ui/Grid';
-
-import { getAccount } from 'data/web3';
+import getWeb3 from '../../utils/getWeb3'
 
 
-// import CryptoChan from 'components/CryptoChan';
+import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'
+import SaleClockAuctionContract from '../../../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 
-const randomChan = () => {
-  return {
-    eyesSize: Math.round(-20 + 40 * Math.random()),
-    eyesAsymmetricity: Math.round(-15 + 30 * Math.random()),
-    eyesTilt: Math.round(-30 + 60 * Math.random()),
-    legsSize: Math.round(-30 + 60 * Math.random()),
-    mouthSize: Math.round(-30 + 60 * Math.random()),
-    mouthTilt: Math.round(-30 + 60 * Math.random()),
-    bodyWidth: Math.round(-100 + 200 * Math.random()),
-    bodyColor: Math.round(-180 + 360 * Math.random()),
-    mouthColor: Math.round(-180 + 360 * Math.random()),
-    eyesColor: Math.round(-180 + 360 * Math.random()),
-    legsColor: Math.round(-180 + 360 * Math.random()),
-  };
-}
+// import Card from 'material-ui/Card';
+
+// import AsyncCryptoChan from 'components/AsyncCryptoChan';
+
+
+import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class BuyNewChan extends React.Component {
-  web3 = null;
-  cryptoChansContract = null;
+    constructor(props) {
+       super(props)
 
-  state = {
-    tokenId: null,
-    Chans: [],
-    loadingChan: false,
-    confirmed: null,
-  }
+       this.state = {
+         admin: false,
+       }
 
-  async componentDidMount() {
-    this.cryptoChansContract = this.props.contract;
+       // this.initialize();
 
-    const myChans = await this.cryptoChansContract.getMyChans();
-    const metadataPromises = myChans.map(this.cryptoChansContract.getChanMetadata);
-    const metadata = await Promise.all(metadataPromises);
-
-    this.setState({Chans: myChans, metadata});
-  }
-
-  getChanMetadata = async (ChanId) => {
-    const metadata = await this.cryptoChansContract.getChanMetadata(ChanId);
-    const Chan = JSON.parse(metadata);
-    this.setState({ Chan });
-  }
-
-  buyChan = async () => {
-    const Chan = randomChan();
-    const address = await getAccount();
-
-    // buildTokenId is a view function, that we can call for free. This allows
-    // to save gas when actually buying the Chan:
-    const id = await this.cryptoChansContract.buildTokenId(Chan, address);
-
-    this.setState({ tokenId: id });
-
-    try {
-
-      const tx = this.cryptoChansContract.growNewChan(address, id, Chan)
-
-      tx.on('confirmation', (confirmationNumber) => {
-        this.setState({ confirmed: confirmationNumber });
-      })
-      .then(() => {
-        localStorage.setItem('token_id', id); // TODO: Get rid of this
-        //this.getChanMetadata(id);  // This fails because the promise returns when tx is submitted not mined.
-      });
-    } catch(er) {
-      console.error(er);
     }
+
+
+
+    instantiateContract() {
+    self= this;
+    /*
+     * SMART CONTRACT EXAMPLE
+     *
+     * Normally these functions would be called in the context of a
+     * state management library, but for convenience I've placed them here.
+     */
+
+    const contract = require('truffle-contract')
+
+    //Extract contract ABI
+    const chanCore = contract(ChanCoreContract);
+    const saleClockAuction = contract(SaleClockAuctionContract);
+
+    //Set Web3 Providers
+    chanCore.setProvider(this.state.web3.currentProvider);
+    saleClockAuction.setProvider(this.state.web3.currentProvider);
+
+    chanCore.deployed().then((instance) => {
+        console.log("successfully deployed ChanCore");
+        // this.setState({ChanCoreContract : instance});
+        self.ChanCoreContract=instance;
+      }).then(()=>{
+        saleClockAuction.deployed().then((instance) => {
+        // this.setState({SaleAuctionCoreContract:instance});
+        self.SaleAuctionCoreContract = instance;
+        console.log("successfully deployed SaleClockAuction");
+                 self.ChanCoreContract.totalSupply().then(totalChans => {
+            console.log('uysfsiofsdfsfsf',totalChans.c[0]);
+            totalChans = totalChans.c[0];
+          for(const i = 0; i < totalChans+1; i++){
+            console.log(i);
+
+            const id=i;
+            self.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
+                console.log(id,isOnAuction);
+
+              if(isOnAuction){
+                const chan = {};
+                self.ChanCoreContract.getChan(id).then( chanData => {
+                console.log(id);
+                  chan.id = id;
+                  chan.name = chanData[0];
+                  chan.create_time = chanData[1].c[0];
+                  chan.level = chanData[2].c[0];
+                  chan.gender = chanData[3] ? "female" : "male";
+                  chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+                }).then( () => {
+                  console.log(chan);
+                  self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+                    chan.seller           = auctionData[0];
+                    chan.starting_price   = auctionData[1];
+                    chan.ending_price     = auctionData[2];
+                    chan.auction_duration = auctionData[3];
+                    chan.started_at       = auctionData[4];
+                  });
+                }).then( () => {
+                  self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+                    chan.current_price = price/1000000000000000+" finney (milliETH)";
+                    console.log(chan);
+                  self.setState({fake_data:self.state.fake_data.concat([chan])});
+                  });
+                });
+              }
+            });
+          }
+        });
+      });
+    });
+
   }
+
+
+    buy(chan_id){
+        console.log(chan_id);
+        this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
+        this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
+        this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
+        this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
+          if(isOnAuction){
+            this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
+              console.log("Seller: "+result[0]);
+              console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
+              console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+              console.log("Duration: "+result[3]/3600 + " hours");
+              console.log("Started At: "+result[4]);
+            });
+            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(priceInWei => {
+              console.log("Price:"+priceInWei/1000000000000000+" finney (milliETH)");
+              this.SaleAuctionCoreContract.bid.sendTransaction(chan_id, {
+                from:this.state.account,
+                value:priceInWei,
+                gas:100000
+              });
+            });
+          }
+        });
+    }
+
+    // initialize(){
+    componentWillMount() {
+        const self=this;
+
+        getWeb3
+        .then(results => {
+          this.setState({
+            web3: results.web3
+          });
+          // Get accounts.
+          results.web3.eth.getAccounts((error, accounts) => {
+            this.setState({account:accounts[0]});
+          });
+
+          this.instantiateContract();        
+        })
+
+        // const { match, contract, contract2} = this.props;
+        // console.log(contract2);
+        // this.ChanCoreContract = contract2;
+        // this.SaleAuctionCoreContract = contract;
+
+        self.setState({fake_data:[]});
+
+    }
+
 
   render() {
+    const buy_func = this.buy.bind(this);
+
+
     return (
-      <div>
-        <h1>Your Chans</h1>
+<div>
+        <h1>{this.contract2}</h1>
+        <div>
+        <Grid>
+  <Row>
+      {this.state.fake_data.map(function(d, idx){
+         return (<Col xs={6} md={4}>
+      <Thumbnail src={d.url} alt="Image not available">
+        <h3>Chan:{d.id}</h3>
+        <p>Name:{d.name}</p>
+        <p>Gender:{d.gender}</p>
+        <p>Level:{d.level}</p>
+        <p>Price:{d.current_price}</p>
+        <p>
+           <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
+        Buy!
+        </Button>
+        </p>
+      </Thumbnail>
+    </Col>)
+       })}
+         </Row>
+</Grid>
+      </div>
 
-        {
-          this.state.loadingChan && "Your Chan is growing..."
-        }
 
-        <Grid container spacing={16}>
-          {
-            !this.state.loadingChan && this.state.Chans && this.state.Chans && this.state.metadata && this.state.Chans.map((t, i) => {
-              const Chan = this.state.metadata[i];
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={t}>
-                  <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <Card style={{width: 300, display: 'flex', justifyContent: 'center'}}>
-                      <Link to={`/${t}`} style={{display: 'block', textAlign: 'center'}}>
-                        <CryptoChan Chan={Chan} size={245} />
-                        <h4>Cardinal #{t}</h4>
-                      </Link>
-                    </Card>
-                  </div>
-                </Grid>
-              );
-            })
-          }
-        </Grid>
 
-        {
-          this.state.confirmed &&
-            <div>confirmed {this.state.confirmed} times</div>
-        }
 
-        <div style={{marginBottom: 32, textAlign: 'center'}}>
-          <button onClick={this.buyChan} style={{margin: '2em 0', padding: '1em 4em'}}>Buy a new Chan</button>
-        </div>
+
       </div>
     )
   }
