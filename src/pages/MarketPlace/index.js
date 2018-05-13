@@ -75,18 +75,57 @@ export default class BuyNewChan extends React.Component {
 
         self.setState({fake_data:[]});
 
-        this.ChanCoreContract.totalSupply().then(totalChans => {
+        // this.ChanCoreContract.totalSupply().then(totalChans => {
+        //   for(var i = 0; i < totalChans; i++){
+        //     this.SaleAuctionCoreContract.isSaleClockAuction(i).then( isOnAuction => {
+        //       if(isOnAuction){
+        //         var chan = {};
+        //         self.ChanCoreContract.getChan(i).then( chanData => {
+        //           chan.id = i;
+        //           chan.name = chanData[0];
+        //           chan.create_time = chanData[1].c[0];
+        //           chan.level = chanData[2].c[0];
+        //           chan.gender = chanData[3] ? "female" : "male";
+        //           chan.url = "https://s3.amazonaws.com/cryptochans/" + i + ".jpg";
+        //         }).then( () => {
+        //           console.log(chan);
+        //           this.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+        //             chan.seller           = auctionData[0];
+        //             chan.starting_price   = auctionData[1];
+        //             chan.ending_price     = auctionData[2];
+        //             chan.auction_duration = auctionData[3];
+        //             chan.started_at       = auctionData[4];
+        //           });
+        //         }).then( () => {
+        //           this.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+        //             chan.current_price = price;
+        //           });
+        //         }).then( () => {
+        //           console.log(chan);
+        //           this.state.fake_data.push(chan);  
+        //         }).then( () => {
+        //           //console.log(this.state.fake_data);
+        //         })
+        //       }
+        //     });
+        //   }
+        // });
+
+
+
+
+         this.ChanCoreContract.totalSupply().then(totalChans => {
+            console.log('tTTTT',totalChans);
           for(var i = 0; i < totalChans; i++){
-            this.SaleAuctionCoreContract.isOnAuction(i).then( isOnAuction => {
-              if(isOnAuction){
-                var chan = {};
+                const id=i;
+                const chan = {};
                 self.ChanCoreContract.getChan(i).then( chanData => {
-                  chan.id = i;
+                  chan.id = id;
                   chan.name = chanData[0];
                   chan.create_time = chanData[1].c[0];
                   chan.level = chanData[2].c[0];
                   chan.gender = chanData[3] ? "female" : "male";
-                  chan.url = "https://s3.amazonaws.com/cryptochans/" + i + ".jpg";
+                  chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
                 }).then( () => {
                   console.log(chan);
                   this.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
@@ -98,16 +137,13 @@ export default class BuyNewChan extends React.Component {
                   });
                 }).then( () => {
                   this.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-                    chan.current_price = price;
+                    chan.current_price = price.c[1]/1000000000000000+" finney (milliETH)";
+                    console.log(chan);
+                  console.log(chan.current_price);
+                  self.setState({fake_data:self.state.fake_data.concat([chan])});
                   });
-                }).then( () => {
-                  console.log(chan);
-                  this.state.fake_data.push(chan);  
-                }).then( () => {
-                  //console.log(this.state.fake_data);
-                })
-              }
-            });
+                });
+
           }
         });
 
@@ -146,6 +182,7 @@ export default class BuyNewChan extends React.Component {
         <p>Name:{d.name}</p>
         <p>Gender:{d.gender}</p>
         <p>Level:{d.level}</p>
+        <p>Price:{d.current_price}</p>
         <p>
            <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
         Buy!
