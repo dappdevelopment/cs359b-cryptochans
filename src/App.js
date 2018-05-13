@@ -92,7 +92,7 @@ class App extends Component {
           console.log(result);
           console.log(this.state.account);
           console.log(result==this.state.account);
-          this.setState({admin:true});
+          this.setState({admin:result==this.state.account});
         }));
       });
 
@@ -101,8 +101,7 @@ class App extends Component {
 
         console.log("successfully deployed SaleClockAuction");
         console.log(instance);
-        console.log(instance.isSaleClockAuction().then(result=> {console.log(result); }));
-        console.log(instance.ownerCut().then(result=> {console.log(result); }));
+  
 
       });
     })
@@ -132,13 +131,9 @@ class App extends Component {
   }
 
   render() {
+    console.log("ADDDDDDD",this.state.admin);
     let AdminDisplay = this.state.admin?        
-         <div style={{width:'300px'}}>
-            <Panel>
-              <Panel.Heading>Admin Content</Panel.Heading>
-              <Panel.Body></Panel.Body>
-            </Panel>
-        </div> : null; 
+          <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
     return (
       <div>
@@ -155,15 +150,13 @@ class App extends Component {
 
         <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
          &emsp;
-      <Link to="/cryptochans/0"><Button  bsStyle="info">Chan Detail</Button></Link> 
-      &emsp;
+
 
         <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
 &emsp;
        <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
 &emsp;
-      <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
-&emsp;
+{AdminDisplay}
         
 
         <Switch>
@@ -210,15 +203,6 @@ class App extends Component {
       </div>
       
               </Router>
-
-
-        
-                     
-
-
-
-
-
 </div>
 
 

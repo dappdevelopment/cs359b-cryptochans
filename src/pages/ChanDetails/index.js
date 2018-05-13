@@ -4,6 +4,7 @@ import Chat from './Chat.js';
 
 
 import getWeb3 from '../../utils/getWeb3'
+
 // import Grid from 'material-ui/Grid';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
@@ -21,7 +22,6 @@ export default class ChanDetails extends React.Component {
   }
 
   refreshState(){
-    console.log("here???");
     this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
   }
 
@@ -33,7 +33,9 @@ export default class ChanDetails extends React.Component {
    }
 
 
+
     sell(){
+      this.handleSellClose();
         console.log("sell");
         this.ChanCoreContract.createSaleAuction.sendTransaction(
           this.state.selectedId,
@@ -277,7 +279,7 @@ export default class ChanDetails extends React.Component {
            Duration:<input id="duration" type="text" onChange={this.handleDurChange.bind(this)}></input>
            <br/>
 
-           <Button onClick={this.sell.bind(this)}>Sell now</Button>
+           <Button onClick={this.sell.bind(this)}>Put on sell</Button>
 
 
           </Modal.Body>

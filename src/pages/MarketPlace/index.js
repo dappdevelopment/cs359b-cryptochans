@@ -55,11 +55,15 @@ export default class BuyNewChan extends React.Component {
         self.SaleAuctionCoreContract = instance;
         console.log("successfully deployed SaleClockAuction");
                  self.ChanCoreContract.totalSupply().then(totalChans => {
-            console.log('uysfsiofsdfsfsf',totalChans);
+            console.log('uysfsiofsdfsfsf',totalChans.c[0]);
+            totalChans = totalChans.c[0];
           for(const i = 0; i < totalChans+1; i++){
+            console.log(i);
 
             const id=i;
             self.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
+                console.log(id,isOnAuction);
+
               if(isOnAuction){
                 const chan = {};
                 self.ChanCoreContract.getChan(id).then( chanData => {
