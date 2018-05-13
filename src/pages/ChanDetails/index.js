@@ -66,7 +66,7 @@ export default class ChanDetails extends React.Component {
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
-      const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)+1).toString()+".jpg";
+      const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)).toString()+".jpg";
       console.log('iiiiiii',i1);
       const sell_func = this.sell.bind(this);
       // console.log(this.state.value);

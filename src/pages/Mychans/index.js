@@ -47,16 +47,16 @@ export default class Mychans extends React.Component {
           self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
             console.log("???",result);
             if (result.length==0){
-              console.log("no chans")
+              console.log("you have no chans");
             }
             else{
-          const chanIdList=result[0].c;
+          const chanIdList=result;
         self.setState({fake_data:[]});
 
 
 
         for (var i = chanIdList.length - 1; i >= 0; i--) {
-            const id = chanIdList[i];
+            const id = chanIdList[i].c[0];
             self.ChanCoreContract.getChan(id).then(result=> {
             console.log(result); 
             var cur_chan={"id":id};

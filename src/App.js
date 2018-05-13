@@ -153,6 +153,8 @@ class App extends Component {
 
         <div>
 
+        <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
+         &emsp;
       <Link to="/cryptochans/0"><Button  bsStyle="info">Chan Detail</Button></Link> 
       &emsp;
 
@@ -162,7 +164,7 @@ class App extends Component {
 &emsp;
       <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
 &emsp;
-        <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
+        
 
         <Switch>
               <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
