@@ -228,13 +228,13 @@ export default class ChanDetails extends React.Component {
 
       <Grid>
       <Row>
-      <Col xs={4} md={8}>
+      <Col xs={6} md={6}>
 
     <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
 
     </Image>
     </Col>
-    <Col >
+    <Col xs={6} md={6}>
         <p>Gender:{this.state.gender}</p>
         <p>Level:{this.state.level}</p>
         
