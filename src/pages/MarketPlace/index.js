@@ -110,8 +110,14 @@ export default class BuyNewChan extends React.Component {
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });
-            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(result=> {console.log("Price:"+result/1000000000000000+" finney (milliETH)");});
-            this.SaleAuctionCoreContract.bid.sendTransaction(chan_id,{from:this.state.account});
+            this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(priceInWei => {
+              console.log("Price:"+priceInWei/1000000000000000+" finney (milliETH)");
+              this.SaleAuctionCoreContract.bid.sendTransaction(chan_id, {
+                from:this.state.account,
+                value:priceInWei,
+                gas:100000
+              });
+            });
           }
         });
     }
