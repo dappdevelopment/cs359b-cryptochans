@@ -18,12 +18,6 @@ export default class ChanDetails extends React.Component {
       fake_data:[]
 
     };
-
-
-     
-
-
-
   }
 
   refreshState(){
@@ -235,6 +229,7 @@ export default class ChanDetails extends React.Component {
     </Image>
     </Col>
     <Col xs={6} md={6}>
+    <Panel>
         <p>Gender:{this.state.gender}</p>
         <p>Level:{this.state.level}</p>
         
@@ -261,6 +256,8 @@ export default class ChanDetails extends React.Component {
 
 
         </ButtonGroup>
+        <br/>
+        </Panel>
 
         <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
           <Modal.Header closeButton>

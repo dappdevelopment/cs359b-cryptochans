@@ -58,7 +58,7 @@ export default class Mychans extends React.Component {
             cur_chan.level = result[2].c[0];
             cur_chan.gender = result[3]?"female":"male";
             console.log(id,typeof(id));
-            cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(parseInt(id)+1)+".jpg";
+            cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
             console.log(cur_chan.url);
             self.setState({fake_data:self.state.fake_data.concat([cur_chan])});
           });
