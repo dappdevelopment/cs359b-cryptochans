@@ -127,6 +127,28 @@ export default class BuyNewChan extends React.Component {
         });
     }
 
+    cancelAuction(chan_id){
+        console.log(chan_id);
+        this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
+        this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
+        this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
+        this.SaleAuctionCoreContract.isOnAuction(chan_id).then(isOnAuction => {
+          if(isOnAuction){
+            this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
+              console.log("Seller: "+result[0]);
+              console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
+              console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+              console.log("Duration: "+result[3]/3600 + " hours");
+              console.log("Started At: "+result[4]);
+            });
+            this.SaleAuctionCoreContract.cancelAuction.sendTransaction(chan_id, {
+                from:this.state.account,
+                gas:1000000
+            });
+          }
+        });
+    }
+
     // initialize(){
     componentWillMount() {
         const self=this;
@@ -156,38 +178,42 @@ export default class BuyNewChan extends React.Component {
 
   render() {
     const buy_func = this.buy.bind(this);
+    const cancel_func = this.cancelAuction.bind(this);
+    const account = this.state.account;
 
 
     return (
-<div>
+      <div>
         <h1>{this.contract2}</h1>
         <div>
-        <Grid>
-  <Row>
-      {this.state.fake_data.map(function(d, idx){
-         return (<Col xs={6} md={4}>
-      <Thumbnail src={d.url} alt="Image not available">
-        <h3>Chan:{d.id}</h3>
-        <p>Name:{d.name}</p>
-        <p>Gender:{d.gender}</p>
-        <p>Level:{d.level}</p>
-        <p>Price:{d.current_price}</p>
-        <p>
-           <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
-        Buy!
-        </Button>
-        </p>
-      </Thumbnail>
-    </Col>)
-       })}
-         </Row>
-</Grid>
-      </div>
+          <Grid>
+            <Row>
+              {this.state.fake_data.map(function(d, idx){
+                return (<Col xs={6} md={4}>
+                  <Thumbnail src={d.url} alt="Image not available">
+                  <h3>Chan:{d.id}</h3>
+                  <p>Name:{d.name}</p>
+                  <p>Gender:{d.gender}</p>
+                  <p>Level:{d.level}</p>
+                  <p>Price:{d.current_price}</p>
+                  <p>
+                    {(d.seller === account) ? 
 
-
-
-
-
+                        <Button bsStyle="primary" onClick={cancel_func.bind(null,d.id)}>
+                          Cancel!
+                        </Button>
+                        :
+                        <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
+                          Buy!
+                        </Button>
+                    }
+                  </p>
+                  </Thumbnail>
+                </Col>)
+              })}
+            </Row>
+          </Grid>
+        </div>
       </div>
     )
   }
