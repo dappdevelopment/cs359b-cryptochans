@@ -102,42 +102,42 @@ Contract info on Rinkeby Test Network
 
 Migrations
 ```
-https://rinkeby.etherscan.io/tx/0x16f542a05425e0e29f4a6ed6cd27f1d22a04120a25d595652cb8a9e852ac2e8d
+https://rinkeby.etherscan.io/tx/0x5b187e0f3897ebd8a9ed47c4871c79be374abc101f58fc96fc22ed63a05008b3
 
 "networks": {
     "4": {
 		"events": {},
 		"links": {},
-		"address": "0x0c082ceb22d1b3aa426f567e3d9e07f2baf26207",
-		"transactionHash": "0x16f542a05425e0e29f4a6ed6cd27f1d22a04120a25d595652cb8a9e852ac2e8d0x16f54"
+		"address": "0xfea05c082cc67cc9cc509dc10576d449470516e4",
+		"transactionHash": "0x5b187e0f3897ebd8a9ed47c4871c79be374abc101f58fc96fc22ed63a05008b30x5b187"
     }
 },
 ```
 
 ChanCore
 ```
-https://rinkeby.etherscan.io/tx/0xf5b475ba434e951ec85c7ffc9607f730d55101f5b8f83d594faf3dbcb7d49934
+https://rinkeby.etherscan.io/tx/0x38603aaab4a0467473626ad81748304555ded1e34cb55605a20de30eff17fe50
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0xc7e511f61e9d46c326c60877baa00fd00a26f876",
-		"transactionHash": "0xf5b475ba434e951ec85c7ffc9607f730d55101f5b8f83d594faf3dbcb7d499340xf5b47"
+		"address": "0x9f711fae1cf4a8a7566821ac8827aff2558d9ec5",
+		"transactionHash": "0x38603aaab4a0467473626ad81748304555ded1e34cb55605a20de30eff17fe500x38603"
 	}
 },
 ```
 
 SaleClockAuction
 ```
-https://rinkeby.etherscan.io/tx/0xb0b2508e2452ea0d8d0984fd9c9d9e9898a3684a3b3f1ea0966d0b6d4cd05ab8
+https://rinkeby.etherscan.io/tx/0x2991e406e336e8c134772977a372cc5c46642e40e1644cd38b6730712baf33c6
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0xa2f325e88bcbbfda2de5f003b7db210a17483c38",
-		"transactionHash": "0xb0b2508e2452ea0d8d0984fd9c9d9e9898a3684a3b3f1ea0966d0b6d4cd05ab80xb0b25"
+		"address": "0xb79d9f55cd659ad06b8abe29157451ac3b11ce02",
+		"transactionHash": "0x2991e406e336e8c134772977a372cc5c46642e40e1644cd38b6730712baf33c60x2991e"
 	}
 },
 ```

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ChanCoreContract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './utils/getWeb3'
-import logo from './logo.svg'
+import logo from './logo.jpg'
 import PropTypes from 'prop-types'
 
 import AppBar from 'material-ui/AppBar'
@@ -92,7 +92,7 @@ class App extends Component {
           console.log(result);
           console.log(this.state.account);
           console.log(result==this.state.account);
-          this.setState({admin:true});
+          this.setState({admin:result==this.state.account});
         }));
       });
 
@@ -101,8 +101,7 @@ class App extends Component {
 
         console.log("successfully deployed SaleClockAuction");
         console.log(instance);
-        console.log(instance.isSaleClockAuction().then(result=> {console.log(result); }));
-        console.log(instance.ownerCut().then(result=> {console.log(result); }));
+  
 
       });
     })
@@ -132,87 +131,61 @@ class App extends Component {
   }
 
   render() {
+    console.log("ADDDDDDD",this.state.admin);
     let AdminDisplay = this.state.admin?        
-         <div style={{width:'300px'}}>
-            <Panel>
-              <Panel.Heading>Admin Content</Panel.Heading>
-              <Panel.Body></Panel.Body>
-            </Panel>
-        </div> : null; 
+          <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
     return (
-      <div>
-           <Router basename={'/cryptochans/'}>
-      <div className="App">
-            <header>
-          <img src={logo} className="App-logo" alt="logo.jpg" />
-          <h1 className="App-title">Cryptochans</h1>
-        </header>
-
-
-
         <div>
-
-        <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
-         &emsp;
-      <Link to="/cryptochans/0"><Button  bsStyle="info">Chan Detail</Button></Link> 
-      &emsp;
-
-        <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
-&emsp;
-       <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
-&emsp;
-      <Link to="/cryptochans/Admin"><Button show={this.state.admin} bsStyle="info">Admin</Button></Link>
-&emsp;
+          <Router basename={'/cryptochans/'}>
+            <div className="App">
+              <header>
+                <img src={logo} className="App-logo" alt="logo.jpg" />
+                <h1 className="App-title">Cryptochans</h1>
+              </header>
+              <div>
+                <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
+                &emsp;
+                <Link to="/cryptochans/Marketplace"><Button  bsStyle="info">MarketPlace</Button></Link> 
+                &emsp;
+                <Link to="/cryptochans/MyChans"><Button bsStyle="info">My Chans</Button></Link>
+                &emsp;
+                {AdminDisplay}
         
 
-        <Switch>
-              <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
-              <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
-              <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} />} />
-              <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
-                            <Route path="/" render={(props)=>
-
-  <Grid>
-  <Col xs={14} md={20}>
-  <Row xs={10} md={10}>
-  <Carousel>
-  <Carousel.Item>
-    <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
-    <Carousel.Caption>
-
-      <h3>Cryptochans</h3>
-    </Carousel.Caption>
-  </Carousel.Item>
-  <Carousel.Item>
-    <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
-    <Carousel.Caption>
-      <h3>Second slide label</h3>
-      <p>Cryptochans</p>
-    </Carousel.Caption>
-  </Carousel.Item>
-</Carousel>
-</Row></Col>
-<span>set the SaleClockAuction's address </span>
-        <input id="chanid" type="text" onChange={this.handleChange.bind(this)}></input>
-        <Button bsStyle="primary" id="Button" onClick={this.setAddr.bind(this)}>
-        Set
-        </Button>
-        <Button bsStyle="primary" id="withdraw" onClick={this.withdraw.bind(this)}>
-        Withdraw
-        </Button></Grid>
-}           />
-
-
-
-        </Switch>
+                <Switch>
+                  <Route path="/cryptochans/Admin" render={(props) => <Admin {...props} contract={this.state.saleClockAuctionInstance} contract2={this.state.chanCoreInstance} />} />
+                  <Route path="/cryptochans/Mychans" render={(props) => <Mychans {...props} contract={this.state.chanCoreInstance} contract2={this.state.chanCoreInstance}/>} />
+                  <Route path="/cryptochans/Marketplace" render={(props) => <BuyNewChan {...props} />} />
+                  <Route path="/cryptochans/:id" render={(props) => <ChanDetails {...props} contract={this.state.chanCoreInstance} contract2={this.state.saleClockAuctionInstance}/>} />
+                  <Route path="/" render={(props)=>
+                    <Grid>
+                      <Col xs={14} md={20}>
+                        <Row xs={10} md={10}>
+                          <Carousel>
+                            <Carousel.Item>
+                              <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
+                              <Carousel.Caption>
+                                <h3>Cryptochans</h3>
+                              </Carousel.Caption>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                              <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
+                              <Carousel.Caption>
+                                <h3>Second slide label</h3>
+                                <p>Cryptochans</p>
+                              </Carousel.Caption>
+                            </Carousel.Item>
+                          </Carousel>
+                        </Row>
+                      </Col>
+                    </Grid>
+                  }/>
+                </Switch>
+              </div>
+            </div>
+          </Router>
         </div>
-      </div>
-      
-              </Router>
-</div>
-
-
 
     );
   }

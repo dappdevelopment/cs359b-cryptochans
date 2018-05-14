@@ -44,6 +44,10 @@ export default class Admin extends React.Component {
       this.ChanCoreContract = contract2;
       this.SaleAuctionCoreContract = contract;
 
+      this.ChanCoreContract.paused().then( isPaused => {
+        this.setState({paused: isPaused});
+      });
+
   }
 
   handleNameChange(event){
@@ -73,24 +77,66 @@ export default class Admin extends React.Component {
     this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
   }
 
+  checkBalance(){
+    this.ChanCoreContract.checkAuctionBalances().then( balance => {
+      console.log("Contract Balance: " + balance.toNumber()/1000000000000000000 + "ETH");
+    });
+  }
+
+  withdrawBalance(){
+    this.ChanCoreContract.withdrawAuctionBalances.sendTransaction({from:this.state.account});
+  }
+
+  setAddr(){
+    console.log(this.state.setaddr);
+    console.log(this.state.chanCoreInstance);
+    this.ChanCoreContract.setSaleAuctionAddress.sendTransaction(this.state.setaddr,{from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleAddrChange(event){
+    console.log(event.target.value);
+    this.setState({setaddr: event.target.value});
+  }
+
 
   render() {
 
+    const isPaused = this.state.isPaused;
 
     return (
       <div>
         <h1>{this.contract2}</h1>
         <div>
           <span>Create Gen 0 Auction</span>
+          <br/>
+          <span>Name</span>
           <input id="chanName" type="text" onChange={this.handleNameChange.bind(this)}></input>
-          <button id="button" onClick={this.createGen0Auction.bind(this)}>
+          <Button bsStyle="primary" id="button" onClick={this.createGen0Auction.bind(this)}>
             Create
-          </button>
+          </Button>
         </div>
+        <br/>
         <div>
-          <button id="button" onClick={this.togglePause.bind(this)}>
-            Pause/Unpause
-          </button>
+          <Button bsStyle="primary" id="pauseButton" onClick={this.togglePause.bind(this)}>
+            {isPaused ? "Unpause" : "Pause"}
+          </Button>
+        </div>
+        <br/>
+        <div>
+          <Button bsStyle="primary" id="checkButton" onClick={this.checkBalance.bind(this)}>
+            Check Balance
+          </Button>
+          <Button bsStyle="primary" id="withdrawButton" onClick={this.withdrawBalance.bind(this)}>
+            Withdraw Balance
+          </Button>
+        </div>
+        <br/>
+        <div>
+          <span>Set SaleClockAuction's address</span>
+          <input id="addr" type="text" onChange={this.handleAddrChange.bind(this)}></input>
+          <Button bsStyle="primary" id="setButton" onClick={this.setAddr.bind(this)}>
+            Set
+          </Button>
         </div>
       </div>
     )

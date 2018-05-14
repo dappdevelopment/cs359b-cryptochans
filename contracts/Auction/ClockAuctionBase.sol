@@ -123,19 +123,19 @@ contract ClockAuctionBase {
 
         // Grab a reference to the seller before the auction struct
         // gets deleted.
-        //address seller = auction.seller;
+        address seller = auction.seller;
 
         // The bid is good! Remove the auction before sending the fees
         // to the sender so we can't have a reentrancy attack.
-        //_removeAuction(_tokenId);
+        _removeAuction(_tokenId);
 
         // Transfer proceeds to seller (if there are any!)
-        //if (price > 0) {
+        if (price > 0) {
             //  Calculate the auctioneer's cut.
             // (NOTE: _computeCut() is guaranteed to return a
             //  value <= price, so this subtraction can't go negative.)
-        //    uint256 auctioneerCut = _computeCut(price);
-        //    uint256 sellerProceeds = price - auctioneerCut;
+            uint256 auctioneerCut = _computeCut(price);
+            uint256 sellerProceeds = price - auctioneerCut;
 
             // NOTE: Doing a transfer() in the middle of a complex
             // method like this is generally discouraged because of
@@ -145,11 +145,12 @@ contract ClockAuctionBase {
             // before calling transfer(), and the only thing the seller
             // can DoS is the sale of their own asset! (And if it's an
             // accident, they can call cancelAuction(). )
-         //   seller.transfer(sellerProceeds);
-        //}
+            address(seller).transfer(sellerProceeds);
+            //seller.send(sellerProceeds);
+        }
 
         // Tell the world!
-       emit AuctionSuccessful(_tokenId, price, msg.sender);
+        emit AuctionSuccessful(_tokenId, price, msg.sender);
 
         return price;
     }
