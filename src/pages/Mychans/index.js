@@ -95,6 +95,29 @@ export default class Mychans extends React.Component {
         <h1>{this.contract2}</h1>
         <div>
         <Grid>
+
+
+
+    <Row>
+      {this.state.fake_data.map(function(d, idx){
+         return (<Col xs={6} md={4}>
+         <Link to={"/cryptochans/" + d.id.toString()}>
+      <Thumbnail src={d.url} alt="242x200">
+        <h3>Chan:{d.id}</h3>
+        <p>Name:{d.name}</p>
+        <p>Gender:{d.gender}</p>
+        <p>Level:{d.level}</p>
+      </Thumbnail>
+      </Link> 
+    </Col>)
+       })}
+    </Row>
+
+
+
+
+
+
   <Row>
       {this.state.fake_data.map(function(d, idx){
          return (<Col xs={6} md={4}>
