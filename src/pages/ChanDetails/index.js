@@ -214,7 +214,7 @@ export default class ChanDetails extends React.Component {
 
       <div>
 
-         <h1>Cryptochan<Badge>{this.state.selectedId}</Badge> Name:{this.state.name}</h1>
+         <h1>Cryptochan Name:{this.state.name}</h1>
 
         <div>
 
@@ -276,6 +276,17 @@ export default class ChanDetails extends React.Component {
         <Button  onClick={this.handleShow.bind(this)}>
           Chat with me
         </Button>
+
+        <Popover
+    id="popover-basic"
+    placement="right"
+    positionLeft={120}
+    positionTop={30}
+  >
+   Currently, only support Chinese=。=
+  </Popover>
+
+
         <br/>
         Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
         <Label bsStyle="info">Unlock More features!</Label>
