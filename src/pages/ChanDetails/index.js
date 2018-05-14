@@ -23,19 +23,19 @@ export default class ChanDetails extends React.Component {
     };
   }
 
-  refreshState(){
-    this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
-  }
+  // refreshState(){
+  //   this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
+  // }
 
 
    levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
-    this.refreshState();
+    // this.refreshState();
     this.state.intimacy = 0;
     this.elapsedTime = 0;
     this.setState({level:this.state.level+1});
-    this.setState({difficult_level:this.state.level*2000});
+    this.setState({difficult_level:this.state.level*500});
    }
 
 
@@ -70,8 +70,8 @@ export default class ChanDetails extends React.Component {
         this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
         this.setState({gender:result[3]?"female":"male"});
         console.log("yyyyyyy",this.state);
-        this.setState({level:result[2].c[0]+1});
-        this.setState({difficult_level:2000*(result[2].c[0]+1)});
+        this.setState({level:result[2].c[0]});
+        this.setState({difficult_level:500*(result[2].c[0]+1)});
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
@@ -201,6 +201,7 @@ export default class ChanDetails extends React.Component {
 
 
   render() {
+    console.log(this.state.level);
         const popover = (
       <Popover id="modal-popover" title="popover">
         very popover. such engagement
