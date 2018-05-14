@@ -45,7 +45,8 @@ export default class Admin extends React.Component {
       this.SaleAuctionCoreContract = contract;
 
       this.ChanCoreContract.paused().then( isPaused => {
-        this.setState({paused: isPaused});
+        console.log("Pause status: " + isPaused);
+        this.setState({isPaused: isPaused});
       });
 
   }
