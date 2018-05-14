@@ -84,16 +84,16 @@ class App extends Component {
         console.log(instance);
         this.setState({chanCoreInstance : instance});
 
-        console.log(instance.getChan(0).then(result=> {console.log(result); }));
-        console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
-        console.log(instance.saleAuction().then(result=> {console.log(result); }));
+        instance.getChan(0).then(result=> {console.log("Chan #0: " + result); });
+        instance.ownerOf(0).then(result=> {console.log("Owner of Chan #0: " + result); });
+        instance.saleAuction().then(result => {console.log("Sale Auction Address: " + result); });
 
-        console.log(instance.owner().then(result=> {
-          console.log(result);
-          console.log(this.state.account);
-          console.log(result==this.state.account);
+        instance.owner().then(result=> {
+          console.log("Contract Owner: " + result);
+          console.log("Current Account: " + this.state.account);
+          console.log("IsOwner: " + (result==this.state.account));
           this.setState({admin:result==this.state.account});
-        }));
+        });
       });
 
       saleClockAuction.deployed().then((instance) => {
@@ -105,22 +105,6 @@ class App extends Component {
 
       });
     })
-  }
-
-  setAddr(){
-    console.log(this.state.setaddr);
-    console.log(this.state.chanCoreInstance);
-    this.state.chanCoreInstance.setSaleAuctionAddress.sendTransaction(this.state.setaddr,{from:this.state.account}).then(result=> {console.log(result);});
-  }
-
-  handleChange(event){
-    console.log(event.target.value);
-    this.setState({setaddr: event.target.value});
-  }
-
-  withdraw(){
-    console.log(this.state.account);
-      console.log(this.state.saleClockAuctionInstance.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
   }
 
   change(){
