@@ -85,7 +85,7 @@ export default class BuyNewChan extends React.Component {
                   });
                 }).then( () => {
                   self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-                    chan.current_price = price/1000000000000000+" finney (milliETH)";
+                    chan.current_price = price/1000000000000000+" (milliETH)";
                     console.log(chan);
                   self.setState({fake_data:self.state.fake_data.concat([chan])});
                   });
@@ -109,13 +109,13 @@ export default class BuyNewChan extends React.Component {
           if(isOnAuction){
             this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
               console.log("Seller: "+result[0]);
-              console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
-              console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+              console.log("Starting Price: "+result[1]/1000000000000000+" (milliETH)");
+              console.log("Ending Price: "+result[2]/1000000000000000+" (milliETH)");
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });
             this.SaleAuctionCoreContract.getCurrentPrice(chan_id).then(priceInWei => {
-              console.log("Price:"+priceInWei/1000000000000000+" finney (milliETH)");
+              console.log("Price:"+priceInWei/1000000000000000+" (milliETH)");
               this.SaleAuctionCoreContract.bid.sendTransaction(chan_id, {
                 from:this.state.account,
                 to:this.SaleAuctionCoreContract.address,
@@ -136,8 +136,8 @@ export default class BuyNewChan extends React.Component {
           if(isOnAuction){
             this.SaleAuctionCoreContract.getAuction(chan_id).then(result => {
               console.log("Seller: "+result[0]);
-              console.log("Starting Price: "+result[1]/1000000000000000+" finney (milliETH)");
-              console.log("Ending Price: "+result[2]/1000000000000000+" finney (milliETH)");
+              console.log("Starting Price: "+result[1]/1000000000000000+" (milliETH)");
+              console.log("Ending Price: "+result[2]/1000000000000000+" (milliETH)");
               console.log("Duration: "+result[3]/3600 + " hours");
               console.log("Started At: "+result[4]);
             });

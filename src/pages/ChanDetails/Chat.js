@@ -65,7 +65,7 @@ export default class Chat extends React.Component {
         megArray: [...this.state.megArray, message]
       })
       var that = this
-      var func = fetch('http://www.tuling123.com/openapi/api?key=f0d11b6cae4647b2bd810a6a3df2136f&info=' + message, {
+      var func = fetch('https://www.tuling123.com/openapi/api?key=f0d11b6cae4647b2bd810a6a3df2136f&info=' + message, {
         method: 'POST',
         type: 'cors'
       }).then(function(response) {

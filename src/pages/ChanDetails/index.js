@@ -23,19 +23,19 @@ export default class ChanDetails extends React.Component {
     };
   }
 
-  refreshState(){
-    this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
-  }
+  // refreshState(){
+  //   this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
+  // }
 
 
    levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
-    this.refreshState();
+    // this.refreshState();
     this.state.intimacy = 0;
     this.elapsedTime = 0;
     this.setState({level:this.state.level+1});
-    this.setState({difficult_level:this.state.level*2000});
+    this.setState({difficult_level:this.state.level*500});
    }
 
 
@@ -45,9 +45,9 @@ export default class ChanDetails extends React.Component {
         console.log("sell");
         this.ChanCoreContract.createSaleAuction.sendTransaction(
           this.state.selectedId,
-          this.state.high,
-          this.state.low,
-          this.state.dur,
+          this.state.high * 1000000000000000,
+          this.state.low * 1000000000000000,
+          this.state.dur * 3600,
           {from:this.state.account}
         );
     }
@@ -70,8 +70,8 @@ export default class ChanDetails extends React.Component {
         this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
         this.setState({gender:result[3]?"female":"male"});
         console.log("yyyyyyy",this.state);
-        this.setState({level:result[2].c[0]+1});
-        this.setState({difficult_level:2000*(result[2].c[0]+1)});
+        this.setState({level:result[2].c[0]});
+        this.setState({difficult_level:500*(result[2].c[0]+1)});
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
@@ -201,6 +201,7 @@ export default class ChanDetails extends React.Component {
 
 
   render() {
+    console.log(this.state.level);
         const popover = (
       <Popover id="modal-popover" title="popover">
         very popover. such engagement
@@ -212,142 +213,108 @@ export default class ChanDetails extends React.Component {
 
     return (
 
-      <div>
-
-         <h1>Cryptochan Name:{this.state.name}</h1>
-
-        <div>
-
-
-
-      <Grid>
-      <Row>
-      <Col xs={5} md={5}>
-
-    <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
-
-    </Image>
-    </Col>
-    <Col xs={2} md={2}>
-    Unlocked achievements:
-    <ButtonGroup vertical>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        blink
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        sweet word
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        hug
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        kiss
-      </Button>
-      <br/>
-      <Button bsStyle='warning' disabled>
-        <Glyphicon glyph="heart" />
-        dance
-      </Button>
-    </ButtonGroup>
-
-    </Col>
-    <Col xs={5} md={5}>
-    <Panel>
-        <p>Gender:{this.state.gender}</p>
-        <p>Level:{this.state.level}</p>
-        
-        <p>Birth Date:{formatTime}</p>     
-
-        <ButtonGroup vertical>
-        <Button onClick={this.handleSellShow.bind(this)}>
-        Sell
-        </Button>
-        <br/>
-
-
-
-        <Button  onClick={this.handleShow.bind(this)}>
-          Chat with me
-        </Button>
-
-        <Popover
-    id="popover-basic"
-    placement="right"
-    positionLeft={120}
-    positionTop={30}
-  >
-   Currently, only support Chinese=。=
-  </Popover>
-
-
-        <br/>
-        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
-        <Label bsStyle="info">Unlock More features!</Label>
-
-        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
-          Level me up
-        </Button>
-
-
-        </ButtonGroup>
-        <br/>
-        </Panel>
-
-        <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Chat</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <Chat/>
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleClose.bind(this)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-
-
-          <Modal show={this.state.sellshow} onHide={this.handleSellClose.bind(this)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Sell</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-           Start Price:<input id="low" type="text" onChange={this.handleHighPriceChange.bind(this)}></input>
-           <br/>
-          End Price:<input id="high" type="text" onChange={this.handleLowPriceChange.bind(this)}></input>
-          <br/>
-           Duration:<input id="duration" type="text" onChange={this.handleDurChange.bind(this)}></input>
-           <br/>
-
-           <Button onClick={this.sell.bind(this)}>Put on sell</Button>
-
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleSellClose.bind(this)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-
-
-
-
-
-
-
-    </Col>
-    </Row>
-    </Grid>
+ <div>
+    <h1>Cryptochan Name:{this.state.name}</h1>
+    <div>
+        <Grid>
+            <Row>
+                <Col xs={5} md={5}>
+                <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
+                </Image>
+                </Col>
+                <Col xs={2} md={2}>
+                Unlocked achievements:
+                <ButtonGroup vertical>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        blink
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        sweet word
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        hug
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        kiss
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning' disabled>
+                        <Glyphicon glyph="heart" />
+                        dance
+                    </Button>
+                </ButtonGroup>
+                </Col>
+                <Col xs={5} md={5}>
+                <Panel>
+                    <p>Gender:{this.state.gender}</p>
+                    <p>Level:{this.state.level}</p>
+                    <p>Birth Date:{formatTime}</p>
+                    <ButtonGroup vertical>
+                        <Button onClick={this.handleSellShow.bind(this)}>
+                        Sell
+                        </Button>
+                        <br/>
+                        <Button  onClick={this.handleShow.bind(this)}>
+                        Chat with me
+                        </Button>
+                        <Popover
+                            id="popover-basic"
+                            placement="right"
+                            positionLeft={120}
+                            positionTop={30}
+                            >
+                            Currently, only support Chinese=。=
+                        </Popover>
+                        <br/>
+                        Intimacy:
+                        <ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
+                        <Label bsStyle="info">Unlock More features!</Label>
+                        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
+                        Level me up
+                        </Button>
+                    </ButtonGroup>
+                    <br/>
+                </Panel>
+                <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Chat</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Chat/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleClose.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.sellshow} onHide={this.handleSellClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Sell</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Start Price:<input placeholder="millieth" id="low" type="number" onChange={this.handleHighPriceChange.bind(this)}></input>
+                        <br/>
+                        End Price:<input placeholder="millieth" id="high" type="number" onChange={this.handleLowPriceChange.bind(this)}></input>
+                        <br/>
+                        Duration:<input placeholder="hour" id="duration" type="number" onChange={this.handleDurChange.bind(this)}></input>
+                        <br/>
+                        <Button onClick={this.sell.bind(this)}>Put on sell</Button>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleSellClose.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                </Col>
+            </Row>
+        </Grid>
     </div>
-    </div>
+</div>
 
     )
   }
