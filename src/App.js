@@ -118,7 +118,8 @@ class App extends Component {
 
   render() {
 
-    fetch('/api/test')
+  //this is for get
+  fetch('/api/test')
   .then(function(response) {
       return response.json();
   }).then(function(data){

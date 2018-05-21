@@ -61,6 +61,30 @@ export default class Admin extends React.Component {
     this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
     this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
+
+
+    fetch('/api/createchan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id: 1,name:"Alice_fake",gender:0}),
+    }) 
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(result) {
+      let message = 'created!';
+      console.log(result);
+      if (status === 400) {
+        // TODO: handle this...
+        message = 'Error in updating claim';
+      }
+    }.bind(this))
+    .catch(console.err);
+
+
+
   }
 
   togglePause(){
