@@ -49,13 +49,32 @@ MongoClient.connect(url, function(err, db) {
 
 
 
+app.get('/api/chan_info/:chanid', function(req, res) {
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log(req)
+  const chanid = req.param.chanid;
+  console.log('getid:',chanid);
+  var dbo = db.db(db_name);
+  var query = {id: chanid};
+  dbo.collection(collection_name).find(query).toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result,'chan detail');
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
+
 
 app.post('/api/createchan', function(req, res) {
 
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db(db_name);
-  console.log(req);
   console.log(req.body,'body???');
   dbo.collection(collection_name).insertOne(req.body, function(err, result) {
     if (err) throw err;

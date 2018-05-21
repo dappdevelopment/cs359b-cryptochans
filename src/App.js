@@ -126,6 +126,20 @@ class App extends Component {
     console.log(data);
   });
 
+  const chanid="0";
+
+  fetch('/api/chan_info/:'+chanid)
+  .then(function(response) {
+    console.log('here');
+      return response.json();
+  }).then(function(data){
+    console.log(data,'successfully get chan detail');
+  });
+
+
+
+  
+
     let AdminDisplay = this.state.admin?        
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
