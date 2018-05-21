@@ -118,12 +118,27 @@ class App extends Component {
 
   render() {
 
-    fetch('/api/test')
+  //this is for get
+  fetch('/api/test')
   .then(function(response) {
       return response.json();
   }).then(function(data){
     console.log(data);
   });
+
+  const chanid="0";
+
+  fetch('/api/chan_info/:'+chanid)
+  .then(function(response) {
+    console.log('here');
+      return response.json();
+  }).then(function(data){
+    console.log(data,'successfully get chan detail');
+  });
+
+
+
+  
 
     let AdminDisplay = this.state.admin?        
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;

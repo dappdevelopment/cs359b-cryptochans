@@ -66,6 +66,28 @@ export default class Admin extends React.Component {
       0x0,    //personality
       {from:this.state.account}
     );
+
+
+    fetch('/api/createchan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id: 1,name:"Alice_fake",gender:0}),
+    }) 
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(result) {
+      let message = 'created!';
+      console.log(result);
+      if (status === 400) {
+        // TODO: handle this...
+        message = 'Error in updating claim';
+      }
+    }.bind(this))
+    .catch(console.err);
+
   }
 
   togglePause(){
