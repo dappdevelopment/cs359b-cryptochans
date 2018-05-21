@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ChanCoreContract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './utils/getWeb3'
+
 import logo from './logo.jpg'
 import PropTypes from 'prop-types'
 
@@ -9,7 +10,7 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
+import {Alert,Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
 
 
@@ -24,7 +25,8 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-//import ChanDetails from './pages/ChanDetails';
+
+
 
 class App extends Component {
   constructor(props) {
@@ -115,7 +117,12 @@ class App extends Component {
   }
 
   render() {
-    console.log("ADDDDDDD",this.state.admin);
+
+    fetch('/api/test')
+  .then(function(response) {
+      console.log('????????????',response,'success??????');
+  });
+
     let AdminDisplay = this.state.admin?        
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 

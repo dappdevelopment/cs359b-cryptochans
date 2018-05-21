@@ -141,3 +141,12 @@ https://rinkeby.etherscan.io/tx/0x5b88e1c376c545f0fb8c9315193275bd3aec1efa977326
 	}
 },
 ```
+
+
+9.Adding the following to ./config/webpack.config.*.js also makes everything work:
+  node: {
++   dns: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }

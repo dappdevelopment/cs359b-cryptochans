@@ -64,6 +64,7 @@ export default class Chat extends React.Component {
       this.setState({
         megArray: [...this.state.megArray, message]
       })
+      // this.setState({respon:[...this.state.respon, "Typing..."]});
       var that = this
       var func = fetch('http://www.tuling123.com/openapi/api?key=f0d11b6cae4647b2bd810a6a3df2136f&info=' + message, {
         method: 'POST',
