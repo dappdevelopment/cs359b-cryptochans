@@ -45,9 +45,9 @@ export default class ChanDetails extends React.Component {
         console.log("sell");
         this.ChanCoreContract.createSaleAuction.sendTransaction(
           this.state.selectedId,
-          this.state.high,
-          this.state.low,
-          this.state.dur,
+          this.state.high * 1000000000000000,
+          this.state.low * 1000000000000000,
+          this.state.dur * 3600,
           {from:this.state.account}
         );
     }
@@ -298,11 +298,15 @@ export default class ChanDetails extends React.Component {
                         <Modal.Title>Sell</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+<<<<<<< HEAD
                         Start Price:<input placeholder="???" id="low" type="text" onChange={this.handleHighPriceChange.bind(this)}></input>
+=======
+                        Start Price:<input placeholder="millieth" id="low" type="number" onChange={this.handleHighPriceChange.bind(this)}></input>
+>>>>>>> ad53fa61acd6df475cba1e755b80016a5acadf68
                         <br/>
-                        End Price:<input id="high" type="text" onChange={this.handleLowPriceChange.bind(this)}></input>
+                        End Price:<input placeholder="millieth" id="high" type="number" onChange={this.handleLowPriceChange.bind(this)}></input>
                         <br/>
-                        Duration:<input id="duration" type="text" onChange={this.handleDurChange.bind(this)}></input>
+                        Duration:<input placeholder="hour" id="duration" type="number" onChange={this.handleDurChange.bind(this)}></input>
                         <br/>
                         <Button onClick={this.sell.bind(this)}>Put on sell</Button>
                     </Modal.Body>
