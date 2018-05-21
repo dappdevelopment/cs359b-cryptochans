@@ -298,7 +298,6 @@ export default class ChanDetails extends React.Component {
                         <Modal.Title>Sell</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Start Price:<input placeholder="???" id="low" type="text" onChange={this.handleHighPriceChange.bind(this)}></input>
                         Start Price:<input placeholder="millieth" id="low" type="number" onChange={this.handleHighPriceChange.bind(this)}></input>
                         <br/>
                         End Price:<input placeholder="millieth" id="high" type="number" onChange={this.handleLowPriceChange.bind(this)}></input>
