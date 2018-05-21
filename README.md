@@ -143,10 +143,25 @@ https://rinkeby.etherscan.io/tx/0x5b88e1c376c545f0fb8c9315193275bd3aec1efa977326
 ```
 
 
-9.Adding the following to ./config/webpack.config.*.js also makes everything work:
-  node: {
-+   dns: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
-  }
+9.Mongodb:
+setup your local mongodb first in mongodb://localhost:27017
+(if you use mac, use command "brew install mongodb") and then run "mongod" to start your local mongodb
+
+then you can run "npm start" as usual, it will spawn off two processes running client and proxy server. 
+Client will start fetching request using "fetch" to send to our proxy server(running on localhost:3001)
+Server will talk to mongodb and return back the db data to client. And then client can display the info 
+on frontend.
+
+In the future, we may change it to sql database(if the class server cannot support mongodb). But for now, we will just use mongodb.
+
+
+
+
+
+
+
+
+
+
+
+
