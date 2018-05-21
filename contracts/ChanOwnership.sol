@@ -17,6 +17,22 @@ contract ChanOwnership is Pausable, ERC721BasicToken {
         uint256 birthTime;
         uint256 level;
         bool gender;
+
+        // The Chan's personality code is packed into these 256-bits, the format is
+        // super secret! A Chan's genes never change.
+        uint256 personality;
+
+        // The minimum timestamp after which this Chan can engage in summoning
+        // activities again. This same timestamp is used for the pregnancy
+        // timer (for matrons) as well as the siring cooldown.
+        uint64 cooldownEndTime;
+
+        // Set to the ID of the sire Chan for matrons that are pregnant,
+        // zero otherwise. A non-zero value here is how we know a Chan
+        // is pregnant. Used to retrieve the personality material for the new
+        // Chan when the birth transpires.
+        uint32 shokanWithId;
+
     }
 
     /*** CONSTANTS ***/
@@ -78,7 +94,8 @@ contract ChanOwnership is Pausable, ERC721BasicToken {
     // @param _name  Name of this chan
     // @param _owner The inital owner of this chan, must be non-zero (except for the unChan, ID 0)
     // @param _gender The gender of the Chan (true for female, false for male)
-    function _createChan(string _name, address _owner, bool _gender)
+    // @param _personality The personality encoding of the Chan
+    function _createChan(string _name, address _owner, bool _gender, uint256 _personality)
         internal
         returns (uint)
     {
@@ -87,7 +104,10 @@ contract ChanOwnership is Pausable, ERC721BasicToken {
             name     : _name,
             birthTime: now,
             level    : 0,
-            gender   : _gender
+            gender   : _gender,
+            personality : _personality,
+            cooldownEndTime : 0,
+            shokanWithId : 0
         });
         uint256 newchanId = chans.push(_Chan) - 1;
 

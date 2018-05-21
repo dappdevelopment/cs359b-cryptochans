@@ -1,9 +1,9 @@
 pragma solidity ^0.4.21;
 
-import './ChanOwnership.sol';
+import './ChanShokan.sol';
 import './Auction/SaleClockAuction.sol';
 
-contract ChanAuction is ChanOwnership {
+contract ChanAuction is ChanShokan {
 
     // The address of the ClockAuction contract that handles auctions of Chans. This
     // same contract handles both peer-to-peer auctions as well as the minted Chan auctions.
@@ -41,7 +41,7 @@ contract ChanAuction is ChanOwnership {
 
         approve(saleAuction, _chanId);
         // Sale auction throws if inputs are invalid and clears
-        // transfer and sire approval after escrowing the kitty.
+        // transfer and sire approval after escrowing the Chan.
         saleAuction.createAuction(
             _chanId,
             _startingPrice,

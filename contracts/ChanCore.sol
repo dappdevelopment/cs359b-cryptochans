@@ -14,9 +14,9 @@ contract ChanCore is ChanMinting {
         paused = true;
 
         // start with the mythical chan 0 - so we don't have generation-0 parent issues
-        _createChan("AnimeGod", this, true);
+        _createChan("AnimeGod", this, true, 0xFFFFFFFFFFFFFFFFFFFFFFFF);
 
-        _createChan("MiaoChan", msg.sender, true);
+        _createChan("MiaoChan", msg.sender, true, 0x888888888888888888888);
 
 
     }

@@ -60,7 +60,12 @@ export default class Admin extends React.Component {
     console.log(this.state.account);
     this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
-    this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
+    this.ChanCoreContract.createGen0Auction.sendTransaction(
+      this.state.name,
+      true,   //gender
+      0x0,    //personality
+      {from:this.state.account}
+    );
   }
 
   togglePause(){
