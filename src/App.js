@@ -120,7 +120,9 @@ class App extends Component {
 
     fetch('/api/test')
   .then(function(response) {
-      console.log('????????????',response,'success??????');
+      return response.json();
+  }).then(function(data){
+    console.log(data);
   });
 
     let AdminDisplay = this.state.admin?        
