@@ -116,28 +116,28 @@ https://rinkeby.etherscan.io/tx/0x5b187e0f3897ebd8a9ed47c4871c79be374abc101f58fc
 
 ChanCore
 ```
-https://rinkeby.etherscan.io/tx/0x031f4d2fd4cdea5779c94355f4ec4763d3443060c42c3f9f8ca51c194b71a331
+https://rinkeby.etherscan.io/tx/0x144048956e9d25c5cbbd3091a416c9bf06c5086acbbd8f5ca03f25b94b90b5a2
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0x9c92cae72d67d5ce6dfb8aa8011d00e2e3505eed",
-		"transactionHash": "0x031f4d2fd4cdea5779c94355f4ec4763d3443060c42c3f9f8ca51c194b71a3310x031f4"
+		"address": "0xdad2c39757d3b973028a4fc20e60228a3c422612",
+		"transactionHash": "0x144048956e9d25c5cbbd3091a416c9bf06c5086acbbd8f5ca03f25b94b90b5a2"
 	}
 },
 ```
 
 SaleClockAuction
 ```
-https://rinkeby.etherscan.io/tx/0x5b88e1c376c545f0fb8c9315193275bd3aec1efa977326261b497d9cdd4ece4a
+https://rinkeby.etherscan.io/tx/0x267fa38fb85395e6770a18941a135c53b79adcb01ffcd029057745273367d110
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0xecd7424d807b7c709837379d2852fb471d532a94",
-		"transactionHash": "0x5b88e1c376c545f0fb8c9315193275bd3aec1efa977326261b497d9cdd4ece4a0x5b88e"
+		"address": "0x5adacd22f5c755b5dfbaf1a1055d9e35d9f34f05",
+		"transactionHash": "0x267fa38fb85395e6770a18941a135c53b79adcb01ffcd029057745273367d110"
 	}
 },
 ```
