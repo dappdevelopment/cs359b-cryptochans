@@ -126,6 +126,49 @@ export default class Admin extends React.Component {
     this.setState({setaddr: event.target.value});
   }
 
+  levelUpToMax(){
+    this.ChanCoreContract.LevelUpToMax.sendTransaction(this.state.chanIdToMax,{from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleChanIdToMaxChange(event){
+    console.log(event.target.value);
+    this.setState({chanIdToMax: event.target.value});
+  }
+
+  startBonding(){
+    this.ChanCoreContract.bondWith.sendTransaction(
+      this.state.bondingChanId1,
+      this.state.bondingChanId2,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleBondingChan1Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId1: event.target.value});
+  }
+
+  handleBondingChan2Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId2: event.target.value});
+  }
+
+  shokan(){
+    this.ChanCoreContract.shokan.sendTransaction(
+      this.state.shokanChanId,
+      this.state.newChanName,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleShokanChanIdChange(event){
+    console.log(event.target.value);
+    this.setState({shokanChanId: event.target.value});
+  }
+
+  handleNewChanNameChange(event){
+    console.log(event.target.value);
+    this.setState({newChanName: event.target.value});
+  }
+
 
   render() {
 
@@ -164,6 +207,29 @@ export default class Admin extends React.Component {
           <input id="addr" type="text" onChange={this.handleAddrChange.bind(this)}></input>
           <Button bsStyle="primary" id="setButton" onClick={this.setAddr.bind(this)}>
             Set
+          </Button>
+        </div>
+        <div>
+          <span>Max out a Chan's Level</span>
+          <input id="chanId" type="text" onChange={this.handleChanIdToMaxChange.bind(this)}></input>
+          <Button bsStyle="primary" id="maxLevelButton" onClick={this.levelUpToMax.bind(this)}>
+            Max Level
+          </Button>
+        </div>
+        <div>
+          <span>Bond 2 Chans</span>
+          <input id="bondingChanId1" type="text" onChange={this.handleBondingChan1Change.bind(this)}></input>
+          <input id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
+          <Button bsStyle="primary" id="startBonding" onClick={this.startBonding.bind(this)}>
+            Bond
+          </Button>
+        </div>
+        <div>
+          <span>Shokan: (ChanID; New Chan Name)</span>
+          <input id="shokanChanId" type="text" onChange={this.handleShokanChanIdChange.bind(this)}></input>
+          <input id="newChanName" type="text" onChange={this.handleNewChanNameChange.bind(this)}></input>
+          <Button bsStyle="primary" id="shokan" onClick={this.shokan.bind(this)}>
+            Shokan
           </Button>
         </div>
       </div>

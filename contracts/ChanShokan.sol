@@ -1,12 +1,12 @@
 pragma solidity ^0.4.21;
 
-import './ChanOwnership.sol';
+import './ChanProperties.sol';
 
 
 /// @title A facet of ChanCore that manages Chan summoning, gestation, and birth.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the ChanCore contract documentation to understand how the various contract facets are arranged.
-contract ChanShokan is ChanOwnership {
+contract ChanShokan is ChanProperties {
 
     /// @dev The Charging event is fired when two Chans successfully bonded and the charging
     ///  timer begins for the Chans.
@@ -14,14 +14,14 @@ contract ChanShokan is ChanOwnership {
 
 
 
-    /// @dev Checks that a given kitten is able to bond. Requires that the
+    /// @dev Checks that a given Chan is able to bond. Requires that the
     ///  current cooldown is finished (for sires) and also checks that there is
     ///  no pending pregnancy.
     function _isReadyToBond(Chan _chan) internal view returns (bool) {
         // In addition to checking the cooldownEndTime, we also need to check to see if
         // the cat has a pending birth; there can be some period of time between the end
         // of the pregnacy timer and the birth event.
-        return (_chan.shokanWithId == 0) && (_chan.cooldownEndTime <= now);
+        return (_chan.shokanWithId == 0) && _isMaxLevel(_chan) && (_chan.cooldownEndTime <= now);
     }
 
     /// @dev Check if a sire has authorized breeding with this matron. True if both sire
@@ -40,14 +40,10 @@ contract ChanShokan is ChanOwnership {
     /// @param _chan1 A reference to the Chan in storage which needs its timer started.
     /// @param _chan2 A reference to the Chan in storage which needs its timer started.
     function _triggerCooldowns(Chan storage _chan1, Chan storage _chan2) internal {
-
-        uint256 maxLevel = _chan1.level;
-        if(_chan2.level > _chan2.level){
-            maxLevel = _chan2.level;
-        }
         
         // Compute the end of the cooldown time
-        uint64 cooldownEndTime = uint64(now + (maxLevel * maxLevel / 100 ) * 1 hours);
+        //uint64 cooldownEndTime = uint64(now + (_chan1.generation+1) * (_chan1.generation+1) * 1 hours);
+        uint64 cooldownEndTime = uint64(now + (_chan1.generation+1) * (_chan1.generation+1) * 5 minutes);
         
         // Apply to both Chans
         _chan1.cooldownEndTime = cooldownEndTime;
@@ -92,6 +88,11 @@ contract ChanShokan is ChanOwnership {
     {
         // A Chan can't bond with itself!
         if (_chanId1 == _chanId2) {
+            return false;
+        }
+
+        // Both Chans' generations need to match
+        if (_chan1.generation != _chan2.generation) {
             return false;
         }
 
@@ -226,14 +227,20 @@ contract ChanShokan is ChanOwnership {
 
         // Make the new Chan!
         address owner = ownerOf(_chanId);
-        uint256 newChanId = _createChan(_newChanName, owner, newChanGender, newChanPersonality);
+        uint256 newChanId = _createChan(
+            _newChanName,
+            owner,
+            uint32(chan1.generation + 1),
+            newChanGender,
+            newChanPersonality
+        );
 
         // Clear the reference to sire from the Chan (REQUIRED! Having shokanWithId
         // set is what marks a Chan as being in the charging state.)
         delete chan1.shokanWithId;
         delete chan2.shokanWithId;
 
-        // return the new kitten's ID
+        // return the new Chan's ID
         return newChanId;
     }
 }

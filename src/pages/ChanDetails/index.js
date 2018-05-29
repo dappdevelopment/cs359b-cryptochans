@@ -28,7 +28,7 @@ export default class ChanDetails extends React.Component {
   // }
 
 
-   levelup(){
+  levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
     // this.refreshState();
@@ -37,6 +37,12 @@ export default class ChanDetails extends React.Component {
     this.setState({level:this.state.level+1});
     this.setState({difficult_level:this.state.level*500});
    }
+
+  checkIn() {
+    console.log("Checking in");
+    this.ChanCoreContract.checkIn.sendTransaction(this.state.selectedId,{from:this.state.account});
+    // this.refreshState();
+  }
 
 
 
@@ -65,13 +71,21 @@ export default class ChanDetails extends React.Component {
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
-      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
-        console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); 
-        this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
-        this.setState({gender:result[3]?"female":"male"});
-        console.log("yyyyyyy",this.state);
-        this.setState({level:result[2].c[0]});
-        this.setState({difficult_level:500*(result[2].c[0]+1)});
+      this.ChanCoreContract.checkInTimer().then(checkInTimer => {
+        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
+          console.log("heyyyyyyyyyyyyy", this);
+          this.setState({name:result[0]}); 
+          this.setState({create_time:result[1].c[0]});
+          this.setState({level:result[2].c[0]});
+          this.setState({gender:result[3]?"female":"male"});
+          this.setState({nextCheckIn:this.timeConverter(result[4].c[0] - checkInTimer)});
+          this.setState({checkInDeadline:this.timeConverter(result[4].c[0])});
+          this.setState({checkInStreak:result[5].c[0]});
+          this.setState({cooldownEndTime:this.timeConverter(result[6].c[0])});
+          this.setState({shokanPartnerId:result[7].c[0]});
+          console.log("Chan Info:",this.state);
+          this.setState({difficult_level:500*(result[2].c[0]+1)});
+        });
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
@@ -186,17 +200,17 @@ export default class ChanDetails extends React.Component {
 
 
   timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-  return time;
-}
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+  }
 
 
 
@@ -278,6 +292,14 @@ export default class ChanDetails extends React.Component {
                         <Label bsStyle="info">Unlock More features!</Label>
                         <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
                         Level me up
+                        </Button>
+                        <Label bsStyle="info">Check In Streak: {this.state.checkInStreak}</Label>
+                        <br/>
+                        <Label bsStyle="info">Next Check In: {this.state.nextCheckIn}</Label>
+                        <br/>
+                        <Label bsStyle="info">Check In Deadline: {this.state.checkInDeadline}</Label>
+                        <Button onClick={this.checkIn.bind(this)}>
+                        Check In
                         </Button>
                     </ButtonGroup>
                     <br/>

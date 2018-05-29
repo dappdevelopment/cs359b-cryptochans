@@ -29,7 +29,7 @@ contract ChanMinting is ChanAuction {
 
         promoCreatedCount++;
         gen0CreatedCount++;
-        _createChan(_name, _owner, _gender, _personality);
+        _createChan(_name, _owner, uint32(0), _gender, _personality);
     }
 
     function _approvedByContract(uint256 _chanId) internal {
@@ -41,7 +41,7 @@ contract ChanMinting is ChanAuction {
     function createGen0Auction(string _name, bool _gender, uint256 _personality) public onlyOwner {
         require(gen0CreatedCount < gen0CreationLimit);
 
-        uint256 chanId = _createChan(_name, msg.sender, _gender, _personality);
+        uint256 chanId = _createChan(_name, msg.sender, uint32(0), _gender, _personality);
         approve(saleAuction, chanId);
 
         //uint256 chanId = _createChan(_name, this, _gender, _personality);
