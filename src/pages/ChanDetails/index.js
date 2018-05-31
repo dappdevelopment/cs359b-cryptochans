@@ -77,12 +77,14 @@ export default class ChanDetails extends React.Component {
           this.setState({name:result[0]}); 
           this.setState({create_time:result[1].c[0]});
           this.setState({level:result[2].c[0]});
-          this.setState({gender:result[3]?"female":"male"});
-          this.setState({nextCheckIn:this.timeConverter(result[4].c[0] - checkInTimer)});
-          this.setState({checkInDeadline:this.timeConverter(result[4].c[0])});
-          this.setState({checkInStreak:result[5].c[0]});
-          this.setState({cooldownEndTime:this.timeConverter(result[6].c[0])});
-          this.setState({shokanPartnerId:result[7].c[0]});
+          this.setState({generation:result[3].c[0]});
+          this.setState({maxLevel:(result[3].c[0] + 1) * 10});
+          this.setState({gender:result[4]?"female":"male"});
+          this.setState({nextCheckIn:this.timeConverter(result[5].c[0] - checkInTimer)});
+          this.setState({checkInDeadline:this.timeConverter(result[5].c[0])});
+          this.setState({checkInStreak:result[6].c[0]});
+          this.setState({cooldownEndTime:this.timeConverter(result[7].c[0])});
+          this.setState({shokanPartnerId:result[8].c[0]});
           console.log("Chan Info:",this.state);
           this.setState({difficult_level:500*(result[2].c[0]+1)});
         });
@@ -268,7 +270,7 @@ export default class ChanDetails extends React.Component {
                 <Col xs={5} md={5}>
                 <Panel>
                     <p>Gender:{this.state.gender}</p>
-                    <p>Level:{this.state.level}</p>
+                    <p>Level:{this.state.level} / {this.state.maxLevel}</p>
                     <p>Birth Date:{formatTime}</p>
                     <ButtonGroup vertical>
                         <Button onClick={this.handleSellShow.bind(this)}>
