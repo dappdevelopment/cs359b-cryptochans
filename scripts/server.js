@@ -47,12 +47,47 @@ let collection_name="Chan";
 
 
 //TODO:write apis to get on auction chans, sort by (id,price,...), also should support gender selection
-app.get('/api/auctions', function(req, res) {
+app.get('/api/auctions/:sort/:display/:account', function(req, res) {
 MongoClient.connect(url, function(err, db) {
+  const sortby = req.params.sort.replace(':', '');
+  const display = req.params.display.replace(':', '');
+  const account = req.params.account.replace(':', '');
+  console.log(sortby,typeof(sortby));
+  console.log(display);
+  console.log(account);
+
+
   if (err) throw err;
   var dbo = db.db(db_name);
   var query = {auction:1};
-  dbo.collection(collection_name).find(query).toArray(function(err, result) {
+
+  switch(display){
+    case "3":
+      query.gender = 0;
+      break;
+    case "4":
+      query.gender = 1;
+      break;
+    case "5":
+      query.owner = account;
+      break;
+    default:
+      console.log('invalid');
+  }
+
+  var mysort = {};
+  switch(sortby){
+    case "1":
+      mysort.name=1;
+      break;
+    case "2":
+      mysort.id=1;
+      break;
+    default:
+      console.log('invalid');
+  }
+
+  dbo.collection(collection_name).find(query).sort(mysort).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
     db.close();
