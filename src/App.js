@@ -119,23 +119,26 @@ class App extends Component {
   render() {
 
   //this is for get
-  fetch('/api/test')
-  .then(function(response) {
-      return response.json();
-  }).then(function(data){
-    console.log(data);
-  });
+  // fetch('/api/test')
+  // .then(function(response) {
+  //     return response.json();
+  // }).then(function(data){
+  //   console.log(data);
+  // });
 
-  const chanid="0";
+  // const chanid=18;
 
-  fetch('/api/chan_info/:'+chanid)
-  .then(function(response) {
-    console.log('here');
-      return response.json();
-  }).then(function(data){
-    console.log(data,'successfully get chan detail');
-  });
-
+  // fetch('/api/chan_info', {
+  //                   method: 'POST',
+  //                   headers: {
+  //                     'Content-Type': 'application/json'
+  //                   },
+  //                   body: JSON.stringify({id:chanid}),
+  //                 }).then(function(response) {
+  //                       return response.json();
+  //                   }).then(function(data){
+  //                     console.log(data);
+  //                   });
 
 
   

@@ -25,32 +25,33 @@ let collection_name="Chan";
 //   start_price:10
 //   end_price:0
 //   duration:24
+//   checkinstreak:
 // }
 
 
-app.get('/api/test', function(req, res) {
+// app.get('/api/test', function(req, res) {
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db(db_name);
-  var query = { name: "Alice"};
-  dbo.collection(collection_name).find(query).toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-    db.close();
-    res.status(200).send(result);
-  });
-});
-});
+// MongoClient.connect(url, function(err, db) {
+//   if (err) throw err;
+//   var dbo = db.db(db_name);
+//   var query = { name: "Alice"};
+//   dbo.collection(collection_name).find(query).toArray(function(err, result) {
+//     if (err) throw err;
+//     console.log(result);
+//     db.close();
+//     res.status(200).send(result);
+//   });
+// });
+// });
 
 
 
 //TODO:write apis to get on auction chans, sort by (id,price,...), also should support gender selection
-app.get('/api/chans_on_auction', function(req, res) {
+app.get('/api/auctions', function(req, res) {
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db(db_name);
-  var query = {is_on_auction:1};
+  var query = {auction:1};
   dbo.collection(collection_name).find(query).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
@@ -62,29 +63,91 @@ MongoClient.connect(url, function(err, db) {
 
 
 
-//TODO:buy chan(ownership transfer)
+app.get('/api/auctions_sortname', function(req, res) {
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  var query = {auction:1};
+  var mysort = {name: 1 };
+  dbo.collection(collection_name).find(query).sort(mysort).toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
 
 
-
-//TODO:sell chan(change onauction status)
 
 
 //TODO:level up
 
 
 
-app.get('/api/chan_info/:chanid', function(req, res) {
+app.post('/api/chan_info', function(req, res) {
 
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
-  console.log(req)
-  const chanid = req.param.chanid;
-  console.log('getid:',chanid);
   var dbo = db.db(db_name);
-  var query = {id: chanid};
-  dbo.collection(collection_name).find(query).toArray(function(err, result) {
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = info.id;
+
+  const query = { id: chan_id };
+
+   dbo.collection(collection_name).find(query).toArray(function(err, result) {
     if (err) throw err;
-    console.log(result,'chan detail');
+    console.log(result);
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
+app.post('/api/sellchan', function(req, res) {
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = parseInt(info.id);
+
+
+  const myquery = { id: chan_id };
+  const newvalues = { $set: { auction:1} };
+
+  dbo.collection(collection_name).updateOne(myquery,newvalues, function(err, result) {
+    if (err) throw err;
+    console.log("1 document updated");
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
+app.post('/api/buychan', function(req, res) {
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = info.id;
+  const owner = info.owner;
+
+  const myquery = { id: chan_id };
+  const newvalues = { $set: { auction:0, owner: owner} };
+
+  dbo.collection(collection_name).updateOne(myquery,newvalues, function(err, result) {
+    if (err) throw err;
+    console.log("1 document updated");
     db.close();
     res.status(200).send(result);
   });
@@ -108,6 +171,9 @@ MongoClient.connect(url, function(err, db) {
   });
 });
 });
+
+
+
 
 
 
