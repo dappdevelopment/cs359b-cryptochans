@@ -102,6 +102,7 @@ export default class BuyNewChan extends React.Component {
 
     buy(chan_id){
         console.log(chan_id);
+        self = this;
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
         this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
@@ -121,8 +122,25 @@ export default class BuyNewChan extends React.Component {
                 to:this.SaleAuctionCoreContract.address,
                 value:priceInWei,
                 gas:1000000
+              }).then(result=>{
+                //change owner in db, set aution to be 0
+                console.log('here');
+                fetch('/api/buychan', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
+                  }) 
+                //refresh page
+                self.fetch_data_from_db();
+
+
               });
             });
+          }
+          else{
+            alert("The chan is not on auction!");
           }
         });
     }
@@ -219,8 +237,8 @@ export default class BuyNewChan extends React.Component {
               {this.state.fake_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={d.url} alt="Image not available">
-                  <h3>Chan:{d.id}</h3>
-                  <p>Name:{d.name}</p>
+                  <h3>Name:{d.name}</h3>
+                  <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
                   <p>Level:{d.level}</p>
                   <p>Price:{d.current_price}</p>

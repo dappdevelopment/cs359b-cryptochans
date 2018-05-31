@@ -25,23 +25,24 @@ let collection_name="Chan";
 //   start_price:10
 //   end_price:0
 //   duration:24
+//   checkinstreak:
 // }
 
 
-app.get('/api/test', function(req, res) {
+// app.get('/api/test', function(req, res) {
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db(db_name);
-  var query = { name: "Alice"};
-  dbo.collection(collection_name).find(query).toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-    db.close();
-    res.status(200).send(result);
-  });
-});
-});
+// MongoClient.connect(url, function(err, db) {
+//   if (err) throw err;
+//   var dbo = db.db(db_name);
+//   var query = { name: "Alice"};
+//   dbo.collection(collection_name).find(query).toArray(function(err, result) {
+//     if (err) throw err;
+//     console.log(result);
+//     db.close();
+//     res.status(200).send(result);
+//   });
+// });
+// });
 
 
 
@@ -92,6 +93,30 @@ MongoClient.connect(url, function(err, db) {
 });
 
 
+app.post('/api/buychan', function(req, res) {
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = info.id;
+  const new_owner = info.owner;
+
+  const myquery = { id: chan_id };
+  const newvalues = { $set: {owner: new_owner, auction:0} };
+
+  dbo.collection(collection_name).updateOne(myquery,newvalues, function(err, result) {
+    if (err) throw err;
+    console.log("1 document updated");
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
 
 
 app.post('/api/createchan', function(req, res) {
@@ -108,6 +133,9 @@ MongoClient.connect(url, function(err, db) {
   });
 });
 });
+
+
+
 
 
 

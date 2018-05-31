@@ -67,7 +67,8 @@ export default class Admin extends React.Component {
         {from:this.state.account}
       ).then(result => {
         console.log(result);
-        this.saveDB(self.count, this.state.name, 0, this.state.account, Date.now());
+        const image_url = "https://s3.amazonaws.com/cryptochans/"+self.count+".jpg";
+        this.saveDB(self.count, this.state.name, 0, this.state.account, Date.now(), image_url);
       })
     })
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
@@ -76,13 +77,13 @@ export default class Admin extends React.Component {
   }
 
 
-  saveDB(given_id,given_name, given_gender, given_owner, given_birthday){
+  saveDB(given_id,given_name, given_gender, given_owner, given_birthday, given_imgurl){
       fetch('/api/createchan', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({id: given_id, name:given_name,gender:given_gender, auction:1, owner: given_owner, birthday:given_birthday, level:0}),
+      body: JSON.stringify({id: given_id, name:given_name,gender:given_gender, auction:1, owner: given_owner, birthday:given_birthday, level:0, url:given_imgurl}),
     }) 
     .then(function(response) {
       return response.json();
