@@ -63,29 +63,49 @@ MongoClient.connect(url, function(err, db) {
 
 
 
-//TODO:buy chan(ownership transfer)
-
-
-
-//TODO:sell chan(change onauction status)
-
 
 //TODO:level up
 
 
 
-app.get('/api/chan_info/:chanid', function(req, res) {
+app.post('/api/chan_info', function(req, res) {
 
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
-  console.log(req)
-  const chanid = req.param.chanid;
-  console.log('getid:',chanid);
   var dbo = db.db(db_name);
-  var query = {id: chanid};
-  dbo.collection(collection_name).find(query).toArray(function(err, result) {
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = info.id;
+
+  const query = { id: chan_id };
+
+   dbo.collection(collection_name).find(query).toArray(function(err, result) {
     if (err) throw err;
-    console.log('chan detail');
+    console.log(result);
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
+app.post('/api/sellchan', function(req, res) {
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  console.log(req.body,'body???');
+
+  const info = req.body;
+  const chan_id = info.id;
+
+  const myquery = { id: chan_id };
+  const newvalues = { $set: { auction:1} };
+
+  dbo.collection(collection_name).updateOne(myquery,newvalues, function(err, result) {
+    if (err) throw err;
+    console.log("1 document updated");
     db.close();
     res.status(200).send(result);
   });
@@ -102,10 +122,10 @@ MongoClient.connect(url, function(err, db) {
 
   const info = req.body;
   const chan_id = info.id;
-  const new_owner = info.owner;
+  const owner = info.owner;
 
   const myquery = { id: chan_id };
-  const newvalues = { $set: {owner: new_owner, auction:0} };
+  const newvalues = { $set: { auction:0, owner: owner} };
 
   dbo.collection(collection_name).updateOne(myquery,newvalues, function(err, result) {
     if (err) throw err;

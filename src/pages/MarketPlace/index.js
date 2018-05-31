@@ -103,6 +103,10 @@ export default class BuyNewChan extends React.Component {
     buy(chan_id){
         console.log(chan_id);
         self = this;
+        // if(!self.checkDBOnAuction(chan_id)){
+        //   alert("Someone bought this before you! Good luck next time!");
+        //   return;
+        // }
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
         this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
@@ -132,10 +136,10 @@ export default class BuyNewChan extends React.Component {
                     },
                     body: JSON.stringify({id:chan_id, owner: this.state.account}),
                   }) 
+
+                alert("successful, you may need to wait for a while before the chan appear in MyChans");
                 //refresh page
                 self.fetch_data_from_db();
-
-
               });
             });
           }
@@ -147,6 +151,7 @@ export default class BuyNewChan extends React.Component {
 
     cancelAuction(chan_id){
         console.log(chan_id);
+        self=this;
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
         this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
         this.ChanCoreContract.ownerOf(chan_id).then(result=> {console.log("Owner:"+result); const owner = result });
@@ -162,6 +167,15 @@ export default class BuyNewChan extends React.Component {
             this.SaleAuctionCoreContract.cancelAuction.sendTransaction(chan_id, {
                 from:this.state.account,
                 gas:1000000
+            }).then(result=>{
+              fetch('/api/buychan', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
+                  });
+              self.fetch_data_from_db();
             });
           }
         });
@@ -207,7 +221,6 @@ export default class BuyNewChan extends React.Component {
         .then(function(response) {
             return response.json();
         }).then(result=>{
-          console.log(result[0].name);
           self.setState({fake_data:result});
         })
 
@@ -220,6 +233,19 @@ export default class BuyNewChan extends React.Component {
         // });
 
     }
+
+
+    // checkDBOnAuction(chan_id){
+    //   console.log(chan_id,'????');
+    //    fetch('/api/chan_info/:'+chan_id)
+    //     .then(function(response) {
+    //       console.log('here');
+    //         return response.json();
+    //     }).then(function(data){
+    //       console.log(data,'successfully get chan detail');
+    //       return (data[0].auction==1);
+    //     });
+    // }
 
 
   render() {

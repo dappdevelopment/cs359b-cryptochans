@@ -67,8 +67,9 @@ export default class Admin extends React.Component {
         {from:this.state.account}
       ).then(result => {
         console.log(result);
-        const image_url = "https://s3.amazonaws.com/cryptochans/"+self.count+".jpg";
-        this.saveDB(self.count, this.state.name, 0, this.state.account, Date.now(), image_url);
+        const id = parseInt(self.count)+2;
+        const image_url = "https://s3.amazonaws.com/cryptochans/"+id+".jpg";
+        this.saveDB(id, this.state.name, 0, this.state.account, Date.now(), image_url);
       })
     })
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
