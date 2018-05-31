@@ -14,9 +14,9 @@ contract ChanCore is ChanMinting {
         paused = true;
 
         // start with the mythical chan 0 - so we don't have generation-0 parent issues
-        _createChan("AnimeGod", this, true);
+        _createChan("AnimeGod", this, uint32(0), true, 0xFFFFFFFFFFFFFFFFFFFFFFFF);
 
-        _createChan("MiaoChan", msg.sender, true);
+        _createChan("MiaoChan", msg.sender, uint32(0), true, 0x888888888888888888888);
 
 
     }
@@ -48,20 +48,24 @@ contract ChanCore is ChanMinting {
         string name,
         uint256 birthTime,
         uint256 level,
-        bool    gender
+        uint32 generation,
+        bool    gender,
+        uint64 checkInDeadline,
+        uint8  checkInStreak,
+        uint64 cooldownEndTime,
+        uint32 shokanWithId
     ) {
         Chan storage chan = chans[_id];
 
         name = chan.name;
         birthTime = uint256(chan.birthTime);
         level = chan.level;
+        generation = chan.generation;
         gender = chan.gender;
-    }
-
-    function ChanLevelup(uint256 _id) public returns (uint256 newlevel) {
-        Chan storage chan = chans[_id];
-        chan.level += 1; //todo: get random number
-        newlevel = chan.level;
+        checkInDeadline = chan.checkInDeadline;
+        checkInStreak = chan.checkInStreak;
+        cooldownEndTime = chan.cooldownEndTime;
+        shokanWithId = chan.shokanWithId;
     }
 
     // @override

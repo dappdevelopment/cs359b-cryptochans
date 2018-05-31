@@ -45,7 +45,8 @@ export default class Admin extends React.Component {
       this.SaleAuctionCoreContract = contract;
 
       this.ChanCoreContract.paused().then( isPaused => {
-        this.setState({paused: isPaused});
+        console.log("Pause status: " + isPaused);
+        this.setState({isPaused: isPaused});
       });
 
   }
@@ -56,10 +57,47 @@ export default class Admin extends React.Component {
   }
 
   createGen0Auction(){
+    self=this;
     console.log(this.state.account);
-    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
+    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count); self.count=count}).then(result=>{
+        this.ChanCoreContract.createGen0Auction.sendTransaction(
+        this.state.name,
+        true,   //gender
+        0x0,    //personality
+        {from:this.state.account}
+      ).then(result => {
+        console.log(result);
+        const id = parseInt(self.count)+2;
+        const image_url = "https://s3.amazonaws.com/cryptochans/"+id+".jpg";
+        this.saveDB(id, this.state.name, 0, this.state.account, Date.now(), image_url);
+      })
+    })
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
-    this.ChanCoreContract.createGen0Auction.sendTransaction(this.state.name,true,{from:this.state.account});
+
+
+  }
+
+
+  saveDB(given_id,given_name, given_gender, given_owner, given_birthday, given_imgurl){
+      fetch('/api/createchan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id: given_id, name:given_name,gender:given_gender, auction:1, owner: given_owner, birthday:given_birthday, level:0, url:given_imgurl}),
+    }) 
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(result) {
+      let message = 'created!';
+      console.log(result);
+      if (status === 400) {
+        // TODO: handle this...
+        message = 'Error in updating claim';
+      }
+    }.bind(this))
+    .catch(console.err);
   }
 
   togglePause(){
@@ -96,6 +134,49 @@ export default class Admin extends React.Component {
   handleAddrChange(event){
     console.log(event.target.value);
     this.setState({setaddr: event.target.value});
+  }
+
+  levelUpToMax(){
+    this.ChanCoreContract.LevelUpToMax.sendTransaction(this.state.chanIdToMax,{from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleChanIdToMaxChange(event){
+    console.log(event.target.value);
+    this.setState({chanIdToMax: event.target.value});
+  }
+
+  startBonding(){
+    this.ChanCoreContract.bondWith.sendTransaction(
+      this.state.bondingChanId1,
+      this.state.bondingChanId2,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleBondingChan1Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId1: event.target.value});
+  }
+
+  handleBondingChan2Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId2: event.target.value});
+  }
+
+  shokan(){
+    this.ChanCoreContract.shokan.sendTransaction(
+      this.state.shokanChanId,
+      this.state.newChanName,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleShokanChanIdChange(event){
+    console.log(event.target.value);
+    this.setState({shokanChanId: event.target.value});
+  }
+
+  handleNewChanNameChange(event){
+    console.log(event.target.value);
+    this.setState({newChanName: event.target.value});
   }
 
 
@@ -136,6 +217,29 @@ export default class Admin extends React.Component {
           <input id="addr" type="text" onChange={this.handleAddrChange.bind(this)}></input>
           <Button bsStyle="primary" id="setButton" onClick={this.setAddr.bind(this)}>
             Set
+          </Button>
+        </div>
+        <div>
+          <span>Max out a Chan's Level</span>
+          <input id="chanId" type="text" onChange={this.handleChanIdToMaxChange.bind(this)}></input>
+          <Button bsStyle="primary" id="maxLevelButton" onClick={this.levelUpToMax.bind(this)}>
+            Max Level
+          </Button>
+        </div>
+        <div>
+          <span>Bond 2 Chans</span>
+          <input id="bondingChanId1" type="text" onChange={this.handleBondingChan1Change.bind(this)}></input>
+          <input id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
+          <Button bsStyle="primary" id="startBonding" onClick={this.startBonding.bind(this)}>
+            Bond
+          </Button>
+        </div>
+        <div>
+          <span>Shokan: (ChanID; New Chan Name)</span>
+          <input id="shokanChanId" type="text" onChange={this.handleShokanChanIdChange.bind(this)}></input>
+          <input id="newChanName" type="text" onChange={this.handleNewChanNameChange.bind(this)}></input>
+          <Button bsStyle="primary" id="shokan" onClick={this.shokan.bind(this)}>
+            Shokan
           </Button>
         </div>
       </div>

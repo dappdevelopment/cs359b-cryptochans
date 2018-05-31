@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ChanCoreContract from '../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 import getWeb3 from './utils/getWeb3'
+
 import logo from './logo.jpg'
 import PropTypes from 'prop-types'
 
@@ -9,7 +10,7 @@ import AppBar from 'material-ui/AppBar'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 
-import {Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
+import {Alert,Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
 
 
@@ -24,7 +25,8 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-//import ChanDetails from './pages/ChanDetails';
+
+
 
 class App extends Component {
   constructor(props) {
@@ -84,16 +86,16 @@ class App extends Component {
         console.log(instance);
         this.setState({chanCoreInstance : instance});
 
-        console.log(instance.getChan(0).then(result=> {console.log(result); }));
-        console.log(instance.ownerOf(0).then(result=> {console.log(result); }));
-        console.log(instance.saleAuction().then(result=> {console.log(result); }));
+        instance.getChan(0).then(result=> {console.log("Chan #0: " + result); });
+        instance.ownerOf(0).then(result=> {console.log("Owner of Chan #0: " + result); });
+        instance.saleAuction().then(result => {console.log("Sale Auction Address: " + result); });
 
-        console.log(instance.owner().then(result=> {
-          console.log(result);
-          console.log(this.state.account);
-          console.log(result==this.state.account);
+        instance.owner().then(result=> {
+          console.log("Contract Owner: " + result);
+          console.log("Current Account: " + this.state.account);
+          console.log("IsOwner: " + (result==this.state.account));
           this.setState({admin:result==this.state.account});
-        }));
+        });
       });
 
       saleClockAuction.deployed().then((instance) => {
@@ -107,22 +109,6 @@ class App extends Component {
     })
   }
 
-  setAddr(){
-    console.log(this.state.setaddr);
-    console.log(this.state.chanCoreInstance);
-    this.state.chanCoreInstance.setSaleAuctionAddress.sendTransaction(this.state.setaddr,{from:this.state.account}).then(result=> {console.log(result);});
-  }
-
-  handleChange(event){
-    console.log(event.target.value);
-    this.setState({setaddr: event.target.value});
-  }
-
-  withdraw(){
-    console.log(this.state.account);
-      console.log(this.state.saleClockAuctionInstance.withdrawBalance.sendTransaction({from:this.state.account}).then(result=> {console.log(result); }));
-  }
-
   change(){
 
 
@@ -131,7 +117,32 @@ class App extends Component {
   }
 
   render() {
-    console.log("ADDDDDDD",this.state.admin);
+
+  //this is for get
+  // fetch('/api/test')
+  // .then(function(response) {
+  //     return response.json();
+  // }).then(function(data){
+  //   console.log(data);
+  // });
+
+  // const chanid=18;
+
+  // fetch('/api/chan_info', {
+  //                   method: 'POST',
+  //                   headers: {
+  //                     'Content-Type': 'application/json'
+  //                   },
+  //                   body: JSON.stringify({id:chanid}),
+  //                 }).then(function(response) {
+  //                       return response.json();
+  //                   }).then(function(data){
+  //                     console.log(data);
+  //                   });
+
+
+  
+
     let AdminDisplay = this.state.admin?        
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
@@ -167,13 +178,14 @@ class App extends Component {
                               <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
                               <Carousel.Caption>
                                 <h3>Cryptochans</h3>
+                                <p>Buy and Sell your Chans to earn money!</p>
                               </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
-                              <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
+                              <img width={900} height={500} alt="900x500" src="https://vthumb.ykimg.com/054101015AEDA4148B7B44A5F0C8581E" />
                               <Carousel.Caption>
-                                <h3>Second slide label</h3>
-                                <p>Cryptochans</p>
+                                <h3>Cryptochans</h3>
+                                <p>Interact with your Chans!</p>
                               </Carousel.Caption>
                             </Carousel.Item>
                           </Carousel>

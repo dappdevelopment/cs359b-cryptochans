@@ -12,7 +12,7 @@ export default class Mychans extends React.Component {
     super(props)
 
     this.state = {
-      fake_data:[]
+      chan_data:[]
 
     }
 
@@ -47,11 +47,11 @@ export default class Mychans extends React.Component {
           self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
             console.log("???",result);
             if (result.length==0){
-              console.log("you have no chans");
+            alert("You don't have any Chans");
             }
             else{
           const chanIdList=result;
-        self.setState({fake_data:[]});
+        self.setState({chan_data:[]});
 
 
 
@@ -67,7 +67,7 @@ export default class Mychans extends React.Component {
             console.log(id,typeof(id));
             cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
             console.log(cur_chan.url);
-            self.setState({fake_data:self.state.fake_data.concat([cur_chan])});
+            self.setState({chan_data:self.state.chan_data.concat([cur_chan])});
           });
         }
       }
@@ -82,7 +82,7 @@ export default class Mychans extends React.Component {
       })
 
         // function tokensOfOwner(address _owner) 
-        // this.setState({fake_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
+        // this.setState({chan_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
     }
 
 
@@ -92,31 +92,27 @@ export default class Mychans extends React.Component {
 
     return (
 <div>
-        <h1>{this.contract2}</h1>
-        <div>
+    <h1>{this.contract2}</h1>
+    <div>
         <Grid>
-  <Row>
-      {this.state.fake_data.map(function(d, idx){
-         return (<Col xs={6} md={4}>
-         <Link to={"/cryptochans/" + d.id.toString()}>
-      <Thumbnail src={d.url} alt="242x200">
-        <h3>Chan:{d.id}</h3>
-        <p>Name:{d.name}</p>
-        <p>Gender:{d.gender}</p>
-        <p>Level:{d.level}</p>
-      </Thumbnail>
-      </Link> 
-    </Col>)
-       })}
-         </Row>
-</Grid>
-      </div>
-
-
-
-
-
-      </div>
+            <Row>
+                {this.state.chan_data.map(function(d, idx){
+                return (
+                <Col xs={6} md={4}>
+                <Link to={"/cryptochans/" + d.id.toString()}>
+                <Thumbnail src={d.url} alt="242x200">
+                    <h3>Chan:{d.id}</h3>
+                    <p>Name:{d.name}</p>
+                    <p>Gender:{d.gender}</p>
+                    <p>Level:{d.level}</p>
+                </Thumbnail>
+                </Link> 
+                </Col>)
+                })}
+            </Row>
+        </Grid>
+    </div>
+</div>
     )
   }
 }

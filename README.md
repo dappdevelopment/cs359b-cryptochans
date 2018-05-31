@@ -116,28 +116,52 @@ https://rinkeby.etherscan.io/tx/0x5b187e0f3897ebd8a9ed47c4871c79be374abc101f58fc
 
 ChanCore
 ```
-https://rinkeby.etherscan.io/tx/0x38603aaab4a0467473626ad81748304555ded1e34cb55605a20de30eff17fe50
+https://rinkeby.etherscan.io/tx/0x144048956e9d25c5cbbd3091a416c9bf06c5086acbbd8f5ca03f25b94b90b5a2
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0x9f711fae1cf4a8a7566821ac8827aff2558d9ec5",
-		"transactionHash": "0x38603aaab4a0467473626ad81748304555ded1e34cb55605a20de30eff17fe500x38603"
+		"address": "0xdad2c39757d3b973028a4fc20e60228a3c422612",
+		"transactionHash": "0x144048956e9d25c5cbbd3091a416c9bf06c5086acbbd8f5ca03f25b94b90b5a2"
 	}
 },
 ```
 
 SaleClockAuction
 ```
-https://rinkeby.etherscan.io/tx/0x2991e406e336e8c134772977a372cc5c46642e40e1644cd38b6730712baf33c6
+https://rinkeby.etherscan.io/tx/0x267fa38fb85395e6770a18941a135c53b79adcb01ffcd029057745273367d110
 
 "networks": {
 	"4": {
 		"events": {},
 		"links": {},
-		"address": "0xb79d9f55cd659ad06b8abe29157451ac3b11ce02",
-		"transactionHash": "0x2991e406e336e8c134772977a372cc5c46642e40e1644cd38b6730712baf33c60x2991e"
+		"address": "0x5adacd22f5c755b5dfbaf1a1055d9e35d9f34f05",
+		"transactionHash": "0x267fa38fb85395e6770a18941a135c53b79adcb01ffcd029057745273367d110"
 	}
 },
 ```
+
+
+9.Mongodb:
+setup your local mongodb first in mongodb://localhost:27017
+(if you use mac, use command "brew install mongodb") and then run "mongod" to start your local mongodb
+
+then you can run "npm start" as usual, it will spawn off two processes running client and proxy server. 
+Client will start fetching request using "fetch" to send to our proxy server(running on localhost:3001)
+Server will talk to mongodb and return back the db data to client. And then client can display the info 
+on frontend.
+
+In the future, we may change it to sql database(if the class server cannot support mongodb). But for now, we will just use mongodb.
+
+
+
+
+
+
+
+
+
+
+
+

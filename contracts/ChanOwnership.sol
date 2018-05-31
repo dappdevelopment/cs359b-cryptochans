@@ -15,8 +15,33 @@ contract ChanOwnership is Pausable, ERC721BasicToken {
     struct Chan {
         string name;
         uint256 birthTime;
-        uint256 level;
+        uint32 level;
+
+        // Generaton of Chan. Summoned Chan is always 1 greater than its creators.
+        // Determines the birth level and max level of a Chan
+        // Birth Level = 10 * generation
+        // Max Level = 10 * (generation + 1)
+        uint32 generation;
         bool gender;
+
+        // The Chan's personality code is packed into these 256-bits, the format is
+        // super secret! A Chan's genes never change.
+        uint256 personality;
+
+        uint64 checkInDeadline;
+        uint8 checkInStreak;
+
+        // The minimum timestamp after which this Chan can engage in summoning
+        // activities again. This same timestamp is used for the pregnancy
+        // timer (for matrons) as well as the siring cooldown.
+        uint64 cooldownEndTime;
+
+        // Set to the ID of the sire Chan for matrons that are pregnant,
+        // zero otherwise. A non-zero value here is how we know a Chan
+        // is pregnant. Used to retrieve the personality material for the new
+        // Chan when the birth transpires.
+        uint32 shokanWithId;
+
     }
 
     /*** CONSTANTS ***/
@@ -78,16 +103,23 @@ contract ChanOwnership is Pausable, ERC721BasicToken {
     // @param _name  Name of this chan
     // @param _owner The inital owner of this chan, must be non-zero (except for the unChan, ID 0)
     // @param _gender The gender of the Chan (true for female, false for male)
-    function _createChan(string _name, address _owner, bool _gender)
+    // @param _personality The personality encoding of the Chan
+    function _createChan(string _name, address _owner, uint32 _gen, bool _gender, uint256 _personality)
         internal
         returns (uint)
     {
 
         Chan memory _Chan = Chan({
-            name     : _name,
-            birthTime: now,
-            level    : 0,
-            gender   : _gender
+            name        : _name,
+            birthTime   : now,
+            level       : 10 * _gen,
+            generation  : _gen,
+            gender      : _gender,
+            personality : _personality,
+            checkInDeadline: uint64(now),
+            checkInStreak: 0,
+            cooldownEndTime : 0,
+            shokanWithId : 0
         });
         uint256 newchanId = chans.push(_Chan) - 1;
 

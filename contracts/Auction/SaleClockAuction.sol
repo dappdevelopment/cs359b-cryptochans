@@ -2,7 +2,7 @@ pragma solidity ^0.4.21;
 
 import "./ClockAuction.sol";
 
-/// @title Clock auction modified for sale of kitties
+/// @title Clock auction modified for sale of Chans
 /// @notice We omit a fallback function to prevent accidental sends to this contract.
 contract SaleClockAuction is ClockAuction {
 
@@ -10,7 +10,7 @@ contract SaleClockAuction is ClockAuction {
     //  right auction in our setSaleAuctionAddress() call.
     bool public isSaleClockAuction = true;
 
-    // Tracks last 5 sale price of gen0 kitty sales
+    // Tracks last 5 sale price of gen0 Chan sales
     uint256 public gen0SaleCount;
     uint256[5] public lastGen0SalePrices;
 
@@ -61,6 +61,7 @@ contract SaleClockAuction is ClockAuction {
 
         // If not a gen0 auction, exit
         if (seller == address(nonFungibleContract)) {
+        //if (seller == nonFungibleContract.owner()) {    
             // Track gen0 sale prices
             lastGen0SalePrices[gen0SaleCount % 5] = price;
             gen0SaleCount++;

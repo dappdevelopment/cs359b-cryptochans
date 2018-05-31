@@ -18,25 +18,31 @@ export default class ChanDetails extends React.Component {
     super(props);
     this.state = {
       intimacy:0,
-      fake_data:[]
+      chan_data:[]
 
     };
   }
 
-  refreshState(){
-    this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
-  }
+  // refreshState(){
+  //   this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
+  // }
 
 
-   levelup(){
+  levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
-    this.refreshState();
+    // this.refreshState();
     this.state.intimacy = 0;
     this.elapsedTime = 0;
     this.setState({level:this.state.level+1});
-    this.setState({difficult_level:this.state.level*2000});
+    this.setState({difficult_level:this.state.level*500});
    }
+
+  checkIn() {
+    console.log("Checking in");
+    this.ChanCoreContract.checkIn.sendTransaction(this.state.selectedId,{from:this.state.account});
+    // this.refreshState();
+  }
 
 
 
@@ -45,11 +51,24 @@ export default class ChanDetails extends React.Component {
         console.log("sell");
         this.ChanCoreContract.createSaleAuction.sendTransaction(
           this.state.selectedId,
-          this.state.high,
-          this.state.low,
-          this.state.dur,
+          this.state.high * 1000000000000000,
+          this.state.low * 1000000000000000,
+          this.state.dur * 3600,
           {from:this.state.account}
-        );
+        ).then(result=>{
+          alert("successful! ");
+          console.log("db!!!");
+          fetch('/api/sellchan', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id:this.state.selectedId}),
+                  }).then(rsult=>{
+                    window.location="/cryptochans/cryptochans/Mychans"
+                  });
+          
+        });
     }
   
   componentWillMount() {
@@ -65,13 +84,23 @@ export default class ChanDetails extends React.Component {
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
-      this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
-        console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); 
-        this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});
-        this.setState({gender:result[3]?"female":"male"});
-        console.log("yyyyyyy",this.state);
-        this.setState({level:result[2].c[0]+1});
-        this.setState({difficult_level:2000*(result[2].c[0]+1)});
+      this.ChanCoreContract.checkInTimer().then(checkInTimer => {
+        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
+          console.log("heyyyyyyyyyyyyy", this);
+          this.setState({name:result[0]}); 
+          this.setState({create_time:result[1].c[0]});
+          this.setState({level:result[2].c[0]});
+          this.setState({generation:result[3].c[0]});
+          this.setState({maxLevel:(result[3].c[0] + 1) * 10});
+          this.setState({gender:result[4]?"female":"male"});
+          this.setState({nextCheckIn:this.timeConverter(result[5].c[0] - checkInTimer)});
+          this.setState({checkInDeadline:this.timeConverter(result[5].c[0])});
+          this.setState({checkInStreak:result[6].c[0]});
+          this.setState({cooldownEndTime:this.timeConverter(result[7].c[0])});
+          this.setState({shokanPartnerId:result[8].c[0]});
+          console.log("Chan Info:",this.state);
+          this.setState({difficult_level:500*(result[2].c[0]+1)});
+        });
       });
 
      //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
@@ -81,7 +110,7 @@ export default class ChanDetails extends React.Component {
       // console.log(this.state.value);
 
       this.setState({selectedId:selectedId});
-      this.setState({fake_img:i1});
+      this.setState({chan_img:i1});
 
 
 
@@ -186,21 +215,22 @@ export default class ChanDetails extends React.Component {
 
 
   timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-  return time;
-}
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+  }
 
 
 
   render() {
+    console.log(this.state.level);
         const popover = (
       <Popover id="modal-popover" title="popover">
         very popover. such engagement
@@ -212,142 +242,116 @@ export default class ChanDetails extends React.Component {
 
     return (
 
-      <div>
-
-         <h1>Cryptochan Name:{this.state.name}</h1>
-
-        <div>
-
-
-
-      <Grid>
-      <Row>
-      <Col xs={5} md={5}>
-
-    <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
-
-    </Image>
-    </Col>
-    <Col xs={2} md={2}>
-    Unlocked achievements:
-    <ButtonGroup vertical>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        blink
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        sweet word
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        hug
-      </Button>
-      <br/>
-      <Button bsStyle='warning'>
-        <Glyphicon glyph="heart" />
-        kiss
-      </Button>
-      <br/>
-      <Button bsStyle='warning' disabled>
-        <Glyphicon glyph="heart" />
-        dance
-      </Button>
-    </ButtonGroup>
-
-    </Col>
-    <Col xs={5} md={5}>
-    <Panel>
-        <p>Gender:{this.state.gender}</p>
-        <p>Level:{this.state.level}</p>
-        
-        <p>Birth Date:{formatTime}</p>     
-
-        <ButtonGroup vertical>
-        <Button onClick={this.handleSellShow.bind(this)}>
-        Sell
-        </Button>
-        <br/>
-
-
-
-        <Button  onClick={this.handleShow.bind(this)}>
-          Chat with me
-        </Button>
-
-        <Popover
-    id="popover-basic"
-    placement="right"
-    positionLeft={120}
-    positionTop={30}
-  >
-   Currently, only support Chinese=。=
-  </Popover>
-
-
-        <br/>
-        Intimacy:<ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
-        <Label bsStyle="info">Unlock More features!</Label>
-
-        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
-          Level me up
-        </Button>
-
-
-        </ButtonGroup>
-        <br/>
-        </Panel>
-
-        <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Chat</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <Chat/>
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleClose.bind(this)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-
-
-          <Modal show={this.state.sellshow} onHide={this.handleSellClose.bind(this)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Sell</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-           Start Price:<input id="low" type="text" onChange={this.handleHighPriceChange.bind(this)}></input>
-           <br/>
-          End Price:<input id="high" type="text" onChange={this.handleLowPriceChange.bind(this)}></input>
-          <br/>
-           Duration:<input id="duration" type="text" onChange={this.handleDurChange.bind(this)}></input>
-           <br/>
-
-           <Button onClick={this.sell.bind(this)}>Put on sell</Button>
-
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleSellClose.bind(this)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-
-
-
-
-
-
-
-    </Col>
-    </Row>
-    </Grid>
+ <div>
+    <h1>Cryptochan Name:{this.state.name}</h1>
+    <div>
+        <Grid>
+            <Row>
+                <Col xs={5} md={5}>
+                <Image style={{width: 300, height: 300}} src={this.state.chan_img} atl="800x800">
+                </Image>
+                </Col>
+                <Col xs={2} md={2}>
+                Unlocked achievements:
+                <ButtonGroup vertical>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        blink
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        sweet word
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        hug
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning'>
+                        <Glyphicon glyph="heart" />
+                        kiss
+                    </Button>
+                    <br/>
+                    <Button bsStyle='warning' disabled>
+                        <Glyphicon glyph="heart" />
+                        dance
+                    </Button>
+                </ButtonGroup>
+                </Col>
+                <Col xs={5} md={5}>
+                <Panel>
+                    <p>Gender:{this.state.gender}</p>
+                    <p>Level:{this.state.level} / {this.state.maxLevel}</p>
+                    <p>Birth Date:{formatTime}</p>
+                    <ButtonGroup vertical>
+                        <Button onClick={this.handleSellShow.bind(this)}>
+                        Sell
+                        </Button>
+                        <br/>
+                        <Button  onClick={this.handleShow.bind(this)}>
+                        Chat with me
+                        </Button>
+                        <Popover
+                            id="popover-basic"
+                            placement="right"
+                            positionLeft={120}
+                            positionTop={30}
+                            >
+                            Currently, only support Chinese=。=
+                        </Popover>
+                        <br/>
+                        Intimacy:
+                        <ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
+                        <Label bsStyle="info">Unlock More features!</Label>
+                        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
+                        Level me up
+                        </Button>
+                        <Label bsStyle="info">Check In Streak: {this.state.checkInStreak}</Label>
+                        <br/>
+                        <Label bsStyle="info">Next Check In: {this.state.nextCheckIn}</Label>
+                        <br/>
+                        <Label bsStyle="info">Check In Deadline: {this.state.checkInDeadline}</Label>
+                        <Button onClick={this.checkIn.bind(this)}>
+                        Check In
+                        </Button>
+                    </ButtonGroup>
+                    <br/>
+                </Panel>
+                <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Chat</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Chat/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleClose.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.sellshow} onHide={this.handleSellClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Sell</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Start Price:<input placeholder="millieth" id="low" type="number" onChange={this.handleHighPriceChange.bind(this)}></input>
+                        <br/>
+                        End Price:<input placeholder="millieth" id="high" type="number" onChange={this.handleLowPriceChange.bind(this)}></input>
+                        <br/>
+                        Duration:<input placeholder="hour" id="duration" type="number" onChange={this.handleDurChange.bind(this)}></input>
+                        <br/>
+                        <Button onClick={this.sell.bind(this)}>Put on sell</Button>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleSellClose.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                </Col>
+            </Row>
+        </Grid>
     </div>
-    </div>
+</div>
 
     )
   }
