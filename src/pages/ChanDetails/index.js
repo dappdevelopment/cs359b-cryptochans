@@ -56,6 +56,7 @@ export default class ChanDetails extends React.Component {
           this.state.dur * 3600,
           {from:this.state.account}
         ).then(result=>{
+          alert("successful! ");
           console.log("db!!!");
           fetch('/api/sellchan', {
                     method: 'POST',
@@ -63,7 +64,10 @@ export default class ChanDetails extends React.Component {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({id:this.state.selectedId}),
+                  }).then(rsult=>{
+                    window.location="/cryptochans/cryptochans/Mychans"
                   });
+          
         });
     }
   
