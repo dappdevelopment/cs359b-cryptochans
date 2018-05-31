@@ -47,7 +47,7 @@ export default class Mychans extends React.Component {
           self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
             console.log("???",result);
             if (result.length==0){
-              console.log("you have no chans");
+            alert("You don't have any Chans");
             }
             else{
           const chanIdList=result;

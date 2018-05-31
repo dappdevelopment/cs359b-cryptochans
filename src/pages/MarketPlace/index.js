@@ -180,8 +180,12 @@ export default class BuyNewChan extends React.Component {
                     },
                     body: JSON.stringify({id:chan_id, owner: this.state.account}),
                   });
+              alert("successful, you may need to wait for a while before the chan appear in MyChans");
               self.fetch_data_from_db();
             });
+          }
+          else{
+            alert("sorry! It's been bought!");
           }
         });
     }
