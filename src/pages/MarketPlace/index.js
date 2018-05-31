@@ -290,6 +290,8 @@ export default class BuyNewChan extends React.Component {
         console.log("error");
 }
 
+    this.fetch_data_from_db();
+
   }
 
 
@@ -328,12 +330,6 @@ export default class BuyNewChan extends React.Component {
               <MenuItem eventKey="6" onSelect={this.onSelect.bind(this)}>Display All</MenuItem>
             </DropdownButton>
 
-            &emsp;
-            &emsp;
-
-            <Button bsStyle="primary" onClick={this.fetch_data_from_db.bind(this)}>
-                          Search
-                        </Button>
 
 
 
