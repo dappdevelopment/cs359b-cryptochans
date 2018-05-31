@@ -48,6 +48,7 @@ contract ChanCore is ChanMinting {
         string name,
         uint256 birthTime,
         uint256 level,
+        uint32 generation,
         bool    gender,
         uint64 checkInDeadline,
         uint8  checkInStreak,
@@ -59,6 +60,7 @@ contract ChanCore is ChanMinting {
         name = chan.name;
         birthTime = uint256(chan.birthTime);
         level = chan.level;
+        generation = chan.generation;
         gender = chan.gender;
         checkInDeadline = chan.checkInDeadline;
         checkInStreak = chan.checkInStreak;
