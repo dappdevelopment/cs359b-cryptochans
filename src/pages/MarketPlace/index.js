@@ -345,9 +345,10 @@ export default class BuyNewChan extends React.Component {
                   <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
                   <p>Level:{d.level}</p>
-                  <p>Price:{d.current_price}</p>
+                  <p>Price:{d.start}</p>
+                  <p>Birth Date:{d.birthday}</p>
                   <p>
-                    {(d.seller === account) ? 
+                    {(d.owner === account) ? 
 
                         <Button bsStyle="primary" onClick={cancel_func.bind(null,d.id)}>
                           Cancel!
