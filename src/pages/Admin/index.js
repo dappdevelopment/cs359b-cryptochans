@@ -57,23 +57,32 @@ export default class Admin extends React.Component {
   }
 
   createGen0Auction(){
+    self=this;
     console.log(this.state.account);
-    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count);});
+    this.ChanCoreContract.gen0CreatedCount.call().then(count => {console.log("Gen 0 created:"+count); self.count=count}).then(result=>{
+        this.ChanCoreContract.createGen0Auction.sendTransaction(
+        this.state.name,
+        true,   //gender
+        0x0,    //personality
+        {from:this.state.account}
+      ).then(result => {
+        console.log(result);
+        this.saveDB(self.count, this.state.name, 0, this.state.account, Date.now());
+      })
+    })
     this.ChanCoreContract.gen0CreationLimit.call().then(count => {console.log("Gen 0 creation limit:"+count);});
-    this.ChanCoreContract.createGen0Auction.sendTransaction(
-      this.state.name,
-      true,   //gender
-      0x0,    //personality
-      {from:this.state.account}
-    );
 
 
-    fetch('/api/createchan', {
+  }
+
+
+  saveDB(given_id,given_name, given_gender, given_owner, given_birthday){
+      fetch('/api/createchan', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({id: 1,name:"Alice_fake",gender:0}),
+      body: JSON.stringify({id: given_id, name:given_name,gender:given_gender, auction:1, owner: given_owner, birthday:given_birthday, level:0}),
     }) 
     .then(function(response) {
       return response.json();
@@ -87,7 +96,6 @@ export default class Admin extends React.Component {
       }
     }.bind(this))
     .catch(console.err);
-
   }
 
   togglePause(){

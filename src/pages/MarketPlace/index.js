@@ -64,33 +64,33 @@ export default class BuyNewChan extends React.Component {
             self.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
                 console.log(id,isOnAuction);
 
-              if(isOnAuction){
-                const chan = {};
-                self.ChanCoreContract.getChan(id).then( chanData => {
-                console.log(id);
-                  chan.id = id;
-                  chan.name = chanData[0];
-                  chan.create_time = chanData[1].c[0];
-                  chan.level = chanData[2].c[0];
-                  chan.gender = chanData[3] ? "female" : "male";
-                  chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                }).then( () => {
-                  console.log(chan);
-                  self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
-                    chan.seller           = auctionData[0];
-                    chan.starting_price   = auctionData[1];
-                    chan.ending_price     = auctionData[2];
-                    chan.auction_duration = auctionData[3];
-                    chan.started_at       = auctionData[4];
-                  });
-                }).then( () => {
-                  self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-                    chan.current_price = price/1000000000000000+" (milliETH)";
-                    console.log(chan);
-                  self.setState({fake_data:self.state.fake_data.concat([chan])});
-                  });
-                });
-              }
+              // if(isOnAuction){
+              //   const chan = {};
+              //   self.ChanCoreContract.getChan(id).then( chanData => {
+              //   console.log(id);
+              //     chan.id = id;
+              //     chan.name = chanData[0];
+              //     chan.create_time = chanData[1].c[0];
+              //     chan.level = chanData[2].c[0];
+              //     chan.gender = chanData[3] ? "female" : "male";
+              //     chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+              //   }).then( () => {
+              //     console.log(chan);
+              //     self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+              //       chan.seller           = auctionData[0];
+              //       chan.starting_price   = auctionData[1];
+              //       chan.ending_price     = auctionData[2];
+              //       chan.auction_duration = auctionData[3];
+              //       chan.started_at       = auctionData[4];
+              //     });
+              //   }).then( () => {
+              //     self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+              //       chan.current_price = price/1000000000000000+" (milliETH)";
+              //       console.log(chan);
+              //     self.setState({fake_data:self.state.fake_data.concat([chan])});
+              //     });
+              //   });
+              // }
             });
           }
         });
@@ -172,6 +172,34 @@ export default class BuyNewChan extends React.Component {
         // this.SaleAuctionCoreContract = contract;
 
         self.setState({fake_data:[]});
+        self.fetch_data_from_db();
+
+
+
+        // self.setState({fake_data:data});
+
+
+    }
+
+
+
+    fetch_data_from_db(){
+      console.log("alice");
+        fetch('/api/auctions')
+        .then(function(response) {
+            return response.json();
+        }).then(result=>{
+          console.log(result[0].name);
+          self.setState({fake_data:result});
+        })
+
+
+        // fetch('/api/test')
+        // .then(function(response) {
+        //     return response.json();
+        // }).then(function(data){
+        //   console.log(data);
+        // });
 
     }
 

@@ -46,11 +46,11 @@ MongoClient.connect(url, function(err, db) {
 
 
 //TODO:write apis to get on auction chans, sort by (id,price,...), also should support gender selection
-app.get('/api/chans_on_auction', function(req, res) {
+app.get('/api/auctions', function(req, res) {
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db(db_name);
-  var query = {is_on_auction:1};
+  var query = {auction:1};
   dbo.collection(collection_name).find(query).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
@@ -84,7 +84,7 @@ MongoClient.connect(url, function(err, db) {
   var query = {id: chanid};
   dbo.collection(collection_name).find(query).toArray(function(err, result) {
     if (err) throw err;
-    console.log(result,'chan detail');
+    console.log('chan detail');
     db.close();
     res.status(200).send(result);
   });
