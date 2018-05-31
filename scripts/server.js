@@ -63,6 +63,23 @@ MongoClient.connect(url, function(err, db) {
 
 
 
+app.get('/api/auctions_sortname', function(req, res) {
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db(db_name);
+  var query = {auction:1};
+  var mysort = {name: 1 };
+  dbo.collection(collection_name).find(query).sort(mysort).toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    db.close();
+    res.status(200).send(result);
+  });
+});
+});
+
+
+
 
 //TODO:level up
 
@@ -98,7 +115,8 @@ MongoClient.connect(url, function(err, db) {
   console.log(req.body,'body???');
 
   const info = req.body;
-  const chan_id = info.id;
+  const chan_id = parseInt(info.id);
+
 
   const myquery = { id: chan_id };
   const newvalues = { $set: { auction:1} };

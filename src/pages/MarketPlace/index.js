@@ -217,7 +217,7 @@ export default class BuyNewChan extends React.Component {
 
     fetch_data_from_db(){
       console.log("alice");
-        fetch('/api/auctions')
+        fetch('/api/auctions_sortname')
         .then(function(response) {
             return response.json();
         }).then(result=>{
