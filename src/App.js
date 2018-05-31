@@ -178,13 +178,14 @@ class App extends Component {
                               <img width={900} height={500} alt="900x500" src="http://img.wxcha.com/file/201711/28/0ba7b1180e.jpg?down" />
                               <Carousel.Caption>
                                 <h3>Cryptochans</h3>
+                                <p>Buy and Sell your Chans to earn money!</p>
                               </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
-                              <img width={900} height={500} alt="900x500" src="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg" />
+                              <img width={900} height={500} alt="900x500" src="https://vthumb.ykimg.com/054101015AEDA4148B7B44A5F0C8581E" />
                               <Carousel.Caption>
-                                <h3>Second slide label</h3>
-                                <p>Cryptochans</p>
+                                <h3>Cryptochans</h3>
+                                <p>Interact with your Chans!</p>
                               </Carousel.Caption>
                             </Carousel.Item>
                           </Carousel>

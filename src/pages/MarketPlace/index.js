@@ -92,7 +92,7 @@ export default class BuyNewChan extends React.Component {
               //     self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
               //       chan.current_price = price/1000000000000000+" (milliETH)";
               //       console.log(chan);
-              //     self.setState({fake_data:self.state.fake_data.concat([chan])});
+              //     self.setState({chan_data:self.state.chan_data.concat([chan])});
               //     });
               //   });
               // }
@@ -212,12 +212,12 @@ export default class BuyNewChan extends React.Component {
         // this.ChanCoreContract = contract2;
         // this.SaleAuctionCoreContract = contract;
 
-        self.setState({fake_data:[]});
+        self.setState({chan_data:[]});
         self.fetch_data_from_db();
 
 
 
-        // self.setState({fake_data:data});
+        // self.setState({chan_data:data});
 
 
     }
@@ -230,7 +230,7 @@ export default class BuyNewChan extends React.Component {
         .then(function(response) {
             return response.json();
         }).then(result=>{
-          self.setState({fake_data:result});
+          self.setState({chan_data:result});
         })
 
 
@@ -342,7 +342,7 @@ export default class BuyNewChan extends React.Component {
 
             </Row>
             <Row>
-              {this.state.fake_data.map(function(d, idx){
+              {this.state.chan_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={d.url} alt="Image not available">
                   <h3>Name:{d.name}</h3>

@@ -18,7 +18,7 @@ export default class ChanDetails extends React.Component {
     super(props);
     this.state = {
       intimacy:0,
-      fake_data:[]
+      chan_data:[]
 
     };
   }
@@ -110,7 +110,7 @@ export default class ChanDetails extends React.Component {
       // console.log(this.state.value);
 
       this.setState({selectedId:selectedId});
-      this.setState({fake_img:i1});
+      this.setState({chan_img:i1});
 
 
 
@@ -248,7 +248,7 @@ export default class ChanDetails extends React.Component {
         <Grid>
             <Row>
                 <Col xs={5} md={5}>
-                <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
+                <Image style={{width: 300, height: 300}} src={this.state.chan_img} atl="800x800">
                 </Image>
                 </Col>
                 <Col xs={2} md={2}>

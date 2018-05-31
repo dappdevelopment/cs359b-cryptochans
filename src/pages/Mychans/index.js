@@ -12,7 +12,7 @@ export default class Mychans extends React.Component {
     super(props)
 
     this.state = {
-      fake_data:[]
+      chan_data:[]
 
     }
 
@@ -51,7 +51,7 @@ export default class Mychans extends React.Component {
             }
             else{
           const chanIdList=result;
-        self.setState({fake_data:[]});
+        self.setState({chan_data:[]});
 
 
 
@@ -67,7 +67,7 @@ export default class Mychans extends React.Component {
             console.log(id,typeof(id));
             cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
             console.log(cur_chan.url);
-            self.setState({fake_data:self.state.fake_data.concat([cur_chan])});
+            self.setState({chan_data:self.state.chan_data.concat([cur_chan])});
           });
         }
       }
@@ -82,7 +82,7 @@ export default class Mychans extends React.Component {
       })
 
         // function tokensOfOwner(address _owner) 
-        // this.setState({fake_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
+        // this.setState({chan_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
     }
 
 
@@ -96,7 +96,7 @@ export default class Mychans extends React.Component {
     <div>
         <Grid>
             <Row>
-                {this.state.fake_data.map(function(d, idx){
+                {this.state.chan_data.map(function(d, idx){
                 return (
                 <Col xs={6} md={4}>
                 <Link to={"/cryptochans/" + d.id.toString()}>
