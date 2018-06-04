@@ -58,15 +58,15 @@ export default class ChanDetails extends React.Component {
         ).then(result=>{
           alert("successful! ");
           console.log("db!!!");
-          fetch('/api/sellchan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:this.state.selectedId}),
-                  }).then(rsult=>{
-                    window.location="/cryptochans/cryptochans/Mychans"
-                  });
+          // fetch('/api/sellchan', {
+          //           method: 'POST',
+          //           headers: {
+          //             'Content-Type': 'application/json'
+          //           },
+          //           body: JSON.stringify({id:this.state.selectedId}),
+          //         }).then(rsult=>{
+          //           window.location="/cryptochans/cryptochans/Mychans"
+          //         });
           
         });
     }

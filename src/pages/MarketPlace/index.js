@@ -69,33 +69,33 @@ export default class BuyNewChan extends React.Component {
             self.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
                 console.log(id,isOnAuction);
 
-              // if(isOnAuction){
-              //   const chan = {};
-              //   self.ChanCoreContract.getChan(id).then( chanData => {
-              //   console.log(id);
-              //     chan.id = id;
-              //     chan.name = chanData[0];
-              //     chan.create_time = chanData[1].c[0];
-              //     chan.level = chanData[2].c[0];
-              //     chan.gender = chanData[3] ? "female" : "male";
-              //     chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-              //   }).then( () => {
-              //     console.log(chan);
-              //     self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
-              //       chan.seller           = auctionData[0];
-              //       chan.starting_price   = auctionData[1];
-              //       chan.ending_price     = auctionData[2];
-              //       chan.auction_duration = auctionData[3];
-              //       chan.started_at       = auctionData[4];
-              //     });
-              //   }).then( () => {
-              //     self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-              //       chan.current_price = price/1000000000000000+" (milliETH)";
-              //       console.log(chan);
-              //     self.setState({chan_data:self.state.chan_data.concat([chan])});
-              //     });
-              //   });
-              // }
+              if(isOnAuction){
+                const chan = {};
+                self.ChanCoreContract.getChan(id).then( chanData => {
+                console.log(id);
+                  chan.id = id;
+                  chan.name = chanData[0];
+                  chan.create_time = chanData[1].c[0];
+                  chan.level = chanData[2].c[0];
+                  chan.gender = chanData[3] ? "female" : "male";
+                  chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+                }).then( () => {
+                  console.log(chan);
+                  self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+                    chan.seller           = auctionData[0];
+                    chan.starting_price   = auctionData[1];
+                    chan.ending_price     = auctionData[2];
+                    chan.auction_duration = auctionData[3];
+                    chan.started_at       = auctionData[4];
+                  });
+                }).then( () => {
+                  self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+                    chan.current_price = price/1000000000000000+" (milliETH)";
+                    console.log(chan);
+                  self.setState({chan_data:self.state.chan_data.concat([chan])});
+                  });
+                });
+              }
             });
           }
         });
@@ -134,17 +134,17 @@ export default class BuyNewChan extends React.Component {
               }).then(result=>{
                 //change owner in db, set aution to be 0
                 console.log('here');
-                fetch('/api/buychan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
-                  }) 
+                // fetch('/api/buychan', {
+                //     method: 'POST',
+                //     headers: {
+                //       'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({id:chan_id, owner: this.state.account}),
+                //   }) 
 
                 alert("successful, you may need to wait for a while before the chan appear in MyChans");
                 //refresh page
-                self.fetch_data_from_db();
+                // self.fetch_data_from_db();
               });
             });
           }
@@ -173,15 +173,15 @@ export default class BuyNewChan extends React.Component {
                 from:this.state.account,
                 gas:1000000
             }).then(result=>{
-              fetch('/api/buychan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
-                  });
+              // fetch('/api/buychan', {
+              //       method: 'POST',
+              //       headers: {
+              //         'Content-Type': 'application/json'
+              //       },
+              //       body: JSON.stringify({id:chan_id, owner: this.state.account}),
+              //     });
               alert("successful, you may need to wait for a while before the chan appear in MyChans");
-              self.fetch_data_from_db();
+              // self.fetch_data_from_db();
             });
           }
           else{
@@ -213,7 +213,7 @@ export default class BuyNewChan extends React.Component {
         // this.SaleAuctionCoreContract = contract;
 
         self.setState({chan_data:[]});
-        self.fetch_data_from_db();
+        // self.fetch_data_from_db();
 
 
 
@@ -224,14 +224,14 @@ export default class BuyNewChan extends React.Component {
 
 
 
-    fetch_data_from_db(){
-      console.log("alice", this.sort, this.displayonly, this.state.account);
-        fetch('/api/auctions/'+this.sort+'/'+this.displayonly+ '/'+this.state.account)
-        .then(function(response) {
-            return response.json();
-        }).then(result=>{
-          self.setState({chan_data:result});
-        })
+    // fetch_data_from_db(){
+    //   console.log("alice", this.sort, this.displayonly, this.state.account);
+    //     fetch('/api/auctions/'+this.sort+'/'+this.displayonly+ '/'+this.state.account)
+    //     .then(function(response) {
+    //         return response.json();
+    //     }).then(result=>{
+    //       self.setState({chan_data:result});
+    //     })
 
 
         // fetch('/api/test')
@@ -241,7 +241,7 @@ export default class BuyNewChan extends React.Component {
         //   console.log(data);
         // });
 
-    }
+    // }
 
 
     // checkDBOnAuction(chan_id){
@@ -256,43 +256,43 @@ export default class BuyNewChan extends React.Component {
     //     });
     // }
 
-  onSelect(eventKey){
-    console.log(eventKey,typeof(eventKey));
-    const key = parseInt(eventKey);
+//   onSelect(eventKey){
+//     console.log(eventKey,typeof(eventKey));
+//     const key = parseInt(eventKey);
 
 
-    switch(key) {
-    case 1:
-        this.setState({sort:"Sort By Name"});
-        this.sort=1;
-        break;
-    case 2:
-        this.setState({sort:"Sort By Id"});
-        this.sort=2;
-        break;
-    case 3:
-        this.setState({displayonly:"Female Only"});
-        this.displayonly=3;
-        break;
-    case 4:
-        this.setState({displayonly:"Male Only"});
-        this.displayonly=4;
-        break;
-    case 5:
-        this.setState({displayonly:"My Chans Only"});
-        this.displayonly=5;
-        break;
-    case 6:
-        this.setState({displayonly:"Display All"});
-        this.displayonly=6;
-        break;
-    default:
-        console.log("error");
-}
+//     switch(key) {
+//     case 1:
+//         this.setState({sort:"Sort By Name"});
+//         this.sort=1;
+//         break;
+//     case 2:
+//         this.setState({sort:"Sort By Id"});
+//         this.sort=2;
+//         break;
+//     case 3:
+//         this.setState({displayonly:"Female Only"});
+//         this.displayonly=3;
+//         break;
+//     case 4:
+//         this.setState({displayonly:"Male Only"});
+//         this.displayonly=4;
+//         break;
+//     case 5:
+//         this.setState({displayonly:"My Chans Only"});
+//         this.displayonly=5;
+//         break;
+//     case 6:
+//         this.setState({displayonly:"Display All"});
+//         this.displayonly=6;
+//         break;
+//     default:
+//         console.log("error");
+// }
 
-    this.fetch_data_from_db();
+//     this.fetch_data_from_db();
 
-  }
+//   }
 
 
   render() {
@@ -306,38 +306,6 @@ export default class BuyNewChan extends React.Component {
         <div>
           <Grid>
             <Row>
-            <div>
-
-            <DropdownButton
-              title={this.state.sort}
-            >
-              <MenuItem header>Sort</MenuItem>
-              <MenuItem eventKey="1" onSelect={this.onSelect.bind(this)}>Sort By Name</MenuItem>
-              <MenuItem eventKey="2" onSelect={this.onSelect.bind(this)}>Sort By Id</MenuItem>
-            </DropdownButton>
-            &emsp;
-            &emsp;
-
-
-
-            <DropdownButton
-              title={this.state.displayonly}
-            >
-              <MenuItem header>Display Only</MenuItem>
-              <MenuItem eventKey="3" onSelect={this.onSelect.bind(this)}>Female</MenuItem>
-              <MenuItem eventKey="4" onSelect={this.onSelect.bind(this)}>Male</MenuItem>
-              <MenuItem eventKey="5" onSelect={this.onSelect.bind(this)}>My Chans</MenuItem>
-              <MenuItem eventKey="6" onSelect={this.onSelect.bind(this)}>Display All</MenuItem>
-            </DropdownButton>
-
-
-
-
-
-            </div>
-
-            </Row>
-            <Row>
               {this.state.chan_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
                   <Thumbnail src={d.url} alt="Image not available">
@@ -345,11 +313,10 @@ export default class BuyNewChan extends React.Component {
                   <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
                   <p>Level:{d.level}</p>
-                  <p>Price:{d.start}</p>
+                  <p>Price:{d.current_price}</p>
                   <p>Birth Date:{d.birthday}</p>
                   <p>
                     {(d.owner === account) ? 
-
                         <Button bsStyle="primary" onClick={cancel_func.bind(null,d.id)}>
                           Cancel!
                         </Button>
