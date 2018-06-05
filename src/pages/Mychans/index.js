@@ -130,8 +130,8 @@ export default class Mychans extends React.Component {
                 <Col xs={6} md={4}>
                 <Link to={"/cryptochans/" + d.id.toString()}>
                 <Thumbnail src={d.url} alt="242x200">
-                    <h3>Chan:{d.id}</h3>
-                    <p>Name:{d.name}</p>
+                    <h3>Name:{d.name}</h3>
+                    <p>Chan:{d.id}</p>
                     <p>Gender:{d.gender}</p>
                     <p>Level:{d.level}</p>
                 </Thumbnail>

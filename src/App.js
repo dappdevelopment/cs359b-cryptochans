@@ -146,13 +146,30 @@ class App extends Component {
     let AdminDisplay = this.state.admin?        
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
+    const pStyle = {
+     'margin-top': '10px',
+      'color': '#f4428c'
+    };
+
+    const iStyle={
+      'width':'50px',
+      'height':'50px'
+    };
+
+    let eth_detect = this.state.web3?"./on.png":"./off.png";
+
     return (
+
         <div>
+        <img style={iStyle} src={require(eth_detect)}></img>
+        <span style={pStyle} >Account Address: {this.state.account}</span>
+        
           <Router basename={'/cryptochans/'}>
             <div className="App">
               <header>
                 <img src={logo} className="App-logo" alt="logo.jpg" />
                 <h1 className="App-title">Cryptochans</h1>
+                
               </header>
               <div>
                 <Link to="/"><Button  bsStyle="info">Main Page</Button></Link>
