@@ -152,8 +152,8 @@ class App extends Component {
     };
 
     const iStyle={
-      'width':'50px',
-      'height':'50px'
+      'width':'30px',
+      'height':'30px'
     };
 
     let eth_detect = this.state.web3?"./on.png":"./off.png";

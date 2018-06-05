@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-route
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
 
 import getWeb3 from '../../utils/getWeb3'
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Glyphicon,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class Mychans extends React.Component {
     constructor(props) {
@@ -106,6 +106,16 @@ export default class Mychans extends React.Component {
 
   render() {
 
+    const bstyle={
+        'background-color':'pink'
+    };
+
+    const tstyle={
+      'box-shadow':'0px 0px 8px #000'
+    }
+
+
+
 
 
     return (
@@ -113,23 +123,20 @@ export default class Mychans extends React.Component {
     <h1>{this.contract2}</h1>
     <div>
 
-    <div>
-          <span>Bond 2 Chans</span>
-          <input id="bondingChanId1" type="text" onChange={this.handleBondingChan1Change.bind(this)}></input>
-          <input id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
-          <Button bsStyle="primary" id="startBonding" onClick={this.startBonding.bind(this)}>
-            Bond
-          </Button>
-        </div>
+
 
 
         <Grid>
+
+
+
+        <Col xs={8} md={8}>
             <Row>
                 {this.state.chan_data.map(function(d, idx){
                 return (
                 <Col xs={6} md={4}>
                 <Link to={"/cryptochans/" + d.id.toString()}>
-                <Thumbnail src={d.url} alt="242x200">
+                <Thumbnail src={d.url} alt="242x200" style={tstyle}>
                     <h3>Name:{d.name}</h3>
                     <p>Chan:{d.id}</p>
                     <p>Gender:{d.gender}</p>
@@ -139,6 +146,20 @@ export default class Mychans extends React.Component {
                 </Col>)
                 })}
             </Row>
+            </Col>
+                    <Col xs={6} md={4}>
+            <div>
+          <span>Bond 2 Chans</span>
+          <br/>
+          <input placeholder="First Chan ID" id="bondingChanId1" type="text" onChange={this.handleBondingChan1Change.bind(this)}></input>
+          <input placeholder="Second Chan ID" id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
+          <br/>
+          <Button style={bstyle} id="startBonding" onClick={this.startBonding.bind(this)}>
+            Bond
+            <Glyphicon glyph="heart" />
+          </Button>
+        </div>
+        </Col>
         </Grid>
     </div>
 </div>

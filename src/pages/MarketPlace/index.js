@@ -222,6 +222,7 @@ export default class BuyNewChan extends React.Component {
               console.log(result,'addr???????');
   var events = this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
   if (!error)
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
     await console.log(log,'AAAAAAAlice');
     self.setState({chan_data: []});
     self.instantiateContract();
@@ -233,7 +234,7 @@ export default class BuyNewChan extends React.Component {
               //       },
               //       body: JSON.stringify({id:chan_id, owner: this.state.account}),
               //     });
-              alert("successful, you may need to wait for a while before the chan appear in MyChans");
+              
               // self.fetch_data_from_db();
             });
           }
@@ -367,6 +368,10 @@ contractEvents() {
     const cancel_func = this.cancelAuction.bind(this);
     const account = this.state.account;
 
+    const tstyle={
+      'box-shadow':'0px 0px 10px #000'
+    }
+
 
 
 
@@ -379,7 +384,7 @@ contractEvents() {
             <Row>
               {this.state.chan_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
-                  <Thumbnail src={d.url} alt="Image not available">
+                  <Thumbnail src={d.url} alt="Image not available" style={tstyle}>
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
