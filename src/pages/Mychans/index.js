@@ -86,6 +86,24 @@ export default class Mychans extends React.Component {
     }
 
 
+      startBonding(){
+    this.ChanCoreContract.bondWith.sendTransaction(
+      this.state.bondingChanId1,
+      this.state.bondingChanId2,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+  handleBondingChan1Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId1: event.target.value});
+  }
+
+  handleBondingChan2Change(event){
+    console.log(event.target.value);
+    this.setState({bondingChanId2: event.target.value});
+  }
+
+
   render() {
 
 
@@ -94,6 +112,17 @@ export default class Mychans extends React.Component {
 <div>
     <h1>{this.contract2}</h1>
     <div>
+
+    <div>
+          <span>Bond 2 Chans</span>
+          <input id="bondingChanId1" type="text" onChange={this.handleBondingChan1Change.bind(this)}></input>
+          <input id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
+          <Button bsStyle="primary" id="startBonding" onClick={this.startBonding.bind(this)}>
+            Bond
+          </Button>
+        </div>
+
+
         <Grid>
             <Row>
                 {this.state.chan_data.map(function(d, idx){

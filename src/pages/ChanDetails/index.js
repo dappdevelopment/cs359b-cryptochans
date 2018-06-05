@@ -58,6 +58,7 @@ export default class ChanDetails extends React.Component {
         ).then(result=>{
           alert("successful! ");
           console.log("db!!!");
+          window.location="/cryptochans/cryptochans/Marketplace"
           // fetch('/api/sellchan', {
           //           method: 'POST',
           //           headers: {

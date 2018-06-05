@@ -50,12 +50,31 @@ export default class BuyNewChan extends React.Component {
     chanCore.setProvider(this.state.web3.currentProvider);
     saleClockAuction.setProvider(this.state.web3.currentProvider);
 
+
     chanCore.deployed().then((instance) => {
+
+
+
+
         console.log("successfully deployed ChanCore");
         // this.setState({ChanCoreContract : instance});
         self.ChanCoreContract=instance;
       }).then(()=>{
         saleClockAuction.deployed().then((instance) => {
+
+//         var events = instance.allEvents( { filter: {fromBlock: 0, toBlock: 'latest'} },function(error, log){
+//   if (!error)
+//     console.log(log,'AAAAAAAlice');
+//     self.setState({chan_data: []});
+//     // self.instantiateContract();
+// });
+
+
+
+
+
+
+
         // this.setState({SaleAuctionCoreContract:instance});
         self.SaleAuctionCoreContract = instance;
         console.log("successfully deployed SaleClockAuction");
@@ -132,6 +151,30 @@ export default class BuyNewChan extends React.Component {
                 value:priceInWei,
                 gas:1000000
               }).then(result=>{
+                // var events = self.SaleAuctionCoreContract.allEvents( function(error, log){
+                //   console.log('BBBBBBBBBBBBBB!');
+                //   if (!error)
+                //     console.log(log,'AAAAAAAlice');
+
+
+                //   self.setState({chan_data:[]})
+                //  self.instantiateContract();
+                  
+                // });
+
+
+
+                              console.log(result,'addr???????');
+
+  var events = this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },function(error, log){
+  if (!error)
+    console.log(log,'AAAAAAAlice');
+    self.setState({chan_data: []});
+    self.instantiateContract();
+});
+
+
+
                 //change owner in db, set aution to be 0
                 console.log('here');
                 // fetch('/api/buychan', {
@@ -142,10 +185,13 @@ export default class BuyNewChan extends React.Component {
                 //     body: JSON.stringify({id:chan_id, owner: this.state.account}),
                 //   }) 
 
-                alert("successful, you may need to wait for a while before the chan appear in MyChans");
+                // alert("successful, you may need to wait for a while before the chan appear in MyChans");
                 //refresh page
                 // self.fetch_data_from_db();
-              });
+              }).then(result=>{
+                console.log("before?");
+                
+              })
             });
           }
           else{
@@ -173,6 +219,13 @@ export default class BuyNewChan extends React.Component {
                 from:this.state.account,
                 gas:1000000
             }).then(result=>{
+              console.log(result,'addr???????');
+  var events = this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
+  if (!error)
+    await console.log(log,'AAAAAAAlice');
+    self.setState({chan_data: []});
+    self.instantiateContract();
+});
               // fetch('/api/buychan', {
               //       method: 'POST',
               //       headers: {
@@ -214,7 +267,6 @@ export default class BuyNewChan extends React.Component {
 
         self.setState({chan_data:[]});
         // self.fetch_data_from_db();
-
 
 
         // self.setState({chan_data:data});
@@ -294,11 +346,30 @@ export default class BuyNewChan extends React.Component {
 
 //   }
 
+contractEvents() {
+
+      
+
+       // contractForEvents.events.BalanceChanged({ filter: { _address: userAccount } }) // Try without the filter
+       // .on("data", function(event) {
+       //     let data = event.returnValues;
+       //     console.log(data);
+       //     refreshBalance();
+       //     $("#loader").hide();
+       // })
+       // .on("error", console.error);
+   }
+
+
 
   render() {
     const buy_func = this.buy.bind(this);
     const cancel_func = this.cancelAuction.bind(this);
     const account = this.state.account;
+
+
+
+
 
     return (
       <div>
@@ -316,7 +387,7 @@ export default class BuyNewChan extends React.Component {
                   <p>Price:{d.current_price}</p>
                   <p>Birth Date:{d.birthday}</p>
                   <p>
-                    {(d.owner === account) ? 
+                    {(d.seller === account) ? 
                         <Button bsStyle="primary" onClick={cancel_func.bind(null,d.id)}>
                           Cancel!
                         </Button>
