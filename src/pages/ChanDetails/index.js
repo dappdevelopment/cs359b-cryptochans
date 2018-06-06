@@ -80,6 +80,7 @@ export default class ChanDetails extends React.Component {
         }).catch(()=>{
           alert("Transaction fail.");
         })
+
     }
   
   componentWillMount() {
