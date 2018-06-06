@@ -202,7 +202,7 @@ export default class Mychans extends React.Component {
       {from:this.state.account}).then(result=> {
 
 
-          this.ChanCoreContract.Charging( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).get(async function(error, log){
+          this.ChanCoreContract.Charging( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
   if (!error){
     await console.log(log,'transaction complete');
     alert("Transaction successful submitted, you may need to wait for a while before it takes effect");

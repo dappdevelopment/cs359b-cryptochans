@@ -153,11 +153,10 @@ export default class BuyNewChan extends React.Component {
               }).then(result=>{
                 console.log(result);
                   alert("Transaction successful submitted, wait for a while for the transaction to go through");
-  this.SaleAuctionCoreContract.AuctionSuccessful({filter:{ fromBlock: 0 , toBlock: 'latest', address: result}}).get(async function(error, log){
-  console.log(error, log,'AAA');
+  this.SaleAuctionCoreContract.AuctionSuccessful({filter:{ fromBlock: 0 , toBlock: 'latest', address: result}}).watch(async function(error, log){
   if (!error){
     await console.log(log,'transaction complete');
-    if(log[0].args.winner==self.state.account){
+    if(log.args.winner==self.state.account){
       alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
     }
     else{
@@ -165,7 +164,7 @@ export default class BuyNewChan extends React.Component {
     }
 
     self.setState({loading:false});
-    console.log(log[0].args.tokenId.c[0],'work?');
+    console.log(log.args.tokenId.c[0],'work?');
     self.setState({chan_data: []});
     self.instantiateContract();
   }
@@ -211,12 +210,11 @@ export default class BuyNewChan extends React.Component {
             }).then(result=>{
               console.log(result,'addr???????');
               alert("Transaction successful submitted, wait for a while for the transaction to go through");
-  this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).get(async function(error, log){
+  this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
   if (!error){
-    console.log(log);
     alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
 
-    await console.log(log[0],'transaction complete!');
+    await console.log(log,'transaction complete!');
     self.setState({loading:false});
     self.setState({chan_data: []});
     self.instantiateContract();
