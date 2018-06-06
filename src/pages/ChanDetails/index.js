@@ -236,6 +236,13 @@ export default class ChanDetails extends React.Component {
        
         var formatTime = this.timeConverter(this.state.create_time);
 
+
+        const heart =null;
+
+
+
+
+
     return (
 
  <div>
@@ -246,6 +253,7 @@ export default class ChanDetails extends React.Component {
                 <Col xs={5} md={5}>
                 <Image style={{width: 300, height: 300}} src={this.state.chan_img} atl="800x800">
                 </Image>
+                {heart}
                 </Col>
                 <Col xs={2} md={2}>
                 Unlocked achievements:

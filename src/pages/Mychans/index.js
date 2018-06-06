@@ -1,12 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
-// import Card from 'material-ui/Card';
-
-// import AsyncCryptoChan from 'components/AsyncCryptoChan';
 
 import getWeb3 from '../../utils/getWeb3'
 import {Glyphicon,Button, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
-
 
 
 import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'

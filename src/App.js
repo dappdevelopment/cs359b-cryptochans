@@ -5,7 +5,7 @@ import getWeb3 from './utils/getWeb3'
 
 import logo from './logo.jpg'
 
-import {Button,Carousel, Grid,Col, Row} from 'react-bootstrap';
+import {Alert,Button,Carousel, Grid,Col, Row} from 'react-bootstrap';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
@@ -29,7 +29,8 @@ class App extends Component {
 
     this.state = {
       admin: false,
-      web3: null
+      web3: null,
+      hasAlert:false
     }
   }
 
@@ -69,6 +70,35 @@ class App extends Component {
     chanCore.setProvider(this.state.web3.currentProvider);
     saleClockAuction.setProvider(this.state.web3.currentProvider);
     // console.log(this.state.web3.currentProvider);
+
+
+      this.state.web3.version.getNetwork((err, netId) => {
+      switch (netId) {
+        case "1":
+          console.log('This is mainnet')
+          this.setState({eth_detect:true});
+          break
+        case "2":
+          console.log('This is the deprecated Morden test network.')
+          this.setState({eth_detect:false});
+          break
+        case "3":
+          console.log('This is the ropsten test network.')
+          this.setState({eth_detect:false});
+          break
+        case "4":
+          this.setState({eth_detect:true});
+          console.log('This is the Rinkeby test network.')
+          break
+        case "42":
+          console.log('This is the Kovan test network.')
+          this.setState({eth_detect:false});
+          break
+        default:
+          console.log('This is an unknown network.')
+          this.setState({eth_detect:true});
+      }
+    })
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
@@ -148,11 +178,17 @@ class App extends Component {
       'height':'30px'
     };
 
-    let eth_detect = this.state.web3?"./on.png":"./off.png";
+    let eth_detect = this.state.eth_detect?"./on.png":"./off.png";
+
+    var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
+  <strong>Please use the correct network!(Rinkeby)</strong></Alert>;
 
     return (
 
         <div>
+        <div>
+      {any_alert}
+      </div>
         <img style={iStyle} src={require(eth_detect)} alt="img not available"></img>
         <span style={pStyle} >Account Address: {this.state.account}</span>
         
