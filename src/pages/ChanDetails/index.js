@@ -57,7 +57,7 @@ export default class ChanDetails extends React.Component {
           {from:this.state.account}
         ).then(result=>{
           alert("Transaction submitted successful! It may take a while before you can see it on Marketplace ");
-            this.SaleAuctionContract.AuctionCreated( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).get(function(error, log){
+            this.SaleAuctionContract.AuctionCreated( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(function(error, log){
             if (!error)
               window.location="/cryptochans/cryptochans/MyChans"
           });

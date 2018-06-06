@@ -21,21 +21,16 @@ export default class BuyNewChan extends React.Component {
 
        this.state = {
         admin: false,
-        sort:"Sort By Name",
-        displayonly:"Display All",
-        loading:false
+        loading:false,
+        chan_data:[]
        }
-
-       this.sort=1;
-       this.displayonly=3;
-
-       // this.initialize();
 
     }
 
 
 
     instantiateContract() {
+      console.log('once?');
     self= this;
     /*
      * SMART CONTRACT EXAMPLE
@@ -55,33 +50,19 @@ export default class BuyNewChan extends React.Component {
     saleClockAuction.setProvider(this.state.web3.currentProvider);
 
 
-    chanCore.deployed().then((instance) => {
-
-
-
-
+    chanCore.deployed().then(async (instance) => {
         console.log("successfully deployed ChanCore");
         // this.setState({ChanCoreContract : instance});
-        self.ChanCoreContract=instance;
+        self.ChanCoreContract=await instance;
       }).then(()=>{
-        saleClockAuction.deployed().then((instance) => {
-
-//         var events = instance.allEvents( { filter: {fromBlock: 0, toBlock: 'latest'} },function(error, log){
-//   if (!error)
-//     console.log(log,'AAAAAAAlice');
-//     self.setState({chan_data: []});
-//     // self.instantiateContract();
-// });
-
-
-
-
-
-
-
-        // this.setState({SaleAuctionCoreContract:instance});
-        self.SaleAuctionCoreContract = instance;
+        saleClockAuction.deployed().then(async (instance) => {
         console.log("successfully deployed SaleClockAuction");
+        self.SaleAuctionCoreContract=await instance;
+
+
+
+
+
                  self.ChanCoreContract.totalSupply().then(totalChans => {
             totalChans = totalChans.c[0];
           for(const i = 0; i < totalChans+1; i++){
@@ -151,20 +132,28 @@ export default class BuyNewChan extends React.Component {
                 value:priceInWei,
                 gas:1000000
               }).then(result=>{
-  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
-  if (!error){
-    await console.log(log,'transaction complete');
-    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
-    self.setState({loading:false});
-    console.log(log.args.tokenId.c[0],'work?');
-    self.setState({chan_data: []});
-    self.instantiateContract();
-  }
-  else{
-    alert("Transaction failed!");
-    self.setState({loading:false});
-  }
-});
+
+                console.log(result);
+                alert("Transaction successful submitted, wait for a while for the transaction to go through");
+                this.SaleAuctionCoreContract.AuctionSuccessful({filter:{ fromBlock: 0 , toBlock: 'latest', address: result}}).watch(async function(error, log){
+                  if (!error){
+                    await console.log(log,'transaction complete');
+                    if(log.args.winner==self.state.account){
+                      alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
+                    }
+                    else{
+                      alert('Sad news...Someone else got the chan before you!');
+                    }
+
+                    self.setState({loading:false});
+                    console.log(log.args.tokenId.c[0],'work?');
+                    self.setState({chan_data: []});
+                    self.instantiateContract();
+                  } else {
+                    alert("Transaction failed!");
+                    self.setState({loading:false});
+                  }
+                });
               }).catch(()=>{
                 alert("Transaction failed!");
     self.setState({loading:false});
@@ -201,9 +190,17 @@ export default class BuyNewChan extends React.Component {
                 gas:1000000
             }).then(result=>{
               console.log(result,'addr???????');
+<<<<<<< HEAD
   this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
   if (!error){
     alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+=======
+              alert("Transaction successful submitted, wait for a while for the transaction to go through");
+  this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
+  if (!error){
+    alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
+
+>>>>>>> c117e0df9d5da062b7dfd4476cb28787c9f127ac
     await console.log(log,'transaction complete!');
     self.setState({loading:false});
     self.setState({chan_data: []});
@@ -237,10 +234,10 @@ export default class BuyNewChan extends React.Component {
 
     // initialize(){
     componentWillMount() {
-        const self=this;
 
-        getWeb3
-        .then(results => {
+
+                getWeb3
+        .then(async results => {
           this.setState({
             web3: results.web3
           });
@@ -249,19 +246,9 @@ export default class BuyNewChan extends React.Component {
             this.setState({account:accounts[0]});
           });
 
-          this.instantiateContract();        
+          await this.instantiateContract();  
+     
         })
-
-        // const { match, contract, contract2} = this.props;
-        // console.log(contract2);
-        // this.ChanCoreContract = contract2;
-        // this.SaleAuctionCoreContract = contract;
-
-        self.setState({chan_data:[]});
-        // self.fetch_data_from_db();
-
-
-        // self.setState({chan_data:data});
 
 
     }
@@ -365,7 +352,9 @@ export default class BuyNewChan extends React.Component {
         <FadeLoader
           color={'#123abc'} 
           loading={this.state.loading} 
-        />
+        >
+        Transaction pending...
+        </FadeLoader>
       </div>
 
 
