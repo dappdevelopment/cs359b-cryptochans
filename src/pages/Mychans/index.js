@@ -72,7 +72,7 @@ export default class Mychans extends React.Component {
             cur_chan.create_time = result[1].c[0];
             cur_chan.name = result[0];
             cur_chan.level = result[2].c[0];
-            cur_chan.gender = result[3]?"female":"male";
+            cur_chan.gender = result[4] ? "female" : "male";
             cur_chan.maxLevel= (result[3].c[0] + 1) * 10;
             cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
             self.setState({chan_data:self.state.chan_data.concat([cur_chan])});
