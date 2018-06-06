@@ -202,10 +202,10 @@ export default class Mychans extends React.Component {
       {from:this.state.account}).then(result=> {
 
 
-          this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
+          this.ChanCoreContract.Charging( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).get(async function(error, log){
   if (!error){
     await console.log(log,'transaction complete');
-    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+    alert("Transaction successful submitted, you may need to wait for a while before it takes effect");
   }
   else{
     alert("Transaction failed!");
@@ -225,6 +225,23 @@ export default class Mychans extends React.Component {
 
   handleBondingChan2Change(event){
     this.setState({bondingChanId2: event.target.value});
+  }
+
+  shokan(){
+    this.ChanCoreContract.shokan.sendTransaction(
+      this.state.shokanChanId,
+      this.state.newChanName,
+      {from:this.state.account}).then(result=> {console.log(result);});
+  }
+
+    handleShokanChanIdChange(event){
+    console.log(event.target.value);
+    this.setState({shokanChanId: event.target.value});
+  }
+
+  handleNewChanNameChange(event){
+    console.log(event.target.value);
+    this.setState({newChanName: event.target.value});
   }
 
 
@@ -279,8 +296,19 @@ export default class Mychans extends React.Component {
           <input placeholder="Second Chan ID" id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
           <br/>
           <Button style={bstyle} id="startBonding" onClick={this.startBonding.bind(this)}>
-            Bond and Shokan
+            Bond
             <Glyphicon glyph="heart" />
+          </Button>
+        </div>
+        <br/>
+        <br/>
+           <div>
+          <p>Shokan a new chan</p>
+          <input placeholder="chan ID" id="shokanChanId" type="text" onChange={this.handleShokanChanIdChange.bind(this)}></input>
+          <input placeholder="chan name" id="newChanName" type="text" onChange={this.handleNewChanNameChange.bind(this)}></input>
+          <Button style={bstyle} id="shokan" onClick={this.shokan.bind(this)}>
+            Shokan
+            <Glyphicon glyph="star" />
           </Button>
         </div>
         </Col>
