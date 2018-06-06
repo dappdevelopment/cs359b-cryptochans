@@ -5,6 +5,9 @@ import getWeb3 from '../../utils/getWeb3'
 import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../../../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 
+import { FadeLoader } from 'react-spinners';
+
+
 // import Card from 'material-ui/Card';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
@@ -19,7 +22,8 @@ export default class BuyNewChan extends React.Component {
        this.state = {
         admin: false,
         sort:"Sort By Name",
-        displayonly:"Display All"
+        displayonly:"Display All",
+        loading:false
        }
 
        this.sort=1;
@@ -201,6 +205,8 @@ export default class BuyNewChan extends React.Component {
     }
 
     cancelAuction(chan_id){
+      this.setState({loading:true});
+
         console.log(chan_id);
         self=this;
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
@@ -224,6 +230,7 @@ export default class BuyNewChan extends React.Component {
   if (!error)
     alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
     await console.log(log,'AAAAAAAlice');
+    self.setState({loading:false});
     self.setState({chan_data: []});
     self.instantiateContract();
 });
@@ -379,7 +386,21 @@ contractEvents() {
     return (
       <div>
         <h1>{this.contract2}</h1>
+
+
+        <div className='sweet-loading' style={{display: 'flex', justifyContent: 'center'}}>
+        <FadeLoader
+          color={'#123abc'} 
+          loading={this.state.loading} 
+        />
+      </div>
+
+
+
         <div>
+
+
+
           <Grid>
             <Row>
               {this.state.chan_data.map(function(d, idx){

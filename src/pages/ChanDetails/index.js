@@ -57,7 +57,19 @@ export default class ChanDetails extends React.Component {
           {from:this.state.account}
         ).then(result=>{
           alert("Transaction submitted successful! It may take a while before you can see it on Marketplace ");
-          window.location="/cryptochans/cryptochans/Marketplace"
+
+                                        console.log(result,'addr???????');
+
+            var events = this.SaleAuctionContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },function(error, log){
+            if (!error)
+              window.location="/cryptochans/cryptochans/Marketplace"
+          });
+
+
+
+
+
+          
           // fetch('/api/sellchan', {
           //           method: 'POST',
           //           headers: {

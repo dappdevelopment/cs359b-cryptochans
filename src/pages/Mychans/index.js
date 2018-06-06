@@ -7,41 +7,58 @@ import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-route
 import getWeb3 from '../../utils/getWeb3'
 import {Glyphicon,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
+
+
+import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'
+import SaleClockAuctionContract from '../../../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
+
 export default class Mychans extends React.Component {
     constructor(props) {
     super(props)
 
     this.state = {
-      chan_data:[]
+      chan_data:[],
+      loading:false
 
     }
 
   }
 
-    componentWillMount() {
-        const { match, contract1, contract2} = this.props;
-        // const selectedId = match.params.id;
-        console.log(contract2);
-        this.ChanCoreContract = contract2;
-        this.SaleAuctionCoreContract = contract1;
-
-        // const myChans = this.cryptotreesContract.getMyChans();
-        const i1 ="https://s3.amazonaws.com/cryptochans/1.jpg";
-        const i2="https://s3.amazonaws.com/cryptochans/2.jpg";
-        const i3="https://s3.amazonaws.com/cryptochans/3.jpg";
 
 
+  instantiateContract() {
+    self= this;
+    /*
+     * SMART CONTRACT EXAMPLE
+     *
+     * Normally these functions would be called in the context of a
+     * state management library, but for convenience I've placed them here.
+     */
 
-        getWeb3
-      .then(results => {
-        this.setState({
-          web3: results.web3
-        })
+    const contract = require('truffle-contract')
 
-        const self = this;
+    //Extract contract ABI
+    const chanCore = contract(ChanCoreContract);
+    const saleClockAuction = contract(SaleClockAuctionContract);
+
+    //Set Web3 Providers
+    chanCore.setProvider(this.state.web3.currentProvider);
+    saleClockAuction.setProvider(this.state.web3.currentProvider);
+
+
+    chanCore.deployed().then((instance) => {
+
+
+
+
+        console.log("successfully deployed ChanCore");
+        // this.setState({ChanCoreContract : instance});
+        self.ChanCoreContract=instance;
+      }).then(()=>{
+        saleClockAuction.deployed().then((instance) => {
 
         // Get accounts.
-        results.web3.eth.getAccounts((error, accounts) => {
+        this.state.web3.eth.getAccounts((error, accounts) => {
           console.log(accounts[0],"I am owner");
           this.setState({account:accounts[0]});
           self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
@@ -52,9 +69,6 @@ export default class Mychans extends React.Component {
             else{
           const chanIdList=result;
         self.setState({chan_data:[]});
-
-
-
         for (var i = chanIdList.length - 1; i >= 0; i--) {
             const id = chanIdList[i].c[0];
             self.ChanCoreContract.getChan(id).then(result=> {
@@ -77,13 +91,114 @@ export default class Mychans extends React.Component {
 
           });
         })
-      }).catch(() => {
-        console.log('Error finding web3.')
-      })
+      }
 
-        // function tokensOfOwner(address _owner) 
-        // this.setState({chan_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
+
+
+
+
+
+
+
+      );
+    });
+
+  }
+
+
+
+    componentWillMount() {
+        const self=this;
+
+        getWeb3
+        .then(results => {
+          this.setState({
+            web3: results.web3
+          });
+          // Get accounts.
+          results.web3.eth.getAccounts((error, accounts) => {
+            this.setState({account:accounts[0]});
+          });
+
+          this.instantiateContract();        
+        })
+
+        self.setState({chan_data:[]});
+
+
+
     }
+
+
+
+
+
+    // componentWillMount() {
+    //     const { match, contract1, contract2} = this.props;
+    //     // const selectedId = match.params.id;
+    //     console.log(contract2);
+    //     this.ChanCoreContract = contract2;
+    //     this.SaleAuctionCoreContract = contract1;
+
+    //     // const myChans = this.cryptotreesContract.getMyChans();
+    //     const i1 ="https://s3.amazonaws.com/cryptochans/1.jpg";
+    //     const i2="https://s3.amazonaws.com/cryptochans/2.jpg";
+    //     const i3="https://s3.amazonaws.com/cryptochans/3.jpg";
+
+
+
+    //     getWeb3
+    //   .then(results => {
+    //     this.setState({
+    //       web3: results.web3
+    //     })
+
+    //     const self = this;
+
+    //     // Get accounts.
+    //     results.web3.eth.getAccounts((error, accounts) => {
+    //       console.log(accounts[0],"I am owner");
+    //       this.setState({account:accounts[0]});
+    //       self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
+    //         console.log("???",result);
+    //         if (result.length==0){
+    //         alert("You don't have any Chans");
+    //         }
+    //         else{
+    //       const chanIdList=result;
+    //     self.setState({chan_data:[]});
+
+
+
+    //     for (var i = chanIdList.length - 1; i >= 0; i--) {
+    //         const id = chanIdList[i].c[0];
+    //         self.ChanCoreContract.getChan(id).then(result=> {
+    //         console.log(result); 
+    //         var cur_chan={"id":id};
+    //         cur_chan.create_time = result[1].c[0];
+    //         cur_chan.name = result[0];
+    //         cur_chan.level = result[2].c[0];
+    //         cur_chan.gender = result[3]?"female":"male";
+    //         console.log(id,typeof(id));
+    //         cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
+    //         console.log(cur_chan.url);
+    //         self.setState({chan_data:self.state.chan_data.concat([cur_chan])});
+    //       });
+    //     }
+    //   }
+
+
+
+
+    //       });
+    //     })
+    //   }).catch(() => {
+    //     console.log('Error finding web3.')
+    //   })
+
+    //     // function tokensOfOwner(address _owner) 
+    //     // this.setState({chan_data:[{"id":0,"url":i1, "name":"Alice"},{"id":1,"url":i2,"name":"Holly"},{"id":2,"url":i3, "name":"Bella"}]});
+    // }
 
 
       startBonding(){

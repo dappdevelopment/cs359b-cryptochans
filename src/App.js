@@ -207,6 +207,8 @@ class App extends Component {
                             </Carousel.Item>
                           </Carousel>
                         </Row>
+                        
+
                       </Col>
                     </Grid>
                   }/>
