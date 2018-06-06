@@ -333,14 +333,7 @@ export default class ChanDetails extends React.Component {
                         <Button  onClick={this.handleShow.bind(this)}>
                         Chat with me
                         </Button>
-                        <Popover
-                            id="popover-basic"
-                            placement="right"
-                            positionLeft={120}
-                            positionTop={30}
-                            >
-                            Currently, only support Chinese=。=
-                        </Popover>
+
                         <br/>
                        
                         

@@ -134,7 +134,7 @@ export default class BuyNewChan extends React.Component {
               }).then(result=>{
 
                 console.log(result);
-                  alert("Transaction successful submitted, wait for a while for the transaction to go through");
+                  alert("Transaction successful submitted, wait for a while for the transaction to go through. (It may fail because of concurrent transactions)");
                   self.setState({loading:false});
 //   this.SaleAuctionCoreContract.AuctionSuccessful({filter:{ fromBlock: 0 , toBlock: 'latest', address: result}}).watch(async function(error, log){
 //   if (!error){
@@ -193,7 +193,7 @@ export default class BuyNewChan extends React.Component {
                 gas:1000000
             }).then(result=>{
 
-              alert("Transaction successful submitted, wait for a while for the transaction to go through");
+              alert("Transaction successful submitted, wait for a while for the transaction to go through. (It may fail because of concurrent transactions)");
               self.setState({loading:false});
 //   this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
 //   if (!error){
