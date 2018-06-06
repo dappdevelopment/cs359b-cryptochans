@@ -68,11 +68,10 @@ class App extends Component {
     //Set Web3 Providers
     chanCore.setProvider(this.state.web3.currentProvider);
     saleClockAuction.setProvider(this.state.web3.currentProvider);
-    console.log(this.state.web3.currentProvider);
+    // console.log(this.state.web3.currentProvider);
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      console.log(accounts);
       console.log({userAccount: accounts[0]});
       this.setState({account:accounts[0]});
 
@@ -81,9 +80,9 @@ class App extends Component {
         console.log(instance);
         this.setState({chanCoreInstance : instance});
 
-        instance.getChan(0).then(result=> {console.log("Chan #0: " + result); });
-        instance.ownerOf(0).then(result=> {console.log("Owner of Chan #0: " + result); });
-        instance.saleAuction().then(result => {console.log("Sale Auction Address: " + result); });
+        // instance.getChan(0).then(result=> {console.log("Chan #0: " + result); });
+        // instance.ownerOf(0).then(result=> {console.log("Owner of Chan #0: " + result); });
+        // instance.saleAuction().then(result => {console.log("Sale Auction Address: " + result); });
 
         instance.owner().then(result=> {
           console.log("Contract Owner: " + result);
@@ -95,7 +94,6 @@ class App extends Component {
 
       saleClockAuction.deployed().then((instance) => {
         this.setState({saleClockAuctionInstance:instance});
-
         console.log("successfully deployed SaleClockAuction");
         console.log(instance);
   

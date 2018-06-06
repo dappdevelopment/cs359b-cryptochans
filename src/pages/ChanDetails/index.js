@@ -23,11 +23,6 @@ export default class ChanDetails extends React.Component {
     };
   }
 
-  // refreshState(){
-  //   this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
-  // }
-
-
   levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
@@ -57,12 +52,9 @@ export default class ChanDetails extends React.Component {
           {from:this.state.account}
         ).then(result=>{
           alert("Transaction submitted successful! It may take a while before you can see it on Marketplace ");
-
-                                        console.log(result,'addr???????');
-
             var events = this.SaleAuctionContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },function(error, log){
             if (!error)
-              window.location="/cryptochans/cryptochans/Marketplace"
+              window.location="/cryptochans/cryptochans/MyChans"
           });
 
 
@@ -80,7 +72,9 @@ export default class ChanDetails extends React.Component {
           //           window.location="/cryptochans/cryptochans/Mychans"
           //         });
           
-        });
+        }).catch(()=>{
+          alert("Transaction fail.");
+        })
     }
   
   componentWillMount() {
@@ -90,15 +84,12 @@ export default class ChanDetails extends React.Component {
 
       const { match, contract,contract2} = this.props;
       const selectedId = match.params.id;
-      console.log(selectedId,'id?');
-      console.log(contract,'contract?');
       
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
       this.ChanCoreContract.checkInTimer().then(checkInTimer => {
-        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
-          console.log("heyyyyyyyyyyyyy", this);
+        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log('chan:',result); 
           this.setState({name:result[0]}); 
           this.setState({create_time:result[1].c[0]});
           this.setState({level:result[2].c[0]});
@@ -110,14 +101,11 @@ export default class ChanDetails extends React.Component {
           this.setState({checkInStreak:result[6].c[0]});
           this.setState({cooldownEndTime:this.timeConverter(result[7].c[0])});
           this.setState({shokanPartnerId:result[8].c[0]});
-          console.log("Chan Info:",this.state);
           this.setState({difficult_level:500*(result[2].c[0]+1)});
         });
       });
 
-     //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
       const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)).toString()+".jpg";
-      console.log('iiiiiii',i1);
       const sell_func = this.sell.bind(this);
       // console.log(this.state.value);
 
@@ -209,18 +197,15 @@ export default class ChanDetails extends React.Component {
 
 
   handleLowPriceChange(event){
-    console.log(event.target.value);
     this.setState({low: event.target.value});
   }
 
   handleHighPriceChange(event){
-    console.log(event.target.value);
     this.setState({high: event.target.value});
   }
 
 
   handleDurChange(event){
-    console.log(event.target.value);
     this.setState({dur: event.target.value});
   }
 
@@ -242,7 +227,6 @@ export default class ChanDetails extends React.Component {
 
 
   render() {
-    console.log(this.state.level);
         const popover = (
       <Popover id="modal-popover" title="popover">
         very popover. such engagement

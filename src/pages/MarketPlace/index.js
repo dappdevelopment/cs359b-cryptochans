@@ -98,6 +98,7 @@ export default class BuyNewChan extends React.Component {
                   chan.level = chanData[2].c[0];
                   chan.gender = chanData[3] ? "female" : "male";
                   chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+                  chan.maxLevel= (chanData[3].c[0] + 1) * 10;
                 }).then( () => {
                   self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
                     chan.seller           = auctionData[0];
@@ -380,7 +381,7 @@ export default class BuyNewChan extends React.Component {
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
-                  <p>Level:{d.level}</p>
+                  <p>Level:{d.level}/{d.maxLevel}</p>
                   <p>Price:{d.current_price}</p>
                   <p>
                     {(d.seller === account) ? 

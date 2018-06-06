@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-route
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
 
 import getWeb3 from '../../utils/getWeb3'
-import {Glyphicon,Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Glyphicon,Button, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
 
 
 
@@ -62,25 +62,23 @@ export default class Mychans extends React.Component {
           console.log(accounts[0],"I am owner");
           this.setState({account:accounts[0]});
           self.ChanCoreContract.tokensOfOwner(accounts[0]).then(result=>{
-            console.log("???",result);
             if (result.length==0){
-            alert("You don't have any Chans");
+            alert("You don't have any Chans, You will be redirected to Marketplace");
+            window.location="/cryptochans/cryptochans/Marketplace"
             }
             else{
           const chanIdList=result;
         self.setState({chan_data:[]});
         for (var i = chanIdList.length - 1; i >= 0; i--) {
             const id = chanIdList[i].c[0];
-            self.ChanCoreContract.getChan(id).then(result=> {
-            console.log(result); 
+            self.ChanCoreContract.getChan(id).then(result=> { 
             var cur_chan={"id":id};
             cur_chan.create_time = result[1].c[0];
             cur_chan.name = result[0];
             cur_chan.level = result[2].c[0];
             cur_chan.gender = result[3]?"female":"male";
-            console.log(id,typeof(id));
+            cur_chan.maxLevel= (result[3].c[0] + 1) * 10;
             cur_chan.url = "https://s3.amazonaws.com/cryptochans/"+(id)+".jpg";
-            console.log(cur_chan.url);
             self.setState({chan_data:self.state.chan_data.concat([cur_chan])});
           });
         }
@@ -205,16 +203,31 @@ export default class Mychans extends React.Component {
     this.ChanCoreContract.bondWith.sendTransaction(
       this.state.bondingChanId1,
       this.state.bondingChanId2,
-      {from:this.state.account}).then(result=> {console.log(result);});
+      {from:this.state.account}).then(result=> {
+
+
+          this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
+  if (!error){
+    await console.log(log,'transaction complete');
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+  }
+  else{
+    alert("Transaction failed!");
+  }
+});
+
+
+
+      }).catch(()=>{
+        alert("Shokan fail");
+      })
   }
 
   handleBondingChan1Change(event){
-    console.log(event.target.value);
     this.setState({bondingChanId1: event.target.value});
   }
 
   handleBondingChan2Change(event){
-    console.log(event.target.value);
     this.setState({bondingChanId2: event.target.value});
   }
 
@@ -255,7 +268,7 @@ export default class Mychans extends React.Component {
                     <h3>Name:{d.name}</h3>
                     <p>Chan:{d.id}</p>
                     <p>Gender:{d.gender}</p>
-                    <p>Level:{d.level}</p>
+                    <p>Level:{d.level}/{d.maxLevel}</p>
                 </Thumbnail>
                 </Link> 
                 </Col>)
@@ -270,7 +283,7 @@ export default class Mychans extends React.Component {
           <input placeholder="Second Chan ID" id="bondingChanId2" type="text" onChange={this.handleBondingChan2Change.bind(this)}></input>
           <br/>
           <Button style={bstyle} id="startBonding" onClick={this.startBonding.bind(this)}>
-            Bond
+            Bond and Shokan
             <Glyphicon glyph="heart" />
           </Button>
         </div>
