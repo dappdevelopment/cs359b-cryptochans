@@ -21,21 +21,16 @@ export default class BuyNewChan extends React.Component {
 
        this.state = {
         admin: false,
-        sort:"Sort By Name",
-        displayonly:"Display All",
-        loading:false
+        loading:false,
+        chan_data:[]
        }
-
-       this.sort=1;
-       this.displayonly=3;
-
-       // this.initialize();
 
     }
 
 
 
     instantiateContract() {
+      console.log('once?');
     self= this;
     /*
      * SMART CONTRACT EXAMPLE
@@ -55,33 +50,19 @@ export default class BuyNewChan extends React.Component {
     saleClockAuction.setProvider(this.state.web3.currentProvider);
 
 
-    chanCore.deployed().then((instance) => {
-
-
-
-
+    chanCore.deployed().then(async (instance) => {
         console.log("successfully deployed ChanCore");
         // this.setState({ChanCoreContract : instance});
-        self.ChanCoreContract=instance;
+        self.ChanCoreContract=await instance;
       }).then(()=>{
-        saleClockAuction.deployed().then((instance) => {
-
-//         var events = instance.allEvents( { filter: {fromBlock: 0, toBlock: 'latest'} },function(error, log){
-//   if (!error)
-//     console.log(log,'AAAAAAAlice');
-//     self.setState({chan_data: []});
-//     // self.instantiateContract();
-// });
-
-
-
-
-
-
-
-        // this.setState({SaleAuctionCoreContract:instance});
-        self.SaleAuctionCoreContract = instance;
+        saleClockAuction.deployed().then(async (instance) => {
         console.log("successfully deployed SaleClockAuction");
+        self.SaleAuctionCoreContract=await instance;
+
+
+
+
+
                  self.ChanCoreContract.totalSupply().then(totalChans => {
             totalChans = totalChans.c[0];
           for(const i = 0; i < totalChans+1; i++){
@@ -247,10 +228,10 @@ export default class BuyNewChan extends React.Component {
 
     // initialize(){
     componentWillMount() {
-        const self=this;
 
-        getWeb3
-        .then(results => {
+
+                getWeb3
+        .then(async results => {
           this.setState({
             web3: results.web3
           });
@@ -259,19 +240,9 @@ export default class BuyNewChan extends React.Component {
             this.setState({account:accounts[0]});
           });
 
-          this.instantiateContract();        
+          await this.instantiateContract();  
+     
         })
-
-        // const { match, contract, contract2} = this.props;
-        // console.log(contract2);
-        // this.ChanCoreContract = contract2;
-        // this.SaleAuctionCoreContract = contract;
-
-        self.setState({chan_data:[]});
-        // self.fetch_data_from_db();
-
-
-        // self.setState({chan_data:data});
 
 
     }
@@ -375,7 +346,9 @@ export default class BuyNewChan extends React.Component {
         <FadeLoader
           color={'#123abc'} 
           loading={this.state.loading} 
-        />
+        >
+        Transaction pending...
+        </FadeLoader>
       </div>
 
 

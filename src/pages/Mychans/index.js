@@ -6,8 +6,6 @@ import {Glyphicon,Button, Grid, Image, Row, Col, Thumbnail} from 'react-bootstra
 
 
 import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'
-import SaleClockAuctionContract from '../../../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
-
 export default class Mychans extends React.Component {
     constructor(props) {
     super(props)
@@ -15,7 +13,6 @@ export default class Mychans extends React.Component {
     this.state = {
       chan_data:[],
       loading:false
-
     }
 
   }
@@ -35,24 +32,14 @@ export default class Mychans extends React.Component {
 
     //Extract contract ABI
     const chanCore = contract(ChanCoreContract);
-    const saleClockAuction = contract(SaleClockAuctionContract);
-
     //Set Web3 Providers
     chanCore.setProvider(this.state.web3.currentProvider);
-    saleClockAuction.setProvider(this.state.web3.currentProvider);
 
 
-    chanCore.deployed().then((instance) => {
-
-
-
-
+    chanCore.deployed().then(async (instance) => {
         console.log("successfully deployed ChanCore");
-        // this.setState({ChanCoreContract : instance});
-        self.ChanCoreContract=instance;
+        self.ChanCoreContract=await instance;
       }).then(()=>{
-        saleClockAuction.deployed().then((instance) => {
-
         // Get accounts.
         this.state.web3.eth.getAccounts((error, accounts) => {
           console.log(accounts[0],"I am owner");
@@ -79,21 +66,8 @@ export default class Mychans extends React.Component {
           });
         }
       }
-
-
-
-
           });
-        })
       }
-
-
-
-
-
-
-
-
       );
     });
 
@@ -116,8 +90,6 @@ export default class Mychans extends React.Component {
 
           this.instantiateContract();        
         })
-
-        self.setState({chan_data:[]});
 
 
 
