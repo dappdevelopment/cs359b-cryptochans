@@ -4,6 +4,7 @@ import Chat from './Chat.js';
 
 
 import getWeb3 from '../../utils/getWeb3'
+import { FadeLoader } from 'react-spinners';
 
 // import Grid from 'material-ui/Grid';
 
@@ -18,8 +19,8 @@ export default class ChanDetails extends React.Component {
     super(props);
     this.state = {
       intimacy:0,
-      chan_data:[]
-
+      chan_data:[],
+      loading:false,
     };
   }
 
@@ -47,6 +48,7 @@ export default class ChanDetails extends React.Component {
 
 
     sell(){
+      self.setState({loading:true});
       this.handleSellClose();
         console.log("sell");
         this.ChanCoreContract.createSaleAuction.sendTransaction(
@@ -57,15 +59,12 @@ export default class ChanDetails extends React.Component {
           {from:this.state.account}
         ).then(result=>{
           alert("Transaction submitted successful! It may take a while before you can see it on Marketplace ");
-            this.SaleAuctionContract.AuctionCreated( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(function(error, log){
-            if (!error)
-              window.location="/cryptochans/cryptochans/MyChans"
-          });
-
-
-
-
-
+          //   this.SaleAuctionContract.AuctionCreated( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(function(error, log){
+          //   if (!error)
+          //     window.location="/cryptochans/cryptochans/MyChans"
+          // });
+          self.setState({loading:false});
+          window.location="/cryptochans/cryptochans/MyChans"
           
           // fetch('/api/sellchan', {
           //           method: 'POST',
@@ -79,6 +78,8 @@ export default class ChanDetails extends React.Component {
           
         }).catch(()=>{
           alert("Transaction fail.");
+          self.setState({loading:false});
+
         })
 
     }
@@ -273,6 +274,14 @@ export default class ChanDetails extends React.Component {
     return (
 
  <div>
+ <div className='sweet-loading' style={{display: 'flex', justifyContent: 'center'}}>
+        <FadeLoader
+          color={'#123abc'} 
+          loading={this.state.loading} 
+        >
+        Transaction pending...
+        </FadeLoader>
+      </div>
     <h1>Cryptochan Name:{this.state.name}</h1>
     <div>
         <Grid>

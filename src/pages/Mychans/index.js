@@ -92,6 +92,9 @@ export default class Mychans extends React.Component {
         })
 
 
+        self.setState({chan_data:[]});
+
+
 
     }
 
@@ -172,22 +175,20 @@ export default class Mychans extends React.Component {
       this.state.bondingChanId1,
       this.state.bondingChanId2,
       {from:this.state.account}).then(result=> {
-
-
-          this.ChanCoreContract.Charging( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
-  if (!error){
-    await console.log(log,'transaction complete');
-    alert("Transaction successful submitted, you may need to wait for a while before it takes effect");
-  }
-  else{
-    alert("Transaction failed!");
-  }
-});
-
-
+        alert("Transaction successful submitted, you may need to wait for a while before it takes effect");
+//           this.ChanCoreContract.Charging( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
+//   if (!error){
+//     await console.log(log,'transaction complete');
+//     alert("Transaction successful submitted, you may need to wait for a while before it takes effect");
+    
+//   }
+//   else{
+//     alert("Transaction failed!");
+//   }
+// });
 
       }).catch(()=>{
-        alert("Shokan fail");
+        alert("bond fail");
       })
   }
 
@@ -203,7 +204,11 @@ export default class Mychans extends React.Component {
     this.ChanCoreContract.shokan.sendTransaction(
       this.state.shokanChanId,
       this.state.newChanName,
-      {from:this.state.account}).then(result=> {console.log(result);});
+      {from:this.state.account}).then(result=> {
+        alert("Transaction successful submitted, you may need to wait for a while before it takes effect");
+        console.log(result);}).catch(()=>{
+          alert("Shokan fail");
+        })
   }
 
     handleShokanChanIdChange(event){
