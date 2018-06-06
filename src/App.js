@@ -4,14 +4,9 @@ import SaleClockAuctionContract from '../node_modules/cryptochans/build/contract
 import getWeb3 from './utils/getWeb3'
 
 import logo from './logo.jpg'
-import PropTypes from 'prop-types'
 
-import AppBar from 'material-ui/AppBar'
-import Tabs, { Tab } from 'material-ui/Tabs'
-import Toolbar from 'material-ui/Toolbar'
-
-import {Alert,Navbar, Jumbotron, Button, Panel,Carousel, Grid,Col, Row} from 'react-bootstrap';
-import {BrowserRouter as Router, Switch, Route, Link, NavLink} from 'react-router-dom';
+import {Button,Carousel, Grid,Col, Row} from 'react-bootstrap';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 
 
@@ -93,8 +88,8 @@ class App extends Component {
         instance.owner().then(result=> {
           console.log("Contract Owner: " + result);
           console.log("Current Account: " + this.state.account);
-          console.log("IsOwner: " + (result==this.state.account));
-          this.setState({admin:result==this.state.account});
+          console.log("IsOwner: " + (result===this.state.account));
+          this.setState({admin:result===this.state.account});
         });
       });
 
@@ -147,7 +142,6 @@ class App extends Component {
           <Link to="/cryptochans/Admin"><Button bsStyle="info">Admin</Button></Link>:null;
 
     const pStyle = {
-     'margin-top': '10px',
       'color': '#f4428c'
     };
 
@@ -161,7 +155,7 @@ class App extends Component {
     return (
 
         <div>
-        <img style={iStyle} src={require(eth_detect)}></img>
+        <img style={iStyle} src={require(eth_detect)} alt="img not available"></img>
         <span style={pStyle} >Account Address: {this.state.account}</span>
         
           <Router basename={'/cryptochans/'}>
