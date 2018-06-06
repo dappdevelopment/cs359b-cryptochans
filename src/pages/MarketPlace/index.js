@@ -190,27 +190,22 @@ export default class BuyNewChan extends React.Component {
                 gas:1000000
             }).then(result=>{
               console.log(result,'addr???????');
-<<<<<<< HEAD
-  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
-  if (!error){
-    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
-=======
-              alert("Transaction successful submitted, wait for a while for the transaction to go through");
-  this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
-  if (!error){
-    alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
 
->>>>>>> c117e0df9d5da062b7dfd4476cb28787c9f127ac
-    await console.log(log,'transaction complete!');
-    self.setState({loading:false});
-    self.setState({chan_data: []});
-    self.instantiateContract();
-  }
-  else{
-    alert("Transaction fails! ");
-    self.setState({loading:false});
-  }
-});
+              alert("Transaction successful submitted, wait for a while for the transaction to go through");
+              this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
+                if (!error){
+                  alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
+
+
+                  await console.log(log,'transaction complete!');
+                  self.setState({loading:false});
+                  self.setState({chan_data: []});
+                  self.instantiateContract();
+                } else {
+                  alert("Transaction fails! ");
+                  self.setState({loading:false});
+                }
+              });
               // fetch('/api/buychan', {
               //       method: 'POST',
               //       headers: {
