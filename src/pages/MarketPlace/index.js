@@ -76,10 +76,10 @@ export default class BuyNewChan extends React.Component {
                   chan.id = id;
                   chan.name = chanData[0];
                   chan.create_time = chanData[1].c[0];
-                  chan.level = chanData[2].c[0];
+                  chan.level = chanData[2].toNumber();
                   chan.gender = chanData[4] ? "female" : "male";
                   chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                  chan.maxLevel= (chanData[3].c[0] + 1) * 10;
+                  chan.maxLevel= (chanData[3].toNumber() + 1) * 10;
                 }).then( () => {
                   self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
                     chan.seller           = auctionData[0];
@@ -132,6 +132,7 @@ export default class BuyNewChan extends React.Component {
                 value:priceInWei,
                 gas:1000000
               }).then(result=>{
+
                 console.log(result);
                   alert("Transaction successful submitted, wait for a while for the transaction to go through");
                   self.setState({loading:false});
@@ -155,6 +156,7 @@ export default class BuyNewChan extends React.Component {
 //     self.setState({loading:false});
 //   }
 // });
+
               }).catch(()=>{
                 alert("Transaction failed!");
     self.setState({loading:false});
@@ -190,6 +192,7 @@ export default class BuyNewChan extends React.Component {
                 from:this.state.account,
                 gas:1000000
             }).then(result=>{
+
               alert("Transaction successful submitted, wait for a while for the transaction to go through");
               self.setState({loading:false});
 //   this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
@@ -206,6 +209,24 @@ export default class BuyNewChan extends React.Component {
 //     self.setState({loading:false});
 //   }
 // });
+
+//               console.log(result,'addr???????');
+
+//               alert("Transaction successful submitted, wait for a while for the transaction to go through");
+//               this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).watch(async function(error, log){
+//                 if (!error){
+//                   alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
+
+
+//                   await console.log(log,'transaction complete!');
+//                   self.setState({loading:false});
+//                   self.setState({chan_data: []});
+//                   self.instantiateContract();
+//                 } else {
+//                   alert("Transaction fails! ");
+//                   self.setState({loading:false});
+//                 }
+//               });
               // fetch('/api/buychan', {
               //       method: 'POST',
               //       headers: {
