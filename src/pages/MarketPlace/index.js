@@ -5,20 +5,29 @@ import getWeb3 from '../../utils/getWeb3'
 import ChanCoreContract from '../../../node_modules/cryptochans/build/contracts/ChanCore.json'
 import SaleClockAuctionContract from '../../../node_modules/cryptochans/build/contracts/SaleClockAuction.json'
 
+import { FadeLoader } from 'react-spinners';
+
+
 // import Card from 'material-ui/Card';
 
 // import AsyncCryptoChan from 'components/AsyncCryptoChan';
 
 
-import {Navbar, Jumbotron, Button, Panel, Grid, Image, Row, Col, Thumbnail} from 'react-bootstrap';
+import { Glyphicon,Button,  Grid, Row, Col, Thumbnail} from 'react-bootstrap';
 
 export default class BuyNewChan extends React.Component {
     constructor(props) {
        super(props)
 
        this.state = {
-         admin: false,
+        admin: false,
+        sort:"Sort By Name",
+        displayonly:"Display All",
+        loading:false
        }
+
+       this.sort=1;
+       this.displayonly=3;
 
        // this.initialize();
 
@@ -45,52 +54,66 @@ export default class BuyNewChan extends React.Component {
     chanCore.setProvider(this.state.web3.currentProvider);
     saleClockAuction.setProvider(this.state.web3.currentProvider);
 
+
     chanCore.deployed().then((instance) => {
+
+
+
+
         console.log("successfully deployed ChanCore");
         // this.setState({ChanCoreContract : instance});
         self.ChanCoreContract=instance;
       }).then(()=>{
         saleClockAuction.deployed().then((instance) => {
+
+//         var events = instance.allEvents( { filter: {fromBlock: 0, toBlock: 'latest'} },function(error, log){
+//   if (!error)
+//     console.log(log,'AAAAAAAlice');
+//     self.setState({chan_data: []});
+//     // self.instantiateContract();
+// });
+
+
+
+
+
+
+
         // this.setState({SaleAuctionCoreContract:instance});
         self.SaleAuctionCoreContract = instance;
         console.log("successfully deployed SaleClockAuction");
                  self.ChanCoreContract.totalSupply().then(totalChans => {
-            console.log('uysfsiofsdfsfsf',totalChans.c[0]);
             totalChans = totalChans.c[0];
           for(const i = 0; i < totalChans+1; i++){
-            console.log(i);
 
             const id=i;
             self.SaleAuctionCoreContract.isOnAuction(id).then( isOnAuction => {
-                console.log(id,isOnAuction);
 
-              // if(isOnAuction){
-              //   const chan = {};
-              //   self.ChanCoreContract.getChan(id).then( chanData => {
-              //   console.log(id);
-              //     chan.id = id;
-              //     chan.name = chanData[0];
-              //     chan.create_time = chanData[1].c[0];
-              //     chan.level = chanData[2].c[0];
-              //     chan.gender = chanData[3] ? "female" : "male";
-              //     chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-              //   }).then( () => {
-              //     console.log(chan);
-              //     self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
-              //       chan.seller           = auctionData[0];
-              //       chan.starting_price   = auctionData[1];
-              //       chan.ending_price     = auctionData[2];
-              //       chan.auction_duration = auctionData[3];
-              //       chan.started_at       = auctionData[4];
-              //     });
-              //   }).then( () => {
-              //     self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
-              //       chan.current_price = price/1000000000000000+" (milliETH)";
-              //       console.log(chan);
-              //     self.setState({fake_data:self.state.fake_data.concat([chan])});
-              //     });
-              //   });
-              // }
+              if(isOnAuction){
+                const chan = {};
+                self.ChanCoreContract.getChan(id).then( chanData => {
+                  chan.id = id;
+                  chan.name = chanData[0];
+                  chan.create_time = chanData[1].c[0];
+                  chan.level = chanData[2].c[0];
+                  chan.gender = chanData[3] ? "female" : "male";
+                  chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
+                  chan.maxLevel= (chanData[3].c[0] + 1) * 10;
+                }).then( () => {
+                  self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
+                    chan.seller           = auctionData[0];
+                    chan.starting_price   = auctionData[1];
+                    chan.ending_price     = auctionData[2];
+                    chan.auction_duration = auctionData[3];
+                    chan.started_at       = auctionData[4];
+                  });
+                }).then( () => {
+                  self.SaleAuctionCoreContract.getCurrentPrice(i).then( price => {
+                    chan.current_price = price/1000000000000000+" (milliETH)";
+                  self.setState({chan_data:self.state.chan_data.concat([chan])});
+                  });
+                });
+              }
             });
           }
         });
@@ -101,7 +124,8 @@ export default class BuyNewChan extends React.Component {
 
 
     buy(chan_id){
-        console.log(chan_id);
+      this.setState({loading:true});
+        console.log('buy:',chan_id);
         self = this;
         // if(!self.checkDBOnAuction(chan_id)){
         //   alert("Someone bought this before you! Good luck next time!");
@@ -127,30 +151,38 @@ export default class BuyNewChan extends React.Component {
                 value:priceInWei,
                 gas:1000000
               }).then(result=>{
-                //change owner in db, set aution to be 0
-                console.log('here');
-                fetch('/api/buychan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
-                  }) 
-
-                alert("successful, you may need to wait for a while before the chan appear in MyChans");
-                //refresh page
-                self.fetch_data_from_db();
-              });
+  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
+  if (!error){
+    await console.log(log,'transaction complete');
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+    self.setState({loading:false});
+    console.log(log.args.tokenId.c[0],'work?');
+    self.setState({chan_data: []});
+    self.instantiateContract();
+  }
+  else{
+    alert("Transaction failed!");
+    self.setState({loading:false});
+  }
+});
+              }).catch(()=>{
+                alert("Transaction failed!");
+    self.setState({loading:false});
+                
+              })
             });
           }
           else{
             alert("The chan is not on auction!");
+            self.setState({loading:false});
           }
         });
     }
 
     cancelAuction(chan_id){
-        console.log(chan_id);
+      this.setState({loading:true});
+
+        console.log('cancel:',chan_id);
         self=this;
         this.ChanCoreContract.balanceOf(this.state.account).then(result=> {console.log("Account Balance:"+result);});
         this.ChanCoreContract.balanceOf(this.SaleAuctionCoreContract.address).then(result=> {console.log("Contract Balance:"+result);});
@@ -168,15 +200,37 @@ export default class BuyNewChan extends React.Component {
                 from:this.state.account,
                 gas:1000000
             }).then(result=>{
-              fetch('/api/buychan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:chan_id, owner: this.state.account}),
-                  });
-              self.fetch_data_from_db();
-            });
+              console.log(result,'addr???????');
+  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
+  if (!error){
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+    await console.log(log,'transaction complete!');
+    self.setState({loading:false});
+    self.setState({chan_data: []});
+    self.instantiateContract();
+  }
+  else{
+    alert("Transaction fails! ");
+    self.setState({loading:false});
+  }
+});
+              // fetch('/api/buychan', {
+              //       method: 'POST',
+              //       headers: {
+              //         'Content-Type': 'application/json'
+              //       },
+              //       body: JSON.stringify({id:chan_id, owner: this.state.account}),
+              //     });
+              
+              // self.fetch_data_from_db();
+            }).catch(()=>{
+              alert("Transaction fails! ");
+              self.setState({loading:false});
+            })
+          }
+          else{
+            alert("sorry! It's been bought!");
+            self.setState({loading:false});
           }
         });
     }
@@ -203,26 +257,25 @@ export default class BuyNewChan extends React.Component {
         // this.ChanCoreContract = contract2;
         // this.SaleAuctionCoreContract = contract;
 
-        self.setState({fake_data:[]});
-        self.fetch_data_from_db();
+        self.setState({chan_data:[]});
+        // self.fetch_data_from_db();
 
 
-
-        // self.setState({fake_data:data});
+        // self.setState({chan_data:data});
 
 
     }
 
 
 
-    fetch_data_from_db(){
-      console.log("alice");
-        fetch('/api/auctions_sortname')
-        .then(function(response) {
-            return response.json();
-        }).then(result=>{
-          self.setState({fake_data:result});
-        })
+    // fetch_data_from_db(){
+    //   console.log("alice", this.sort, this.displayonly, this.state.account);
+    //     fetch('/api/auctions/'+this.sort+'/'+this.displayonly+ '/'+this.state.account)
+    //     .then(function(response) {
+    //         return response.json();
+    //     }).then(result=>{
+    //       self.setState({chan_data:result});
+    //     })
 
 
         // fetch('/api/test')
@@ -232,7 +285,7 @@ export default class BuyNewChan extends React.Component {
         //   console.log(data);
         // });
 
-    }
+    // }
 
 
     // checkDBOnAuction(chan_id){
@@ -247,36 +300,100 @@ export default class BuyNewChan extends React.Component {
     //     });
     // }
 
+//   onSelect(eventKey){
+//     console.log(eventKey,typeof(eventKey));
+//     const key = parseInt(eventKey);
+
+
+//     switch(key) {
+//     case 1:
+//         this.setState({sort:"Sort By Name"});
+//         this.sort=1;
+//         break;
+//     case 2:
+//         this.setState({sort:"Sort By Id"});
+//         this.sort=2;
+//         break;
+//     case 3:
+//         this.setState({displayonly:"Female Only"});
+//         this.displayonly=3;
+//         break;
+//     case 4:
+//         this.setState({displayonly:"Male Only"});
+//         this.displayonly=4;
+//         break;
+//     case 5:
+//         this.setState({displayonly:"My Chans Only"});
+//         this.displayonly=5;
+//         break;
+//     case 6:
+//         this.setState({displayonly:"Display All"});
+//         this.displayonly=6;
+//         break;
+//     default:
+//         console.log("error");
+// }
+
+//     this.fetch_data_from_db();
+
+//   }
+
 
   render() {
     const buy_func = this.buy.bind(this);
     const cancel_func = this.cancelAuction.bind(this);
     const account = this.state.account;
 
+    const tstyle={
+      'box-shadow':'0px 0px 10px #000'
+    }
+
+     const bstyle={
+        'background-color':'pink'
+    };
+
+
+
+
 
     return (
       <div>
         <h1>{this.contract2}</h1>
+
+
+        <div className='sweet-loading' style={{display: 'flex', justifyContent: 'center'}}>
+        <FadeLoader
+          color={'#123abc'} 
+          loading={this.state.loading} 
+        />
+      </div>
+
+
+
         <div>
+
+
+
           <Grid>
             <Row>
-              {this.state.fake_data.map(function(d, idx){
+              {this.state.chan_data.map(function(d, idx){
                 return (<Col xs={6} md={4}>
-                  <Thumbnail src={d.url} alt="Image not available">
+                  <Thumbnail src={d.url} alt="Image not available" style={tstyle}>
                   <h3>Name:{d.name}</h3>
                   <p>Id:{d.id}</p>
                   <p>Gender:{d.gender}</p>
-                  <p>Level:{d.level}</p>
+                  <p>Level:{d.level}/{d.maxLevel}</p>
                   <p>Price:{d.current_price}</p>
                   <p>
                     {(d.seller === account) ? 
-
-                        <Button bsStyle="primary" onClick={cancel_func.bind(null,d.id)}>
-                          Cancel!
+                        <Button style={bstyle} onClick={cancel_func.bind(null,d.id)}>
+                          Take me back home
+                          <Glyphicon glyph="heart" />
                         </Button>
                         :
-                        <Button bsStyle="primary" onClick={buy_func.bind(null,d.id)}>
-                          Buy!
+                        <Button style={bstyle} onClick={buy_func.bind(null,d.id)}>
+                          Take me home
+                          <Glyphicon glyph="heart" />
                         </Button>
                     }
                   </p>

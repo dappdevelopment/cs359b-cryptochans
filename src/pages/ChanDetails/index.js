@@ -18,22 +18,17 @@ export default class ChanDetails extends React.Component {
     super(props);
     this.state = {
       intimacy:0,
-      fake_data:[]
+      chan_data:[]
 
     };
   }
-
-  // refreshState(){
-  //   this.ChanCoreContract.getChan(this.state.selectedId).then(result=> {console.log("ooooooooo",result); console.log("heyyyyyyyyyyyyy", this); this.setState({name:result[0]}); this.setState({create_time:result[1].c[0]});this.setState({level:result[2].c[0]});this.setState({gender:result[3]?"female":"male"});console.log("yyyyyyy",this.state);});
-  // }
-
 
   levelup(){
     console.log("level up");
     this.ChanCoreContract.ChanLevelup.sendTransaction(this.state.selectedId,{from:this.state.account});
     // this.refreshState();
-    this.state.intimacy = 0;
-    this.elapsedTime = 0;
+    // this.state.intimacy = 0;
+    // this.elapsedTime = 0;
     this.setState({level:this.state.level+1});
     this.setState({difficult_level:this.state.level*500});
    }
@@ -55,7 +50,32 @@ export default class ChanDetails extends React.Component {
           this.state.low * 1000000000000000,
           this.state.dur * 3600,
           {from:this.state.account}
-        );
+        ).then(result=>{
+          alert("Transaction submitted successful! It may take a while before you can see it on Marketplace ");
+            var events = this.SaleAuctionContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },function(error, log){
+            if (!error)
+              window.location="/cryptochans/cryptochans/MyChans"
+          });
+
+
+
+
+
+          
+          // fetch('/api/sellchan', {
+          //           method: 'POST',
+          //           headers: {
+          //             'Content-Type': 'application/json'
+          //           },
+          //           body: JSON.stringify({id:this.state.selectedId}),
+          //         }).then(rsult=>{
+          //           window.location="/cryptochans/cryptochans/Mychans"
+          //         });
+          
+        }).catch(()=>{
+          alert("Transaction fail.");
+        })
+
     }
   
   componentWillMount() {
@@ -65,15 +85,12 @@ export default class ChanDetails extends React.Component {
 
       const { match, contract,contract2} = this.props;
       const selectedId = match.params.id;
-      console.log(selectedId,'id?');
-      console.log(contract,'contract?');
       
 
       this.ChanCoreContract = contract;
       this.SaleAuctionContract = contract2;
       this.ChanCoreContract.checkInTimer().then(checkInTimer => {
-        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log(result); 
-          console.log("heyyyyyyyyyyyyy", this);
+        this.ChanCoreContract.getChan(selectedId).then(result=> {console.log('chan:',result); 
           this.setState({name:result[0]}); 
           this.setState({create_time:result[1].c[0]});
           this.setState({level:result[2].c[0]});
@@ -85,19 +102,16 @@ export default class ChanDetails extends React.Component {
           this.setState({checkInStreak:result[6].c[0]});
           this.setState({cooldownEndTime:this.timeConverter(result[7].c[0])});
           this.setState({shokanPartnerId:result[8].c[0]});
-          console.log("Chan Info:",this.state);
           this.setState({difficult_level:500*(result[2].c[0]+1)});
         });
       });
 
-     //const i1="http://img.im17.com/upload/cimg/2012/09-26/CV4VR32635714142861850668.jpg";
       const i1="https://s3.amazonaws.com/cryptochans/"+(parseInt(selectedId)).toString()+".jpg";
-      console.log('iiiiiii',i1);
       const sell_func = this.sell.bind(this);
       // console.log(this.state.value);
 
       this.setState({selectedId:selectedId});
-      this.setState({fake_img:i1});
+      this.setState({chan_img:i1});
 
 
 
@@ -117,50 +131,50 @@ export default class ChanDetails extends React.Component {
 
 
 
-      let startDate = new Date();
-        this.elapsedTime = 0;
-        var valid=true;
+      // let startDate = new Date();
+      //   this.elapsedTime = 0;
+      //   var valid=true;
 
-        const focus = function() {
-            startDate = new Date();
-            valid = true;
-        };
+      //   const focus = function() {
+      //       startDate = new Date();
+      //       valid = true;
+      //   };
 
-        console.log('state?????',this.state, this.state.level);
-        const self=this;
-        const blur = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            self.elapsedTime += spentTime;
-            console.log('now:',self.elapsedTime);
-            self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
-            valid=false;
-        };
+      //   console.log('state?????',this.state, this.state.level);
+      //   const self=this;
+      //   const blur = function() {
+      //       const endDate = new Date();
+      //       const spentTime = endDate.getTime() - startDate.getTime();
+      //       self.elapsedTime += spentTime;
+      //       console.log('now:',self.elapsedTime);
+      //       self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
+      //       valid=false;
+      //   };
 
-        const beforeunload = function() {
-            const endDate = new Date();
-            const spentTime = endDate.getTime() - startDate.getTime();
-            self.elapsedTime += spentTime;
-            console.log('tttttime',self.elapsedTime);
-            self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
-            valid=false;
+      //   const beforeunload = function() {
+      //       const endDate = new Date();
+      //       const spentTime = endDate.getTime() - startDate.getTime();
+      //       self.elapsedTime += spentTime;
+      //       console.log('tttttime',self.elapsedTime);
+      //       self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
+      //       valid=false;
 
-            // elapsedTime contains the time spent on page in milliseconds
-        };
+      //       // elapsedTime contains the time spent on page in milliseconds
+      //   };
 
-        const refreshIntimacy = function(){
-          if (valid) {
-          const endDate = new Date();
-          const spentTime = endDate.getTime() - startDate.getTime();
-          self.elapsedTime += spentTime;
-          self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
-          startDate = new Date();}
-        };
+      //   const refreshIntimacy = function(){
+      //     if (valid) {
+      //     const endDate = new Date();
+      //     const spentTime = endDate.getTime() - startDate.getTime();
+      //     self.elapsedTime += spentTime;
+      //     self.setState({intimacy:(self.elapsedTime/self.state.difficult_level)});
+      //     startDate = new Date();}
+      //   };
 
-        window.addEventListener('focus', focus);
-        window.addEventListener('blur', blur);
-        window.addEventListener('beforeunload', beforeunload);
-        setInterval(refreshIntimacy,3000);
+      //   window.addEventListener('focus', focus);
+      //   window.addEventListener('blur', blur);
+      //   window.addEventListener('beforeunload', beforeunload);
+      //   setInterval(refreshIntimacy,3000);
 
   }
 
@@ -184,18 +198,15 @@ export default class ChanDetails extends React.Component {
 
 
   handleLowPriceChange(event){
-    console.log(event.target.value);
     this.setState({low: event.target.value});
   }
 
   handleHighPriceChange(event){
-    console.log(event.target.value);
     this.setState({high: event.target.value});
   }
 
 
   handleDurChange(event){
-    console.log(event.target.value);
     this.setState({dur: event.target.value});
   }
 
@@ -217,7 +228,6 @@ export default class ChanDetails extends React.Component {
 
 
   render() {
-    console.log(this.state.level);
         const popover = (
       <Popover id="modal-popover" title="popover">
         very popover. such engagement
@@ -227,6 +237,13 @@ export default class ChanDetails extends React.Component {
        
         var formatTime = this.timeConverter(this.state.create_time);
 
+
+        const heart =null;
+
+
+
+
+
     return (
 
  <div>
@@ -235,8 +252,9 @@ export default class ChanDetails extends React.Component {
         <Grid>
             <Row>
                 <Col xs={5} md={5}>
-                <Image style={{width: 300, height: 300}} src={this.state.fake_img} atl="800x800">
+                <Image style={{width: 300, height: 300}} src={this.state.chan_img} atl="800x800">
                 </Image>
+                {heart}
                 </Col>
                 <Col xs={2} md={2}>
                 Unlocked achievements:
@@ -289,10 +307,9 @@ export default class ChanDetails extends React.Component {
                             Currently, only support Chinese=。=
                         </Popover>
                         <br/>
-                        Intimacy:
-                        <ProgressBar bsStyle="success" now={this.state.intimacy} label={`${this.state.intimacy.toFixed(2)}%`} />
+                       
                         <Label bsStyle="info">Unlock More features!</Label>
-                        <Button  disabled={this.state.intimacy<100} onClick={this.levelup.bind(this)}>
+                        <Button onClick={this.levelup.bind(this)}>
                         Level me up
                         </Button>
                         <Label bsStyle="info">Check In Streak: {this.state.checkInStreak}</Label>
