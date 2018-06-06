@@ -95,10 +95,10 @@ export default class BuyNewChan extends React.Component {
                   chan.id = id;
                   chan.name = chanData[0];
                   chan.create_time = chanData[1].c[0];
-                  chan.level = chanData[2].c[0];
+                  chan.level = chanData[2].toNumber();
                   chan.gender = chanData[4] ? "female" : "male";
                   chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
-                  chan.maxLevel= (chanData[3].c[0] + 1) * 10;
+                  chan.maxLevel= (chanData[3].toNumber() + 1) * 10;
                 }).then( () => {
                   self.SaleAuctionCoreContract.getAuction(i).then( auctionData => {
                     chan.seller           = auctionData[0];
@@ -151,21 +151,12 @@ export default class BuyNewChan extends React.Component {
                 value:priceInWei,
                 gas:1000000
               }).then(result=>{
-                console.log(result);
-                  alert("Transaction successful submitted, wait for a while for the transaction to go through");
-  this.SaleAuctionCoreContract.AuctionSuccessful({filter:{ fromBlock: 0 , toBlock: 'latest', address: result}}).get(async function(error, log){
-  console.log(error, log,'AAA');
+  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
   if (!error){
     await console.log(log,'transaction complete');
-    if(log[0].args.winner==self.state.account){
-      alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
-    }
-    else{
-      alert('Sad news...Someone else got the chan before you!');
-    }
-
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
     self.setState({loading:false});
-    console.log(log[0].args.tokenId.c[0],'work?');
+    console.log(log.args.tokenId.c[0],'work?');
     self.setState({chan_data: []});
     self.instantiateContract();
   }
@@ -210,13 +201,10 @@ export default class BuyNewChan extends React.Component {
                 gas:1000000
             }).then(result=>{
               console.log(result,'addr???????');
-              alert("Transaction successful submitted, wait for a while for the transaction to go through");
-  this.SaleAuctionCoreContract.AuctionCancelled( { filter: {fromBlock: 0, toBlock: 'latest', address: result} }).get(async function(error, log){
+  this.SaleAuctionCoreContract.allEvents( { filter: {fromBlock: 0, toBlock: 'latest', address: result} },async function(error, log){
   if (!error){
-    console.log(log);
-    alert('Congrats! You got the chan! Wait for a while before you can see your chan in MyChans');
-
-    await console.log(log[0],'transaction complete!');
+    alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
+    await console.log(log,'transaction complete!');
     self.setState({loading:false});
     self.setState({chan_data: []});
     self.instantiateContract();
