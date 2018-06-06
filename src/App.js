@@ -30,7 +30,8 @@ class App extends Component {
     this.state = {
       admin: false,
       web3: null,
-      hasAlert:false
+      hasAlert:false,
+      account: 'Not Logged In'
     }
   }
 
@@ -48,6 +49,7 @@ class App extends Component {
       this.instantiateContract()
     })
     .catch(() => {
+      alert("Error finding web3");
       console.log('Error finding web3.')
     })
   }
@@ -103,7 +105,8 @@ class App extends Component {
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
       console.log({userAccount: accounts[0]});
-      this.setState({account:accounts[0]});
+      if (accounts[0]) { this.setState({account:accounts[0]});}
+     
 
       chanCore.deployed().then((instance) => {
         console.log("successfully deployed ChanCore");

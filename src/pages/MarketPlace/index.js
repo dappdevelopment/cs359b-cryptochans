@@ -156,6 +156,7 @@ export default class BuyNewChan extends React.Component {
     await console.log(log,'transaction complete');
     alert("Transaction successful submitted, you may need to wait for a while before the chan appears in MyChans");
     self.setState({loading:false});
+    console.log(log.args.tokenId.c[0],'work?');
     self.setState({chan_data: []});
     self.instantiateContract();
   }
