@@ -55,16 +55,7 @@ export default class ChanDetails extends React.Component {
           this.state.low * 1000000000000000,
           this.state.dur * 3600,
           {from:this.state.account}
-        ).then(result=>{
-          console.log("db!!!");
-          fetch('/api/sellchan', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({id:this.state.selectedId}),
-                  });
-        });
+        );
     }
   
   componentWillMount() {

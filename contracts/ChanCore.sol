@@ -76,4 +76,8 @@ contract ChanCore is ChanMinting {
         // Actually unpause the contract.
         super.unpause();
     }
+
+    function withdrawBalances() external onlyOwner {
+        owner.transfer(this.balance);
+    }
 }
