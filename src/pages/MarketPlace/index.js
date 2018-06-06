@@ -96,7 +96,7 @@ export default class BuyNewChan extends React.Component {
                   chan.name = chanData[0];
                   chan.create_time = chanData[1].c[0];
                   chan.level = chanData[2].c[0];
-                  chan.gender = chanData[3] ? "female" : "male";
+                  chan.gender = chanData[4] ? "female" : "male";
                   chan.url = "https://s3.amazonaws.com/cryptochans/" + id + ".jpg";
                   chan.maxLevel= (chanData[3].c[0] + 1) * 10;
                 }).then( () => {

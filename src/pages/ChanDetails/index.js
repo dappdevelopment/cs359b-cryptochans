@@ -96,13 +96,14 @@ export default class ChanDetails extends React.Component {
           this.setState({level:result[2].c[0]});
           this.setState({generation:result[3].c[0]});
           this.setState({maxLevel:(result[3].c[0] + 1) * 10});
-          this.setState({gender:result[4]?"female":"male"});
+          this.setState({gender:result[4] ? "female" : "male"});
           this.setState({nextCheckIn:this.timeConverter(result[5].c[0] - checkInTimer)});
           this.setState({checkInDeadline:this.timeConverter(result[5].c[0])});
           this.setState({checkInStreak:result[6].c[0]});
           this.setState({cooldownEndTime:this.timeConverter(result[7].c[0])});
           this.setState({shokanPartnerId:result[8].c[0]});
           this.setState({difficult_level:500*(result[2].c[0]+1)});
+          console.log(this.state);
         });
       });
 
