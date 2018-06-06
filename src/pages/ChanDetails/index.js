@@ -35,7 +35,12 @@ export default class ChanDetails extends React.Component {
 
   checkIn() {
     console.log("Checking in");
-    this.ChanCoreContract.checkIn.sendTransaction(this.state.selectedId,{from:this.state.account});
+    this.ChanCoreContract.checkIn.sendTransaction(this.state.selectedId,{from:this.state.account}).then(result=>{
+      alert('Checkin success, you may need to wait for a while and refresh the page for update');
+      window.location="/cryptochans/cryptochans/MyChans"
+    }).catch(()=>{
+      alert('Checkin failed');
+    });
     // this.refreshState();
   }
 
@@ -212,6 +217,24 @@ export default class ChanDetails extends React.Component {
   }
 
 
+  getHeart(num){
+    //out of 7
+    console.log(num,'num???');
+    let ret = [];
+    for (var i =0; i < num; i++) {
+      ret.push(<Glyphicon glyph="heart" style={{'color':'red'}}/>);
+    }
+    for (var i =0; i < (7-num); i++) {
+      ret.push(<Glyphicon glyph="heart" style={{'color':'red','opacity':'0.1'}}/>);
+    }
+
+    return ret
+
+
+
+  }
+
+
 
   timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
@@ -240,6 +263,8 @@ export default class ChanDetails extends React.Component {
 
 
         const heart =null;
+
+        self = this;
 
 
 
@@ -309,17 +334,20 @@ export default class ChanDetails extends React.Component {
                         </Popover>
                         <br/>
                        
-                        <Label bsStyle="info">Unlock More features!</Label>
-                        <Button onClick={this.levelup.bind(this)}>
-                        Level me up
-                        </Button>
-                        <Label bsStyle="info">Check In Streak: {this.state.checkInStreak}</Label>
+                        
+                        <p bsStyle="info">Check In Streak: {self.getHeart(this.state.checkInStreak)}</p>
                         <br/>
-                        <Label bsStyle="info">Next Check In: {this.state.nextCheckIn}</Label>
+                        <p bsStyle="info">Next Check In: {this.state.nextCheckIn}</p>
                         <br/>
-                        <Label bsStyle="info">Check In Deadline: {this.state.checkInDeadline}</Label>
+                        <p bsStyle="info">Check In Deadline: {this.state.checkInDeadline}</p>
                         <Button onClick={this.checkIn.bind(this)}>
                         Check In
+                        </Button>
+
+
+                        <Label bsStyle="info">Unlock More features!</Label>
+                        <Button disabled={this.state.checkInStreak<7} onClick={this.levelup.bind(this)}>
+                        Level me up
                         </Button>
                     </ButtonGroup>
                     <br/>
