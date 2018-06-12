@@ -257,12 +257,17 @@ export default class BuyNewChan extends React.Component {
           this.setState({
             web3: results.web3
           });
-          // Get accounts.
+          if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
+      }
+      else{
+                 // Get accounts.
           results.web3.eth.getAccounts((error, accounts) => {
             this.setState({account:accounts[0]});
           });
 
           await this.instantiateContract();  
+      }
+
      
         })
 

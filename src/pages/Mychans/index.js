@@ -83,12 +83,16 @@ export default class Mychans extends React.Component {
           this.setState({
             web3: results.web3
           });
+          if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
+            
+          }
+            else{
           // Get accounts.
           results.web3.eth.getAccounts((error, accounts) => {
             this.setState({account:accounts[0]});
           });
 
-          this.instantiateContract();        
+          this.instantiateContract();     }   
         })
 
 

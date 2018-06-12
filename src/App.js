@@ -40,13 +40,24 @@ class App extends Component {
     // See utils/getWeb3 for more info.
 
     getWeb3
-    .then(results => {
+    .then(async results => {
       this.setState({
         web3: results.web3
-      })
+      });
+      await console.log(results,'ressfsfsfsf');
+      if(results.web3.currentProvider.host=='http://127.0.0.1:9545'){
+        alert("Please install metamask");
+      }
+      else{
+        console.log(results.web3);
+        this.instantiateContract()
+      }
+
+
+      console.log(results.web3);
 
       // Instantiate contract once web3 provided.
-      this.instantiateContract()
+      
     })
     .catch(() => {
       alert("Error finding web3");
@@ -78,7 +89,7 @@ class App extends Component {
       switch (netId) {
         case "1":
           console.log('This is mainnet')
-          this.setState({eth_detect:true});
+          this.setState({eth_detect:false});
           break
         case "2":
           console.log('This is the deprecated Morden test network.')
@@ -98,7 +109,7 @@ class App extends Component {
           break
         default:
           console.log('This is an unknown network.')
-          this.setState({eth_detect:true});
+          this.setState({eth_detect:false});
       }
     })
 
@@ -143,6 +154,8 @@ class App extends Component {
   }
 
   render() {
+    var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
+  <strong>Warning:Please use Rinkeby Network</strong></Alert>;
 
   //this is for get
   // fetch('/api/test')
@@ -181,10 +194,6 @@ class App extends Component {
       'height':'30px'
     };
 
-    let eth_detect = this.state.eth_detect?"./on.png":"./off.png";
-
-    var any_alert = this.state.eth_detect?null:<Alert bsStyle="warning">
-  <strong>Please use the correct network!(Rinkeby)</strong></Alert>;
 
     return (
 
@@ -192,7 +201,6 @@ class App extends Component {
         <div>
       {any_alert}
       </div>
-        <img style={iStyle} src={require(eth_detect)} alt="img not available"></img>
         <span style={pStyle} >Account Address: {this.state.account}</span>
         
           <Router basename={'/cryptochans/'}>
